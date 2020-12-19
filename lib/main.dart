@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'ui/pages/RouteNotFoundPage.dart';
 import 'ui/routes.dart';
 
 void main() {
@@ -10,6 +11,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: ROUTES,
+      onUnknownRoute: (settings) => MaterialPageRoute(
+        builder: (BuildContext context) {
+          return RouteNotFoundPage(page: settings.name);
+        },
+      ),
     );
   }
 }
