@@ -6,5 +6,5 @@ String videoCover(dynamic item) {
   } else {
     id = v["videoId"];
   }
-  return "https://stream.pull.workers.dev/video/" + id + ".jpg";
+  return "https://stream.pull.workers.dev/video/" + id + ".jpg?v8";
 }

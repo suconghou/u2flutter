@@ -9,19 +9,14 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Image.network(cover, fit: BoxFit.cover, width: 1080, loadingBuilder:
-            (BuildContext context, Widget child,
-                ImageChunkEvent loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes
-                  : null,
-            ),
-          );
-        }),
+        Center(
+          child: FadeInImage.assetNetwork(
+            image: cover,
+            placeholder: "images/loading.gif",
+            placeholderScale: 3,
+            fit: BoxFit.cover,
+          ),
+        ),
         SizedBox(
           height: 4,
         ),

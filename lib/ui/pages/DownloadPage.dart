@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 
-class AboutPage extends StatelessWidget {
+
+
+class DownloadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("关于"),
+        title: Text("下载管理"),
       ),
       body: Center(
         child: Column(
           children: [
-            Text("关于"),
+            Text("下载任务的管理"),
+
           ],
         ),
       ),
+
     );
   }
+
 }

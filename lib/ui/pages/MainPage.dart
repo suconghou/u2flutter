@@ -39,7 +39,7 @@ class _MainPageState extends State with SingleTickerProviderStateMixin {
               Tab(text: "动物"),
               Tab(text: "体育"),
               Tab(text: "游戏"),
-              Tab(text: "教育"),
+              Tab(text: "科技"),
             ],
           ),
         ),
@@ -52,7 +52,7 @@ class _MainPageState extends State with SingleTickerProviderStateMixin {
             HomeTabView(15),
             HomeTabView(17),
             HomeTabView(20),
-            HomeTabView(27),
+            HomeTabView(28),
           ],
         ));
   }
