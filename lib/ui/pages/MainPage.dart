@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/HomeDrawer.dart';
 import '../widgets/VideoGridWidget.dart';
+import '../widgets/HomeTabView.dart';
 import '../pages/SearchPage.dart';
 
 class MainPage extends StatefulWidget {
@@ -46,17 +47,12 @@ class _MainPageState extends State with SingleTickerProviderStateMixin {
         body: TabBarView(
           controller: _controller,
           children: [
-            VideoGridWidget([
-              "https://stream.suconghou.cn/video/4d2uHiMbaz0.jpg",
-              "https://stream.suconghou.cn/video/ugpywe34_30.jpg",
-              "https://stream.suconghou.cn/video/JAMNqRBL_CY.jpg",
-              "https://stream.suconghou.cn/video/mrHqzfjdpX8.jpg"
-            ]),
-            Text("tab2"),
-            Text("tab3"),
-            Text("tab4"),
-            Text("tab5"),
-            Text("tab6"),
+            HomeTabView(10),
+            HomeTabView(1),
+            HomeTabView(15),
+            HomeTabView(17),
+            HomeTabView(20),
+            HomeTabView(27),
           ],
         ));
   }
