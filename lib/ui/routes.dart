@@ -6,7 +6,7 @@ import 'pages/SettingsPage.dart';
 import 'pages/AboutPage.dart';
 import 'pages/DownloadPage.dart';
 
-final Map<String, WidgetBuilder> ROUTES = {
+final Map<String, WidgetBuilder> routes = {
   "/": (c) => MainPage(),
   '/favorites':(c)=>FavoritesPage(),
   '/download':(c)=>DownloadPage(),

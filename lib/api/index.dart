@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import '../utils/cache.dart';
 
-Uri base = Uri.parse('https://r.suconghou.cn/video/api/v3/');
+Uri base = Uri.parse('http://s.feds.club/video/api/v3/');
 
 class _DataApi {
   var client = HttpClient();
@@ -138,5 +138,5 @@ class _DataApi {
   }
 }
 
-final Api = _DataApi();
+final api = _DataApi();
 

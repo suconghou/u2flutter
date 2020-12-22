@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: ROUTES,
+      routes: routes,
       onUnknownRoute: (settings) => MaterialPageRoute(
         builder: (BuildContext context) {
           return RouteNotFoundPage(page: settings.name);

@@ -3,7 +3,7 @@ import '../../api/index.dart';
 import 'VideoGridWidget.dart';
 
 class HomeTabView extends StatefulWidget {
-  int videoCategoryId;
+  final int videoCategoryId;
   HomeTabView(this.videoCategoryId);
 
   @override
@@ -14,10 +14,10 @@ class HomeTabView extends StatefulWidget {
 
 class _HomeTabViewState extends State {
   int videoCategoryId;
-  Future _refresh = null;
+  Future _refresh;
 
-  _HomeTabViewState(this.videoCategoryId){
-    _refresh = Api.mostPopularVideos(videoCategoryId:videoCategoryId);
+  _HomeTabViewState(this.videoCategoryId) {
+    _refresh = api.mostPopularVideos(videoCategoryId: videoCategoryId);
   }
 
   @override
@@ -25,6 +25,7 @@ class _HomeTabViewState extends State {
     return FutureBuilder(
         future: _refresh,
         builder: (context, AsyncSnapshot snapshot) {
+          print(snapshot);
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasError) {
               return _body(snapshot.data);
@@ -46,7 +47,7 @@ class _HomeTabViewState extends State {
 
   void refresh() {
     setState(() {
-      _refresh = Api.mostPopularVideos(videoCategoryId:videoCategoryId);
+      _refresh = api.mostPopularVideos(videoCategoryId: videoCategoryId);
     });
   }
 
@@ -54,7 +55,8 @@ class _HomeTabViewState extends State {
     print(data["items"]);
     return RefreshIndicator(
       onRefresh: () async => refresh(),
-      child: VideoGridWidget(data["items"]),
+      child:
+          data["items"] is List ? VideoGridWidget(data["items"]) : Text("数据错误"),
     );
   }
 }

@@ -74,7 +74,7 @@ class ResultPage extends StatefulWidget {
 class ResultPageState extends LoadingPageState<ResultPage> {
   @override
   Future<List> fetchData(int page)async {
-      var res = await Api.search(q:widget.query);
+      var res = await api.search(q:widget.query);
       return res["items"];
   }
 
@@ -99,27 +99,27 @@ class ResultPageState extends LoadingPageState<ResultPage> {
   bool get wantKeepAlive => true;
 }
 
-final String store_key = "query_history";
+final String storeKey = "query_history";
 
 addQueryHistory(String q) {
   Set qSet = Set<String>();
   qSet.add(q);
   qSet.addAll(getQueryHistory());
-  Store.set(store_key, qSet);
+  Store.set(storeKey, qSet);
 }
 
 delQueryHistory(String q) {
   var data = getQueryHistory();
   data.remove(q);
-  Store.set(store_key, data);
+  Store.set(storeKey, data);
 }
 
 clearQueryHistory() {
-  Store.remove(store_key);
+  Store.remove(storeKey);
 }
 
 Set<String> getQueryHistory() {
-  var v = Store.get(store_key);
+  var v = Store.get(storeKey);
   if (v is Set) {
     return v;
   }
