@@ -25,7 +25,6 @@ class _HomeTabViewState extends State {
     return FutureBuilder(
         future: _refresh,
         builder: (context, AsyncSnapshot snapshot) {
-          print(snapshot);
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasError) {
               return _body(snapshot.data);
@@ -52,7 +51,6 @@ class _HomeTabViewState extends State {
   }
 
   Widget _body(dynamic data) {
-    print(data["items"]);
     return RefreshIndicator(
       onRefresh: () async => refresh(),
       child:
