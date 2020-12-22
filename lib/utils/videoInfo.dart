@@ -1,4 +1,25 @@
 String videoCover(dynamic item) {
+  final String id = getVideoId(item);
+  return "https://stream.pull.workers.dev/video/" + id + ".jpg?v8";
+}
+
+String getVideoTitle(dynamic item) {
+  var v = item["snippet"];
+  if (v is Map) {
+    return v["title"];
+  }
+  return "";
+}
+
+String getVideoDesc(dynamic item) {
+  var v = item["snippet"];
+  if (v is Map) {
+    return v["description"];
+  }
+  return "";
+}
+
+String getVideoId(dynamic item) {
   String id = "";
   var v = item["id"];
   if (v is String) {
@@ -6,14 +27,17 @@ String videoCover(dynamic item) {
   } else {
     id = v["videoId"];
   }
-  return "https://stream.pull.workers.dev/video/" + id + ".jpg?v8";
+  return id;
 }
 
 String viewCount(dynamic item) {
-  var n = 1;
+  var n = 0;
   var v = item["statistics"];
   if (v is Map) {
     n = int.parse(v["viewCount"]);
+  }
+  if (n < 1) {
+    return "";
   }
   if (n > 10000) {
     return "${(n / 1000).round()}万观看";

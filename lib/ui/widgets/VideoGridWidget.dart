@@ -3,12 +3,13 @@ import '../../utils/videoInfo.dart';
 
 Widget buildVideoItem(BuildContext context, dynamic item) {
   String cover = videoCover(item);
-  String title = item["snippet"]["title"];
+  String title = getVideoTitle(item);
   String count = viewCount(item);
   String pubTime = pubAt(item);
   String dur = duration(item);
   return Container(
     color: Colors.white,
+    padding: EdgeInsets.symmetric( vertical: 5),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -89,7 +90,7 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
 Widget buildListVideoItem(BuildContext context, dynamic item) {
   return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/play', arguments: "1234ID");
+        Navigator.pushNamed(context, '/play', arguments: item);
       },
       child: buildVideoItem(context, item));
 }
@@ -97,25 +98,31 @@ Widget buildListVideoItem(BuildContext context, dynamic item) {
 Widget buildIndexVideoItem(BuildContext context, dynamic item) {
   var video = buildVideoItem(context, item);
   return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, "/play", arguments: "detail");
+            Navigator.pushNamed(context, "/play", arguments: item);
           },
           child: video));
 }
 
 class VideoGridWidget extends StatelessWidget {
   final List list;
-  VideoGridWidget(this.list);
+  bool grid;
+  VideoGridWidget(this.list, {this.grid = true});
 
   @override
   Widget build(BuildContext context) {
     var children =
         list.map((item) => buildListVideoItem(context, item)).toList();
-    return GridView.extent(
+    if (!grid) {
+      return Column(
+        children: children,
+      );
+    }
+    return GridView.count(
       padding: EdgeInsets.all(10),
-      maxCrossAxisExtent: 240,
+      crossAxisCount: 2,
       mainAxisSpacing: 0,
       crossAxisSpacing: 10,
       childAspectRatio: 1,

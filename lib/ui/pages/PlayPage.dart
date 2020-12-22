@@ -1,19 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/api/index.dart';
+import '../widgets/VideoListBuilder.dart';
+import '../../utils/videoInfo.dart';
 
 class PlayPage extends StatelessWidget {
+  Future<dynamic> _refresh;
+  String videoId;
+
   @override
   Widget build(BuildContext context) {
+    dynamic item = ModalRoute.of(context).settings.arguments;
+    final String id = getVideoId(item);
+    final String title = getVideoTitle(item);;
+    final String desc = getVideoTitle(item);
+    final String pubTime = pubAt(item);
+    final String count = viewCount(item);
+    final String dur = duration(item);
+    videoId = id;
+    refresh();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Play Page Title"),
+        title: Text(title),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text("Play Page"),
-          ],
-        ),
+      body: ListView(
+        padding: EdgeInsets.all(10),
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+          SizedBox(
+            height: 300,
+          ),
+          Row(
+            children: [
+              Text(pubTime),
+              Expanded(child: Container()),
+              Text(dur),
+              Expanded(child: Container()),
+              Text(count,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      decoration: TextDecoration.none)),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            desc,
+            style: TextStyle(color: Colors.grey),
+          ),
+          SizedBox(
+            height: 100,
+          ),
+          VideoListBuilder(_refresh, refresh).build(),
+          SizedBox(
+            height: 100,
+          ),
+        ],
       ),
     );
+  }
+
+  refresh() {
+    if (true) {
+      _refresh = api.relatedVideo(relatedToVideoId: videoId);
+    } else {
+      _refresh = api.playlistsInChannel(channelId: videoId);
+    }
   }
 }
