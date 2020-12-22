@@ -10,16 +10,16 @@ class _DataApi {
 
   _DataApi(
       [int timeout = 15,
-        userAgent =
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15']) {
+      userAgent =
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15']) {
     client.connectionTimeout = Duration(seconds: timeout);
     client.userAgent = userAgent;
   }
 
   mostPopularVideos(
       {String regionCode = 'HK',
-        int videoCategoryId = 1,
-        int maxResults = 30}) async {
+      int videoCategoryId = 1,
+      int maxResults = 30}) async {
     var params = {
       'chart': 'mostPopular',
       'maxResults': maxResults.toString(),
@@ -38,11 +38,11 @@ class _DataApi {
 
   search(
       {String q,
-        String pageToken,
-        String channelId,
-        String regionCode,
-        String type = 'video',
-        int maxResults = 20}) async {
+      String pageToken,
+      String channelId,
+      String regionCode,
+      String type = 'video',
+      int maxResults = 20}) async {
     var order = '';
     if (q != null && q.isNotEmpty) {
       order = 'viewCount';
@@ -61,9 +61,9 @@ class _DataApi {
 
   relatedVideo(
       {String relatedToVideoId,
-        String pageToken,
-        String type = 'video',
-        int maxResults = 30}) async {
+      String pageToken,
+      String type = 'video',
+      int maxResults = 30}) async {
     var params = {
       'type': type,
       'relatedToVideoId': relatedToVideoId,
@@ -139,4 +139,3 @@ class _DataApi {
 }
 
 final api = _DataApi();
-

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class PlayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,12 +11,9 @@ class PlayPage extends StatelessWidget {
         child: Column(
           children: [
             Text("Play Page"),
-
           ],
         ),
       ),
-
     );
   }
-
 }

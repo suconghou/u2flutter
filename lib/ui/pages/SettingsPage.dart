@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,12 +11,9 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           children: [
             Text("设置页面"),
-
           ],
         ),
       ),
-
     );
   }
-
 }

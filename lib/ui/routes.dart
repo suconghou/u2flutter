@@ -8,10 +8,9 @@ import 'pages/DownloadPage.dart';
 
 final Map<String, WidgetBuilder> routes = {
   "/": (c) => MainPage(),
-  '/favorites':(c)=>FavoritesPage(),
-  '/download':(c)=>DownloadPage(),
-  '/play':(c)=>PlayPage(),
-  '/about':(c)=>AboutPage(),
-  '/settings':(c)=>SettingsPage(),
-
+  '/favorites': (c) => FavoritesPage(),
+  '/download': (c) => DownloadPage(),
+  '/play': (c) => PlayPage(),
+  '/about': (c) => AboutPage(),
+  '/settings': (c) => SettingsPage(),
 };

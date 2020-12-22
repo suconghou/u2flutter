@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,12 +11,9 @@ class FavoritesPage extends StatelessWidget {
         child: Column(
           children: [
             Text("这里分两类收藏,一类是视频,一类是channel"),
-
           ],
         ),
       ),
-
     );
   }
-
 }

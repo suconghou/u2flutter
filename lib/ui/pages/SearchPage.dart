@@ -73,15 +73,19 @@ class ResultPage extends StatefulWidget {
 
 class ResultPageState extends LoadingPageState<ResultPage> {
   @override
-  Future<List> fetchData(int page)async {
-      var res = await api.search(q:widget.query);
+  Future<List> fetchData(int page) async {
+    var res = await api.search(q: widget.query);
+    if (res["items"] is List) {
       return res["items"];
+    }
+    print(res);
+    return [];
   }
 
   @override
   Widget buildItem(BuildContext context, int index, dynamic item) {
     print(item);
-    return buildIndexVideoItem(context,item);
+    return buildIndexVideoItem(context, item);
   }
 
   Widget tagText(String s) {

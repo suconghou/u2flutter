@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class DownloadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,12 +11,9 @@ class DownloadPage extends StatelessWidget {
         child: Column(
           children: [
             Text("下载任务的管理"),
-
           ],
         ),
       ),
-
     );
   }
-
 }
