@@ -6,7 +6,9 @@ import '../../api/index.dart';
 
 class SearchPageDelegate extends SearchDelegate<Map> {
 
-  SearchPageDelegate():super(searchFieldLabel:"输入关键词搜索");
+  SearchPageDelegate():super(searchFieldLabel:"输入关键词搜索",searchFieldStyle:TextStyle(
+    fontSize: 14,
+  ));
 
   @override
   List<Widget> buildActions(BuildContext context) {

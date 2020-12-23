@@ -8,7 +8,8 @@ Widget getWidgetByLoadingStatus(LoadingStatus status, VoidCallback onRefresh,
       return Center(child: CircularProgressIndicator());
     case LoadingStatus.ERROR:
       return Center(
-        child: FlatButton(onPressed: onRefresh, child: Text(errText)),
+        child: FlatButton(
+            onPressed: onRefresh, child: Center(child: Text(errText))),
       );
     case LoadingStatus.NO_MORE:
       return Center(
