@@ -1,5 +1,8 @@
 String videoCover(dynamic item) {
   final String id = getVideoId(item);
+  if (id == "") {
+    return "https://assets.suconghou.cn/defaultImg.png";
+  }
   return "https://stream.pull.workers.dev/video/" + id + ".jpg?v8";
 }
 
@@ -19,8 +22,18 @@ String getVideoDesc(dynamic item) {
   return "";
 }
 
+// 兼容playlist 中的ID, 检测 youtube#playlist
 String getVideoId(dynamic item) {
   String id = "";
+  if (item["kind"] == "youtube#playlist") {
+    return getPlayListVid(item);
+  }
+  var c = item["contentDetails"];
+  if (c is Map) {
+    if (c["videoId"] is String) {
+      return c["videoId"];
+    }
+  }
   var v = item["id"];
   if (v is String) {
     id = v;
@@ -28,6 +41,30 @@ String getVideoId(dynamic item) {
     id = v["videoId"];
   }
   return id;
+}
+
+String getPlayListVid(dynamic item) {
+  var s = item['snippet'];
+  if (s is Map) {
+    var t = s['thumbnails'];
+    if (t is Map) {
+      var w = t['medium'];
+      if (t['default'] is Map) {
+        w = t['default'];
+      } else if (t['standard'] is Map) {
+        w = t['standard'];
+      } else if (t['high'] is Map) {
+        w = t['high'];
+      }
+      var u = w['url'];
+      var r = RegExp(r"/([\w\-]{6,12})/");
+      var match = r.firstMatch(u);
+      if (match != null) {
+        return match.group(1);
+      }
+    }
+  }
+  return '';
 }
 
 String getChannelId(dynamic item) {
@@ -150,4 +187,26 @@ String getVideoCount(dynamic item) {
     }
   }
   return "$n个视频";
+}
+
+String getChannelUploadId(dynamic item) {
+  var v = item["contentDetails"];
+  if (v is Map) {
+    var c = v["relatedPlaylists"];
+    if (c is Map) {
+      return c["uploads"];
+    }
+  }
+  return "";
+}
+
+String getChannelFavoriteId(dynamic item) {
+  var v = item["contentDetails"];
+  if (v is Map) {
+    var c = v["favorites"];
+    if (c is Map) {
+      return c["uploads"];
+    }
+  }
+  return "";
 }

@@ -7,10 +7,12 @@ import '../../api/index.dart';
 class SearchPageDelegate extends SearchDelegate<Map> {
   SearchPageDelegate()
       : super(
-            searchFieldLabel: "输入关键词搜索",
-            searchFieldStyle: TextStyle(
-              fontSize: 14,
-            ));
+          searchFieldLabel: "输入关键词搜索",
+          searchFieldStyle: TextStyle(
+            fontSize: 14,
+            color: Colors.black54,
+          ),
+        );
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -121,7 +123,7 @@ class ResultPageState extends LoadingPageState<ResultPage> {
 
   @override
   Widget buildItem(BuildContext context, int index, dynamic item) {
-    return buildIndexVideoItem(context, item);
+    return buildSignleVideoItem(context, item);
   }
 
   Widget tagText(String s) {

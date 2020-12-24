@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../utils/videoInfo.dart';
 
-Widget buildVideoItem(BuildContext context, dynamic item) {
+Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
   String cover = videoCover(item);
   String title = getVideoTitle(item);
   String count = viewCount(item);
@@ -11,24 +11,45 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
   String ctitle = getChannelTitle(item);
   final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
       ? Container(
-          margin: EdgeInsets.symmetric(horizontal: 5),
-          child: InkWell(
-            child: Text(
-              ctitle,
-              maxLines: 2,
-              style: TextStyle(color: Colors.blue,fontSize: 12),
+          margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+          child: SizedBox(
+            height: 14,
+            child: InkWell(
+              child: Text(
+                ctitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.blue, fontSize: 14, height: 1),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/channel', arguments: cid);
+              },
             ),
-            onTap: () {
-              Navigator.pushNamed(context, '/channel', arguments: cid);
-            },
           ),
         )
       : SizedBox(
-          height: 4,
+          height: 5,
         );
+  var titleWidget = Text(
+    title,
+    maxLines: 2,
+    overflow: TextOverflow.ellipsis,
+    style: TextStyle(
+        height: 1,
+        fontSize: 14,
+        color: Colors.black,
+        decoration: TextDecoration.none),
+  );
+  var titleBox = signle
+      ? titleWidget
+      : SizedBox(
+          height: 28,
+          child: titleWidget,
+        );
+
   return Container(
     color: Colors.white,
-    padding: EdgeInsets.symmetric(vertical: 5),
+    padding: EdgeInsets.all(0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -45,50 +66,37 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
           dur.isEmpty
               ? Container()
               : Positioned(
-                  bottom: 5,
-                  right: 5,
+                  bottom: 3,
+                  right: 3,
                   child: Container(
                     margin: EdgeInsets.all(2),
                     color: Colors.black,
                     padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     child: Text(dur,
                         maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           color: Colors.white,
                           decoration: TextDecoration.none,
                         )),
                   ),
                 ),
         ]),
-        SizedBox(
-          height: 4,
-        ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-                decoration: TextDecoration.none),
-          ),
-        ),
-        SizedBox(
-          height: 4,
-        ),
+            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            child: titleBox),
         cc,
         Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.symmetric(horizontal: 5),
+          margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
           child: Row(
             children: <Widget>[
               Text(
                 pubTime,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
+                  height: 1,
                   color: Colors.black87,
                   decoration: TextDecoration.none,
                 ),
@@ -96,7 +104,8 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
               Expanded(child: Container()),
               Text(count,
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
+                      height: 1,
                       color: Colors.grey,
                       decoration: TextDecoration.none))
             ],
@@ -107,16 +116,17 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
   );
 }
 
-Widget buildListVideoItem(BuildContext context, dynamic item) {
+Widget buildListVideoItem(BuildContext context, dynamic item,
+    {signle = false}) {
   return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/play', arguments: item);
       },
-      child: buildVideoItem(context, item));
+      child: buildVideoItem(context, item, signle: signle));
 }
 
-Widget buildIndexVideoItem(BuildContext context, dynamic item) {
-  var video = buildVideoItem(context, item);
+Widget buildSignleVideoItem(BuildContext context, dynamic item) {
+  var video = buildVideoItem(context, item, signle: true);
   return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: InkWell(
@@ -133,19 +143,26 @@ class VideoGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var children =
-        list.map((item) => buildListVideoItem(context, item)).toList();
     if (!grid) {
+      var children = list
+          .map((item) => buildListVideoItem(
+                context,
+                item,
+                signle: true,
+              ))
+          .toList();
       return Column(
         children: children,
       );
     }
+    var children =
+        list.map((item) => buildListVideoItem(context, item)).toList();
     return GridView.count(
       padding: EdgeInsets.all(10),
       crossAxisCount: 2,
       mainAxisSpacing: 0,
       crossAxisSpacing: 10,
-      childAspectRatio: 0.8,
+      childAspectRatio: 1,
       children: children,
     );
   }
