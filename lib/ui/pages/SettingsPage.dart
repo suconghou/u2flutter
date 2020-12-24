@@ -7,12 +7,35 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("设置"),
       ),
-      body: Center(
-        child: Column(
+      body: ListView(
+        padding: EdgeInsets.all(20),
           children: [
-            Text("设置页面"),
+            TextField(
+                decoration:InputDecoration(
+                  icon: Icon(Icons.api),
+                  labelText: "内容API服务"
+                )
+            ),
+            TextField(
+                decoration:InputDecoration(
+                    icon: Icon(Icons.analytics),
+                    labelText: "视频解析服务"
+                )
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 40),
+              height: 40,
+              child: RaisedButton(
+                child: Text("保存"),
+                textColor: Colors.white,
+                color: Colors.blue[500],
+                elevation: 5,
+                onPressed: (){
+                },
+              ),
+            )
+
           ],
-        ),
       ),
     );
   }
