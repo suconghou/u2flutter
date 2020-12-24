@@ -5,21 +5,27 @@ import '../widgets/VideoGridWidget.dart';
 import '../../api/index.dart';
 
 class SearchPageDelegate extends SearchDelegate<Map> {
-
-  SearchPageDelegate():super(searchFieldLabel:"输入关键词搜索",searchFieldStyle:TextStyle(
-    fontSize: 14,
-  ));
+  SearchPageDelegate()
+      : super(
+            searchFieldLabel: "输入关键词搜索",
+            searchFieldStyle: TextStyle(
+              fontSize: 14,
+            ));
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return [IconButton(icon: Icon(Icons.clear), onPressed: () {
-      if(query.isEmpty){
-        close(context,null);
-      }else{
-        query="";
-        showSuggestions(context);
-      }
-    })];
+    return [
+      IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            if (query.isEmpty) {
+              close(context, null);
+            } else {
+              query = "";
+              showSuggestions(context);
+            }
+          })
+    ];
   }
 
   @override
@@ -66,32 +72,31 @@ class SuggestionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final suggestions = getQueryHistory();
-      print(suggestions);
-      return ListView.builder(
+    final suggestions = getQueryHistory();
+    print(suggestions);
+    return ListView.builder(
         itemCount: suggestions.length,
-          itemBuilder: (c, i) {
-            return ListTile(
-              onTap: () {
-                onShowResult(suggestions.elementAt(i));
-              },
-              title: Text(suggestions.elementAt(i)),
-              trailing: Container(
-                width: 20,
-                height: 20,
-                child: IconButton(
-                  iconSize: 20,
-                  padding: EdgeInsets.all(0),
-                  onPressed: ()  {
-                    delQueryHistory(suggestions.elementAt(i));
-                    onQuery(query);
-                  },
-                  icon: Icon(Icons.close),
-                ),
+        itemBuilder: (c, i) {
+          return ListTile(
+            onTap: () {
+              onShowResult(suggestions.elementAt(i));
+            },
+            title: Text(suggestions.elementAt(i)),
+            trailing: Container(
+              width: 20,
+              height: 20,
+              child: IconButton(
+                iconSize: 20,
+                padding: EdgeInsets.all(0),
+                onPressed: () {
+                  delQueryHistory(suggestions.elementAt(i));
+                  onQuery(query);
+                },
+                icon: Icon(Icons.close),
               ),
-            );
-          }
-      );
+            ),
+          );
+        });
   }
 }
 

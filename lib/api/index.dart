@@ -5,7 +5,7 @@ import '../utils/store.dart';
 
 final _default = 'https://r.suconghou.cn/video/api/v3/';
 
-Uri base;
+Uri _base;
 
 class _DataApi {
   var client = HttpClient();
@@ -17,15 +17,15 @@ class _DataApi {
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15']) {
     client.connectionTimeout = Duration(seconds: timeout);
     client.userAgent = userAgent;
-
+    initBaseUrl();
   }
 
   initBaseUrl(){
     final _baseUrl = Store.get("baseUrl");
     if (_baseUrl is String && _baseUrl.isNotEmpty) {
-      base = Uri.parse(_baseUrl);
+      _base = Uri.parse(_baseUrl);
     } else {
-      base = Uri.parse(_default);
+      _base = Uri.parse(_default);
     }
   }
 
@@ -123,10 +123,10 @@ class _DataApi {
   Uri buildUrl(String uri, Map<String, String> params) {
     params.removeWhere((key, value) => value == null || value.isEmpty);
     return Uri(
-        scheme: base.scheme,
-        host: base.host,
-        port: base.port,
-        path: base.path + uri,
+        scheme: _base.scheme,
+        host: _base.host,
+        port: _base.port,
+        path: _base.path + uri,
         queryParameters: params);
   }
 

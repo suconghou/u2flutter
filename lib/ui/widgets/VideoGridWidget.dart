@@ -7,9 +7,28 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
   String count = viewCount(item);
   String pubTime = pubAt(item);
   String dur = duration(item);
+  String cid = getChannelId(item);
+  String ctitle = getChannelTitle(item);
+  final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
+      ? Container(
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          child: InkWell(
+            child: Text(
+              ctitle,
+              maxLines: 2,
+              style: TextStyle(color: Colors.blue,fontSize: 12),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/channel', arguments: cid);
+            },
+          ),
+        )
+      : SizedBox(
+          height: 4,
+        );
   return Container(
     color: Colors.white,
-    padding: EdgeInsets.symmetric( vertical: 5),
+    padding: EdgeInsets.symmetric(vertical: 5),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -60,6 +79,7 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
         SizedBox(
           height: 4,
         ),
+        cc,
         Container(
           alignment: Alignment.center,
           margin: EdgeInsets.symmetric(horizontal: 5),
@@ -125,7 +145,7 @@ class VideoGridWidget extends StatelessWidget {
       crossAxisCount: 2,
       mainAxisSpacing: 0,
       crossAxisSpacing: 10,
-      childAspectRatio: 1,
+      childAspectRatio: 0.8,
       children: children,
     );
   }

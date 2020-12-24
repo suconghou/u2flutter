@@ -30,6 +30,24 @@ String getVideoId(dynamic item) {
   return id;
 }
 
+String getChannelId(dynamic item) {
+  String id = "";
+  var v = item["snippet"];
+  if (v is Map) {
+    id = v["channelId"];
+  }
+  return id;
+}
+
+String getChannelTitle(dynamic item) {
+  String title = "";
+  var v = item["snippet"];
+  if (v is Map) {
+    title = v["channelTitle"];
+  }
+  return title;
+}
+
 String viewCount(dynamic item) {
   var n = 0;
   var v = item["statistics"];
@@ -102,4 +120,34 @@ String duration(dynamic item) {
     return arr.join(":");
   }
   return "";
+}
+
+String getSubscriberCount(dynamic item) {
+  var v = item["statistics"];
+  var n = 0;
+  if (v is Map) {
+    var c = v["subscriberCount"];
+    if (c is String) {
+      n = int.parse(c);
+    }
+  }
+  if (n < 1) {
+    return "";
+  }
+  if (n > 10000) {
+    return "${(n / 1000).round()}万订阅者";
+  }
+  return "$n订阅者";
+}
+
+String getVideoCount(dynamic item) {
+  var v = item["statistics"];
+  var n = 0;
+  if (v is Map) {
+    var c = v["videoCount"];
+    if (c is String) {
+      n = int.parse(c);
+    }
+  }
+  return "$n个视频";
 }

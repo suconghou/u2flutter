@@ -11,11 +11,30 @@ class PlayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     dynamic item = ModalRoute.of(context).settings.arguments;
     final String id = getVideoId(item);
-    final String title = getVideoTitle(item);;
+    final String title = getVideoTitle(item);
+    ;
     final String desc = getVideoTitle(item);
     final String pubTime = pubAt(item);
     final String count = viewCount(item);
     final String dur = duration(item);
+    final String cid = getChannelId(item);
+    final String ctitle = getChannelTitle(item);
+    final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
+        ? Container(
+          margin:  EdgeInsets.symmetric(vertical: 10),
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/channel', arguments: cid);
+              },
+              child: Text(
+                ctitle,
+                style: TextStyle(fontSize: 14, color: Colors.blue),
+              ),
+            ),
+          )
+        : SizedBox(
+            height: 2,
+          );
     videoId = id;
     refresh();
     return Scaffold(
@@ -34,6 +53,7 @@ class PlayPage extends StatelessWidget {
           SizedBox(
             height: 300,
           ),
+          cc,
           Row(
             children: [
               Text(pubTime),
