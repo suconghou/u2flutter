@@ -57,9 +57,9 @@ class PlayPage extends StatelessWidget {
           Row(
             children: [
               Text(pubTime),
-              Expanded(child: Container()),
+              SizedBox(width: 4,),
               Text(dur),
-              Expanded(child: Container()),
+              SizedBox(width: 4,),
               Text(count,
                   style: TextStyle(
                       fontSize: 14,

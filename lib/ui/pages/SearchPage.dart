@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/store.dart';
+import '../../utils/dataHelper.dart';
 import 'LoadingPageState.dart';
 import '../widgets/VideoGridWidget.dart';
 import '../../api/index.dart';
@@ -141,29 +141,3 @@ class ResultPageState extends LoadingPageState<ResultPage> {
   bool get wantKeepAlive => true;
 }
 
-final String storeKey = "query_history";
-
-addQueryHistory(String q) {
-  Set qSet = Set<String>();
-  qSet.add(q);
-  qSet.addAll(getQueryHistory());
-  Store.set(storeKey, qSet);
-}
-
-delQueryHistory(String q) {
-  var data = getQueryHistory();
-  data.remove(q);
-  Store.set(storeKey, data);
-}
-
-clearQueryHistory() {
-  Store.remove(storeKey);
-}
-
-Set<String> getQueryHistory() {
-  var v = Store.get(storeKey);
-  if (v is Set) {
-    return v;
-  }
-  return Set<String>();
-}

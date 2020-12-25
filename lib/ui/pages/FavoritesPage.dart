@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
+import '../widgets/FavChannelList.dart';
+import '../widgets/FavVideoList.dart';
 
 class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("我的收藏"),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Text("这里分两类收藏,一类是视频,一类是channel"),
-          ],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("我的收藏"),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: "视频"),
+              Tab(text: "频道"),
+            ],
+          ),
+        ),
+        body: Container(
+          margin: EdgeInsets.all(10),
+          child: TabBarView(
+            children: [
+              FavVideoList(),
+              FavChannelList(),
+            ],
+          ),
         ),
       ),
     );

@@ -40,10 +40,10 @@ class _ChannelTabPageState extends State {
     Widget uploadList = uploadId.isNotEmpty ? ChannelTabView(ChannelTab.UPLOAD,uploadId): Center(child: Text("无数据"),);
     Widget favList = favId.isNotEmpty ? ChannelTabView(ChannelTab.FAVORITE,favId): Center(child: Text("无数据"),);
 
-    return new DefaultTabController(
+    return DefaultTabController(
         length: tabTitle.length,
         child: Scaffold(
-          body: new NestedScrollView(
+          body: NestedScrollView(
             headerSliverBuilder: (context, bool) {
               return [
                 SliverAppBar(
@@ -129,7 +129,7 @@ class _ChannelTabPageState extends State {
                 ),
                 SliverPersistentHeader(
                   delegate: SliverTabBarDelegate(
-                    new TabBar(
+                    TabBar(
                       tabs: tabTitle.map((f) => Tab(text: f)).toList(),
                       indicatorColor: Colors.red,
                       unselectedLabelColor: Colors.black,

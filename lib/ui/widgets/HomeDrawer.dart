@@ -33,36 +33,61 @@ class HomeDrawer extends StatelessWidget {
           child: ListView(
             children: [
               ListTile(
-                leading: Icon(Icons.favorite),
+                leading: Icon(
+                  Icons.favorite,
+                  color: Colors.blue,
+                ),
+                trailing: Icon(Icons.chevron_right,
+                    color: Theme.of(context).primaryColor),
                 title: Text("我的收藏"),
                 onTap: () {
                   Navigator.pushNamed(context, "/favorites");
                 },
               ),
               ListTile(
-                leading: Icon(Icons.file_download),
+                leading: Icon(
+                  Icons.file_download,
+                  color: Colors.blue,
+                ),
+                trailing: Icon(Icons.chevron_right,
+                    color: Theme.of(context).primaryColor),
                 title: Text("下载管理"),
                 onTap: () {
                   Navigator.pushNamed(context, "/download");
                 },
               ),
               ListTile(
-                leading: Icon(Icons.info),
-                title: Text("未知"),
+                leading: Icon(
+                  Icons.info,
+                  color: Colors.blue,
+                ),
+                trailing: Icon(Icons.chevron_right,
+                    color: Theme.of(context).primaryColor),
+                title: Text("未知导航"),
                 onTap: () {
                   Navigator.pushNamed(context, "/about");
                 },
               ),
               ListTile(
-                leading: Icon(Icons.settings),
-                title: Text("设置"),
+                leading: Icon(
+                  Icons.settings,
+                  color: Colors.blue,
+                ),
+                trailing: Icon(Icons.chevron_right,
+                    color: Theme.of(context).primaryColor),
+                title: Text("系统设置"),
                 onTap: () {
                   Navigator.pushNamed(context, "/settings");
                 },
               ),
               ListTile(
-                leading: Icon(Icons.info),
-                title: Text("关于"),
+                leading: Icon(
+                  Icons.info,
+                  color: Colors.blue,
+                ),
+                trailing: Icon(Icons.chevron_right,
+                    color: Theme.of(context).primaryColor),
+                title: Text("关于应用"),
                 onTap: () {
                   Navigator.pushNamed(context, "/about");
                 },

@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
+import '../../utils/dataHelper.dart';
 import '../../api/index.dart';
-import 'ChannelTabPage.dart';
+import '../widgets/VideoGridWidget.dart';
 
-class ChannelPage extends StatelessWidget {
-  Future _refresh;
-
+class FavVideoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String cid = ModalRoute.of(context).settings.arguments;
-    _refresh = api.channels(cid);
-    return main(context, cid);
+    var ids = getFavVIds();
+    ids = {"mrHqzfjdpX8"};
+
+    if (ids.length < 1) {
+      return Center(
+        child: Text("无数据"),
+      );
+    }
+    return ListView(
+      children: ids.map((e) => buildItem(e)).toList(),
+    );
   }
 
-  Widget main(BuildContext context, String channelId) {
+  Widget buildItem(String id) {
+    final Future _refresh = api.videoInfo(id);
     return FutureBuilder(
         future: _refresh,
         builder: (context, AsyncSnapshot snapshot) {
+          print(snapshot);
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasError) {
               return _body(context, snapshot.data);
@@ -36,7 +45,7 @@ class ChannelPage extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, dynamic res) {
-    dynamic item = res["items"][0];
-    return ChannelTabPage(item);
+    final item = res["items"][0];
+    return buildSignleVideoItem(context, item);
   }
 }
