@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api/index.dart';
 import '../widgets/VideoListBuilder.dart';
+import '../widgets/VideoStreamPlayer.dart';
 import '../../utils/videoInfo.dart';
 
 class PlayPage extends StatelessWidget {
@@ -21,7 +22,7 @@ class PlayPage extends StatelessWidget {
     final String ctitle = getChannelTitle(item);
     final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
         ? Container(
-          margin:  EdgeInsets.symmetric(vertical: 10),
+          margin:  EdgeInsets.only(bottom: 10),
             child: InkWell(
               onTap: () {
                 Navigator.pushNamed(context, '/channel', arguments: cid);
@@ -50,20 +51,19 @@ class PlayPage extends StatelessWidget {
               fontSize: 18,
             ),
           ),
-          SizedBox(
-            height: 300,
-          ),
+          VideoStreamPlayer(videoId),
           cc,
           Row(
             children: [
-              Text(pubTime),
-              SizedBox(width: 4,),
-              Text(dur),
-              SizedBox(width: 4,),
+              Text("发布于"+pubTime,style: TextStyle(height: 1),),
+              SizedBox(width: 8,),
+              Text(dur,style: TextStyle(height: 1,color: Colors.red),),
+              SizedBox(width: 8,),
               Text(count,
                   style: TextStyle(
+                      height: 1,
                       fontSize: 14,
-                      color: Colors.grey,
+                      color: Colors.black87,
                       decoration: TextDecoration.none)),
             ],
           ),

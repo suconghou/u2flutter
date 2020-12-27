@@ -34,7 +34,8 @@ abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
             setState(() {
               _status = LoadingStatus.ERROR;
             });
-            toast(e);
+            //TODO use dialog
+            print(e);
           }
         })
         .asStream()

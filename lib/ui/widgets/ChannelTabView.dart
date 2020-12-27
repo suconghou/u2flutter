@@ -21,8 +21,6 @@ class _ChannelTabViewState extends State {
   Future _refresh;
 
   _ChannelTabViewState(this.ctype, this.channelId) {
-    debugPrint(channelId);
-    debugPrint("$ctype");
     if (ctype == ChannelTab.PLAYLIST) {
       _refresh = api.playlistsInChannel(channelId:channelId);
     } else {

@@ -19,13 +19,13 @@ class HomeDrawer extends StatelessWidget {
                   ),
                   ClipOval(
                     child: Image.network(
-                      "https://flutter.cn/favicon.ico",
+                      "https://assets.suconghou.cn/u2web/static/dist/favicon.ico",
                       width: 80,
                       height: 80,
                     ),
                   ),
                   Container(height: 20),
-                  Text("U2WEB"),
+                  Text("U2FLUTTER"),
                 ],
               ),
             )),

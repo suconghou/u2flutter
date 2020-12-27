@@ -5,7 +5,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("设置"),
+        title: Text("系统设置"),
       ),
       body: ListView(
         padding: EdgeInsets.all(20),

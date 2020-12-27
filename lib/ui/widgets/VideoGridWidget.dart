@@ -9,11 +9,14 @@ Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
   String dur = duration(item);
   String cid = getChannelId(item);
   String ctitle = getChannelTitle(item);
+  if(title.isEmpty || cover.isEmpty){
+    return Container();
+  }
   final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
       ? Container(
           margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
           child: SizedBox(
-            height: 14,
+            height: 15,
             child: InkWell(
               child: Text(
                 ctitle,
@@ -43,7 +46,7 @@ Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
   var titleBox = signle
       ? titleWidget
       : SizedBox(
-          height: 28,
+          height: 29,
           child: titleWidget,
         );
 
@@ -61,6 +64,24 @@ Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
               placeholder: "images/loading.gif",
               placeholderScale: 3,
               fit: BoxFit.cover,
+              placeholderErrorBuilder: (c, obj, err) {
+                print(obj);
+                print(err);
+                return Image.asset(
+                  "images/error.jpg",
+                  fit: BoxFit.cover,
+                  width: 1080,
+                );
+              },
+              imageErrorBuilder: (c, obj, err) {
+                print(obj);
+                print(err);
+                return Image.asset(
+                  "images/error.jpg",
+                  fit: BoxFit.cover,
+                  width: 1080,
+                );
+              },
             ),
           ),
           dur.isEmpty
@@ -162,7 +183,7 @@ class VideoGridWidget extends StatelessWidget {
       crossAxisCount: 2,
       mainAxisSpacing: 0,
       crossAxisSpacing: 10,
-      childAspectRatio: 1,
+      childAspectRatio: 0.98,
       children: children,
     );
   }
