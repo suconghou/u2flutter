@@ -40,8 +40,10 @@ class _VideoStreamPlayerState extends State {
                 alignment: Alignment.bottomCenter,
                 children: <Widget>[
                   VideoPlayer(_controller), //here it is!!
-                  _PlayPauseOverlay(controller: _controller),
-                  VideoProgressIndicator(_controller, allowScrubbing: true),
+                  _PlayerController(_controller),
+                  VideoProgressIndicator(_controller,
+                      allowScrubbing: true,
+                      colors: VideoProgressColors(playedColor: Colors.blue)),
                 ],
               ),
             )
@@ -63,19 +65,43 @@ class _VideoStreamPlayerState extends State {
   }
 }
 
-class _PlayPauseOverlay extends StatelessWidget {
-  const _PlayPauseOverlay({Key key, this.controller}) : super(key: key);
-
+class _PlayerController extends StatelessWidget {
   final VideoPlayerController controller;
+
+  _PlayerController(this.controller);
 
   @override
   Widget build(BuildContext context) {
+    return _PlayPauseOverlay(controller);
+  }
+}
+
+class _PlayPauseOverlay extends StatefulWidget {
+  final VideoPlayerController controller;
+
+  const _PlayPauseOverlay(this.controller);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _PlayPauseOverlayState(controller);
+  }
+}
+
+class _PlayPauseOverlayState extends State {
+  final VideoPlayerController controller;
+  bool playing;
+
+  _PlayPauseOverlayState(this.controller);
+
+  @override
+  Widget build(BuildContext context) {
+    playing = controller.value.isPlaying;
     return Stack(
       children: <Widget>[
         AnimatedSwitcher(
           duration: Duration(milliseconds: 50),
           reverseDuration: Duration(milliseconds: 200),
-          child: controller.value.isPlaying
+          child: playing
               ? SizedBox.shrink()
               : Container(
                   color: Colors.black26,
@@ -90,8 +116,17 @@ class _PlayPauseOverlay extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            controller.play(); //play on tap
+            if (controller.value.isPlaying) {
+              controller.pause();
+            } else {
+              controller.play(); //play on tap
+            }
+            setState(() {
+              playing = controller.value.isPlaying;
+            });
           },
+          onLongPress: () {},
+          onDoubleTap: () {},
         ),
       ],
     );
