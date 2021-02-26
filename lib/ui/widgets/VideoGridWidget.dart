@@ -16,13 +16,13 @@ Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
       ? Container(
           margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
           child: SizedBox(
-            height: 15,
+            height: 13,
             child: InkWell(
               child: Text(
                 ctitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Colors.blue, fontSize: 14, height: 1),
+                style: TextStyle(color: Colors.blue, fontSize: 12, height: 1),
               ),
               onTap: () {
                 Navigator.pushNamed(context, '/channel', arguments: cid);
@@ -38,15 +38,15 @@ Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
     maxLines: 2,
     overflow: TextOverflow.ellipsis,
     style: TextStyle(
-        height: 1,
-        fontSize: 14,
+        height: 1.1,
+        fontSize: 12,
         color: Colors.black,
         decoration: TextDecoration.none),
   );
   var titleBox = signle
       ? titleWidget
       : SizedBox(
-          height: 29,
+          height: 26,
           child: titleWidget,
         );
 
@@ -116,7 +116,7 @@ Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
               Text(
                 pubTime,
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 12,
                   height: 1,
                   color: Colors.black87,
                   decoration: TextDecoration.none,
@@ -125,7 +125,7 @@ Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
               Expanded(child: Container()),
               Text(count,
                   style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 12,
                       height: 1,
                       color: Colors.grey,
                       decoration: TextDecoration.none))

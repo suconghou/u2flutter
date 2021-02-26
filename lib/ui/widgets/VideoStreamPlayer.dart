@@ -49,7 +49,7 @@ class _VideoStreamPlayerState extends State {
             )
           : Container(
               child: SizedBox(
-                height: 300,
+                height: 200,
                 child: Center(
                   child: CircularProgressIndicator(),
                 ),

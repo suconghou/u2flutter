@@ -28,9 +28,15 @@ class ChannelPage extends StatelessWidget {
               );
             }
           } else {
-            return Center(
-              child: CircularProgressIndicator(),
+            return Scaffold(
+              appBar: AppBar(
+                title: Text("Loading"),
+              ),
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
+
           }
         });
   }
