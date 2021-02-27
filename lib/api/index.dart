@@ -17,16 +17,16 @@ class _DataApi {
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15']) {
     client.connectionTimeout = Duration(seconds: timeout);
     client.userAgent = userAgent;
-    initBaseUrl();
   }
 
-  initBaseUrl(){
-    final _baseUrl = Store.get("baseUrl");
-    if (_baseUrl is String && _baseUrl.isNotEmpty) {
+  Future<Uri> initBaseUrl() async {
+    final _baseUrl = await Store.getString("baseUrl");
+    if (_baseUrl != null && _baseUrl.isNotEmpty) {
       _base = Uri.parse(_baseUrl);
     } else {
       _base = Uri.parse(_default);
     }
+    return _base;
   }
 
   mostPopularVideos(
@@ -120,7 +120,10 @@ class _DataApi {
     return await get('playlistItems', params);
   }
 
-  Uri buildUrl(String uri, Map<String, String> params) {
+  Future<Uri> buildUrl(String uri, Map<String, String> params) async {
+    if (_base == null) {
+      _base = await initBaseUrl();
+    }
     params.removeWhere((key, value) => value == null || value.isEmpty);
     return Uri(
         scheme: _base.scheme,
@@ -131,7 +134,7 @@ class _DataApi {
   }
 
   get(String uri, Map<String, Object> params) async {
-    var target = buildUrl(uri, params);
+    var target = await buildUrl(uri, params);
     var key = target.toString();
     var v = cache.get(key);
     if (v != null) {

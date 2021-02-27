@@ -6,16 +6,34 @@ import '../../api/index.dart';
 class FavChannelList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var ids = getFavCIds();
-    ids = {"UCAWnuGH5fKJKM-DiWrdbgJA"};
-    if (ids.length < 1) {
-      return Center(
-        child: Text("无数据"),
-      );
-    }
-    return ListView(
-      children: ids.map((e) => buildItem(e)).toList(),
-    );
+    return FutureBuilder(
+        future: getFavCIds(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (!snapshot.hasError) {
+              final Set<String> ids = snapshot.data;
+              if (ids.length < 1) {
+                return Center(
+                  child: Text("无数据"),
+                );
+              }
+              return ListView(
+                children: ids.map((e) => buildItem(e)).toList(),
+              );
+            } else {
+              return Center(
+                child: FlatButton(
+                  child: Text("加载失败"),
+                  onPressed: () => {},
+                ),
+              );
+            }
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 
   Widget buildItem(String id) {
@@ -53,7 +71,8 @@ class FavChannelList extends StatelessWidget {
     final String videoNum = getVideoCount(item);
 
     final cardItem = Card(
-        elevation: 3,
+        elevation: 1,
+        color: Colors.white,
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(
@@ -83,34 +102,37 @@ class FavChannelList extends StatelessWidget {
                   Text(
                     count,
                     style:
-                        TextStyle(fontSize: 13, color: Colors.red, height: 1),
+                        TextStyle(fontSize: 13, color: Colors.red, height: 1.5),
                   ),
-                  SizedBox(
-                    width: 6,
-                  ),
+                ],
+              ),
+              Row(
+                children: [
                   Text(
                     subCount,
-                    style:
-                        TextStyle(fontSize: 13, color: Colors.blue, height: 1),
+                    style: TextStyle(
+                        fontSize: 13, color: Colors.blue, height: 1.5),
                   ),
                   SizedBox(
                     width: 6,
                   ),
                   Text(
                     videoNum,
-                    style:
-                        TextStyle(fontSize: 13, color: Colors.green, height: 1),
+                    style: TextStyle(
+                        fontSize: 13, color: Colors.green, height: 1.5),
                   )
                 ],
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  desc,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      desc,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    )),
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../api/index.dart';
 import 'VideoGridWidget.dart';
+import 'ChannalPlayList.dart';
 
 enum ChannelTab { UPLOAD, FAVORITE, PLAYLIST }
 
@@ -17,6 +18,8 @@ class ChannelTabView extends StatefulWidget {
 
 class _ChannelTabViewState extends State {
   String channelId;
+  String nextPageToken = "";
+  List listData = [];
   final ChannelTab ctype;
   Future _refresh;
 
@@ -30,26 +33,29 @@ class _ChannelTabViewState extends State {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _refresh,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (!snapshot.hasError) {
-              return _body(snapshot.data);
-            } else {
-              return Center(
-                child: FlatButton(
-                  child: Text("加载失败，点击重试"),
-                  onPressed: () => refresh(),
-                ),
-              );
-            }
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        });
+    return listData.length ==0 ? Center(child: CircularProgressIndicator(),):
+    _body(listData);
+
+    // return FutureBuilder(
+    //     future: _refresh,
+    //     builder: (context, AsyncSnapshot snapshot) {
+    //       if (snapshot.connectionState == ConnectionState.done) {
+    //         if (!snapshot.hasError) {
+    //           return
+    //         } else {
+    //           return Center(
+    //             child: FlatButton(
+    //               child: Text("加载失败，点击重试"),
+    //               onPressed: () => refresh(),
+    //             ),
+    //           );
+    //         }
+    //       } else {
+    //         return Center(
+    //           child: CircularProgressIndicator(),
+    //         );
+    //       }
+    //     });
   }
 
   void refresh() {
@@ -63,13 +69,14 @@ class _ChannelTabViewState extends State {
   }
 
   Widget _body(dynamic data) {
-    final grid = ctype!=ChannelTab.PLAYLIST;
-    var content = data["items"] is List
-        ? VideoGridWidget(data["items"],grid: grid,)
-        : Text("数据错误");
-    return grid?content:ListView(
-      padding: EdgeInsets.all(10),
-      children: [content],
-    );
+    if(data["items"] is List){
+        final grid = ctype!=ChannelTab.PLAYLIST;
+        var content = grid
+            ?   VideoGridWidget(data["items"],grid: grid, )
+            : ChannelPlayList(data["items"]);
+        return content;
+    }
+    return Text("数据错误");
+
   }
 }

@@ -33,11 +33,10 @@ class SearchPageDelegate extends SearchDelegate<Map> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-        icon: IconButton(
-            icon: AnimatedIcon(
+        icon: AnimatedIcon(
           icon: AnimatedIcons.menu_arrow,
           progress: transitionAnimation,
-        )),
+        ),
         onPressed: () {
           close(context, null);
         });
@@ -74,30 +73,48 @@ class SuggestionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final suggestions = getQueryHistory();
-    print(suggestions);
-    return ListView.builder(
-        itemCount: suggestions.length,
-        itemBuilder: (c, i) {
-          return ListTile(
-            onTap: () {
-              onShowResult(suggestions.elementAt(i));
-            },
-            title: Text(suggestions.elementAt(i)),
-            trailing: Container(
-              width: 20,
-              height: 20,
-              child: IconButton(
-                iconSize: 20,
-                padding: EdgeInsets.all(0),
-                onPressed: () {
-                  delQueryHistory(suggestions.elementAt(i));
-                  onQuery(query);
-                },
-                icon: Icon(Icons.close),
-              ),
-            ),
-          );
+    return FutureBuilder(
+        future: getQueryHistory(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (!snapshot.hasError) {
+              final suggestions = snapshot.data;
+              return ListView.builder(
+                  itemCount: suggestions.length,
+                  itemBuilder: (c, i) {
+                    return ListTile(
+                      onTap: () {
+                        onShowResult(suggestions.elementAt(i));
+                      },
+                      title: Text(suggestions.elementAt(i)),
+                      trailing: Container(
+                        width: 24,
+                        height: 24,
+                        child: IconButton(
+                          iconSize: 24,
+                          padding: EdgeInsets.all(0),
+                          onPressed: () {
+                            delQueryHistory(suggestions.elementAt(i));
+                            onQuery(query);
+                          },
+                          icon: Icon(Icons.close),
+                        ),
+                      ),
+                    );
+                  });
+            } else {
+              return Center(
+                child: FlatButton(
+                  child: Text("加载失败"),
+                  onPressed: () => {},
+                ),
+              );
+            }
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
         });
   }
 }
@@ -126,18 +143,6 @@ class ResultPageState extends LoadingPageState<ResultPage> {
     return buildSignleVideoItem(context, item);
   }
 
-  Widget tagText(String s) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-      child: Chip(
-//      labelPadding: EdgeInsets.all(2),
-//      padding: EdgeInsets.all(5),
-        label: Text(s),
-      ),
-    );
-  }
-
   @override
   bool get wantKeepAlive => true;
 }
-

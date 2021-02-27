@@ -1,53 +1,36 @@
-import 'dart:convert';
-import 'dart:io';
-
-final _store = _Store();
-
-class _Store {
-  final file = File('store.json');
-  var _state = Map<String, dynamic>();
-
-  init() async {
-    var str = await file.readAsString();
-    if (str.isEmpty) {
-      str = "{}";
-    }
-    var data = jsonDecode(str);
-    _state = data;
-  }
-
-  get(String key) {
-    return _state[key];
-  }
-
-  set(String key, dynamic value) {
-    _state[key] = value;
-  }
-
-  remove(String key) {
-    _state.remove(key);
-  }
-
-  save() {
-    var str = jsonEncode(_state);
-    file.writeAsString(str);
-  }
-}
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Store {
-  static set(String key, dynamic value) {
-    _store.set(key, value);
+  static setString(String key, String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setString(key, value);
   }
 
-  static get(
+  static setSet(String key, Set<String> value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setStringList(key, value.toList());
+  }
+
+  static getString(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return  prefs.getString(key);
+  }
+
+  static getSet(
     String key,
-  ) {
-    _store.get(key);
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final r =   prefs.getStringList(key);
+    if (r==null){
+      return Set<String>();
+    }
+    return r.toSet();
   }
 
   static remove(
     String key,
-  ) {
-    _store.remove(key);
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.remove(key);
   }
 }

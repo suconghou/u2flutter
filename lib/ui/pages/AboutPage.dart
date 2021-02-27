@@ -20,7 +20,7 @@ class AboutPage extends StatelessWidget {
 
   Widget buildText(String text){
     return Card(
-      elevation: 2,
+      elevation: 1,
       margin: EdgeInsets.all(10),
       child: Padding(
         padding: EdgeInsets.all(10),

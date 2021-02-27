@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../utils/videoInfo.dart';
 
-Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
+Widget buildVideoItem(
+  BuildContext context,
+  dynamic item, {
+  signle = false,
+}) {
   String cover = videoCover(item);
   String title = getVideoTitle(item);
   String count = viewCount(item);
@@ -9,7 +13,7 @@ Widget buildVideoItem(BuildContext context, dynamic item, {signle = false}) {
   String dur = duration(item);
   String cid = getChannelId(item);
   String ctitle = getChannelTitle(item);
-  if(title.isEmpty || cover.isEmpty){
+  if (title.isEmpty || cover.isEmpty) {
     return Container();
   }
   final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
@@ -141,7 +145,11 @@ Widget buildListVideoItem(BuildContext context, dynamic item,
     {signle = false}) {
   return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/play', arguments: item);
+        Navigator.pushNamed(
+          context,
+          '/play',
+          arguments: item,
+        );
       },
       child: buildVideoItem(context, item, signle: signle));
 }
@@ -160,7 +168,8 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
 class VideoGridWidget extends StatelessWidget {
   final List list;
   bool grid;
-  VideoGridWidget(this.list, {this.grid = true});
+  ScrollController controller;
+  VideoGridWidget(this.list, {this.grid = true, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -179,12 +188,14 @@ class VideoGridWidget extends StatelessWidget {
     var children =
         list.map((item) => buildListVideoItem(context, item)).toList();
     return GridView.count(
+      shrinkWrap:true,
       padding: EdgeInsets.all(10),
       crossAxisCount: 2,
       mainAxisSpacing: 0,
       crossAxisSpacing: 10,
       childAspectRatio: 0.98,
       children: children,
+      controller: controller,
     );
   }
 }

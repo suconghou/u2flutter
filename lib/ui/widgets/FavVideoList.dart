@@ -6,17 +6,34 @@ import '../widgets/VideoGridWidget.dart';
 class FavVideoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var ids = getFavVIds();
-    ids = {"mrHqzfjdpX8"};
-
-    if (ids.length < 1) {
-      return Center(
-        child: Text("无数据"),
-      );
-    }
-    return ListView(
-      children: ids.map((e) => buildItem(e)).toList(),
-    );
+    return FutureBuilder(
+        future: getFavVIds(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (!snapshot.hasError) {
+              final Set<String> ids = snapshot.data;
+              if (ids.length < 1) {
+                return Center(
+                  child: Text("无数据"),
+                );
+              }
+              return ListView(
+                children: ids.map((e) => buildItem(e)).toList(),
+              );
+            } else {
+              return Center(
+                child: FlatButton(
+                  child: Text("加载失败"),
+                  onPressed: () => {},
+                ),
+              );
+            }
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 
   Widget buildItem(String id) {

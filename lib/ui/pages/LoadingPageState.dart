@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/LoadingStatus.dart';
-import '../utils/toast.dart';
 
 abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
     with AutomaticKeepAliveClientMixin {
