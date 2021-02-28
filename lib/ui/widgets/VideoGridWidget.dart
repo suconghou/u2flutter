@@ -188,7 +188,7 @@ class VideoGridWidget extends StatelessWidget {
     var children =
         list.map((item) => buildListVideoItem(context, item)).toList();
     return GridView.count(
-      shrinkWrap:true,
+      shrinkWrap: true,
       padding: EdgeInsets.all(10),
       crossAxisCount: 2,
       mainAxisSpacing: 0,

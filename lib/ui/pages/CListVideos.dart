@@ -30,12 +30,12 @@ class videosList extends StatefulWidget {
 class _videosListState extends State<videosList> {
   String playlistId;
   List videoList = [];
-  bool loading = true;
+  bool loading = false;
   String nexPageToken = "";
   String loadMoreText = "没有更多数据";
   TextStyle loadMoreTextStyle =
       TextStyle(color: const Color(0xFF999999), fontSize: 14.0);
-  ScrollController _controller = new ScrollController();
+  ScrollController _controller = ScrollController();
 
   _videosListState(this.playlistId) {
     _pullToRefresh();
@@ -69,7 +69,10 @@ class _videosListState extends State<videosList> {
             onRefresh: _pullToRefresh,
             child: ListView(
               children: [
-                VideoGridWidget(videoList, controller: _controller),
+                VideoGridWidget(
+                  videoList,
+                  controller: _controller,
+                ),
                 Center(
                   child: Text(loadMoreText, style: loadMoreTextStyle),
                 )

@@ -21,62 +21,107 @@ class _ChannelTabViewState extends State {
   String nextPageToken = "";
   List listData = [];
   final ChannelTab ctype;
-  Future _refresh;
+  bool loading = false;
+  String nexPageToken = "";
+  String loadMoreText = "没有更多数据";
+  TextStyle loadMoreTextStyle =
+      TextStyle(color: const Color(0xFF999999), fontSize: 14.0);
+
+  ScrollController _controller = ScrollController();
 
   _ChannelTabViewState(this.ctype, this.channelId) {
-    if (ctype == ChannelTab.PLAYLIST) {
-      _refresh = api.playlistsInChannel(channelId:channelId);
-    } else {
-      _refresh = api.playlistItems(playlistId: channelId);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return listData.length ==0 ? Center(child: CircularProgressIndicator(),):
-    _body(listData);
-
-    // return FutureBuilder(
-    //     future: _refresh,
-    //     builder: (context, AsyncSnapshot snapshot) {
-    //       if (snapshot.connectionState == ConnectionState.done) {
-    //         if (!snapshot.hasError) {
-    //           return
-    //         } else {
-    //           return Center(
-    //             child: FlatButton(
-    //               child: Text("加载失败，点击重试"),
-    //               onPressed: () => refresh(),
-    //             ),
-    //           );
-    //         }
-    //       } else {
-    //         return Center(
-    //           child: CircularProgressIndicator(),
-    //         );
-    //       }
-    //     });
-  }
-
-  void refresh() {
-    setState(() {
-      if (ctype == ChannelTab.PLAYLIST) {
-        _refresh = api.playlistsInChannel(channelId:channelId);
+    _pullToRefresh();
+    _controller.addListener(() {
+      var maxScroll = _controller.position.maxScrollExtent;
+      var pixel = _controller.position.pixels;
+      if (maxScroll == pixel && nexPageToken != null) {
+        setState(() {
+          loadMoreText = "正在加载中...";
+          loadMoreTextStyle =
+              new TextStyle(color: const Color(0xFF4483f6), fontSize: 14.0);
+        });
+        if (!loading) {
+          loadMoreData();
+        }
       } else {
-        _refresh = api.playlistItems(playlistId: channelId);
+        setState(() {
+          loadMoreText = "没有更多数据";
+          loadMoreTextStyle =
+              new TextStyle(color: const Color(0xFF999999), fontSize: 14.0);
+        });
       }
     });
   }
 
-  Widget _body(dynamic data) {
-    if(data["items"] is List){
-        final grid = ctype!=ChannelTab.PLAYLIST;
-        var content = grid
-            ?   VideoGridWidget(data["items"],grid: grid, )
-            : ChannelPlayList(data["items"]);
-        return content;
-    }
-    return Text("数据错误");
+  @override
+  Widget build(BuildContext context) {
+    return listData.length == 0
+        ? new Center(child: new CircularProgressIndicator())
+        : RefreshIndicator(onRefresh: _pullToRefresh, child: _body());
+  }
 
+  Future _pullToRefresh() async {
+    dynamic res;
+    if (ctype == ChannelTab.PLAYLIST) {
+      res = await api.playlistsInChannel(channelId: channelId);
+    } else {
+      res = await api.playlistItems(playlistId: channelId);
+    }
+    setState(() {
+      listData = res["items"];
+      nexPageToken = res["nextPageToken"];
+    });
+  }
+
+  loadMoreData() async {
+    print("load more");
+    if (nexPageToken != null) {
+      loading = true;
+      dynamic res;
+      if (ctype == ChannelTab.PLAYLIST) {
+        res = await api.playlistsInChannel(
+            channelId: channelId, pageToken: nextPageToken);
+      } else {
+        res = await api.playlistItems(
+            playlistId: channelId, pageToken: nextPageToken);
+      }
+      List resList = (res["items"] is List) ? res["items"] : [];
+      listData.addAll(resList);
+      setState(() {
+        nexPageToken = res["nextPageToken"];
+      });
+      loading = false;
+    }
+  }
+
+  Widget _body() {
+    final grid = ctype != ChannelTab.PLAYLIST;
+
+    if (grid) {
+      return ListView(
+        children: [
+          VideoGridWidget(
+            listData,
+            grid: grid,
+            controller: _controller,
+          ),
+          Center(
+            child: Text(loadMoreText, style: loadMoreTextStyle),
+          )
+        ],
+      );
+    }
+
+    return ListView(
+      children: [
+        ChannelPlayList(
+          listData,
+          controller: _controller,
+        ),
+        Center(
+          child: Text(loadMoreText, style: loadMoreTextStyle),
+        )
+      ],
+    );
   }
 }
