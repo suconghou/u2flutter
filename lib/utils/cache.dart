@@ -14,7 +14,7 @@ class CacheManager {
 
   get(String key) {
     int t = DateTime.now().millisecondsSinceEpoch;
-    CacheItem item = cache[key];
+    CacheItem? item = cache[key];
     if (item != null) {
       if (item.expire > t) {
         return item.value;

@@ -1,9 +1,9 @@
-String videoCover(dynamic item) {
+String videoCover(Object item) {
   final String id = getVideoId(item);
   if (id == "") {
     return "https://assets.suconghou.cn/defaultImg.png";
   }
-  return "https://r.suconghou.cn/video/" + id + ".jpg";
+  return "https://ts.suconghou.cn/video/" + id + ".jpg";
 }
 
 String getVideoTitle(dynamic item) {
@@ -59,9 +59,7 @@ String getPlayListVid(dynamic item) {
       var u = w['url'];
       var r = RegExp(r"/([\w\-]{6,12})/");
       var match = r.firstMatch(u);
-      if (match != null) {
-        return match.group(1);
-      }
+      return match?.group(1) ?? "";
     }
   }
   return '';
@@ -118,7 +116,7 @@ String pubAt(dynamic item) {
     [1, '秒']
   ];
   for (var i = 0; i < f.length; i++) {
-    var t = f[i][0];
+    var t = f[i][0] as num;
     var e = f[i][1];
     var c = (d / t).floor();
     if (c != 0 && c > 0) {
@@ -138,7 +136,7 @@ String duration(dynamic item) {
     var r = RegExp(r"([1-9]+)M$");
     var f = r.firstMatch(t);
     if (f != null) {
-      var f1 = f.group(1);
+      var f1 = f.group(1)!;
       if (f1.length == 1) {
         return "0$f1:00";
       }
@@ -147,7 +145,7 @@ String duration(dynamic item) {
     r = RegExp(r"\d+");
     var arr = [];
     for (var item in r.allMatches(t)) {
-      var x = item.group(0);
+      var x = item.group(0)!;
       if (x.length == 1) {
         arr.add("0$x");
       } else {

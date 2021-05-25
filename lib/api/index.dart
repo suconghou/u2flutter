@@ -5,7 +5,7 @@ import '../utils/store.dart';
 
 final _default = 'https://r.suconghou.cn/video/api/v3/';
 
-Uri _base;
+late Uri _base;
 
 class _DataApi {
   var client = HttpClient();
@@ -50,14 +50,14 @@ class _DataApi {
   }
 
   search(
-      {String q,
-      String pageToken,
-      String channelId,
-      String regionCode,
+      {String q = "",
+      String pageToken = "",
+      String channelId = "",
+      String regionCode = "",
       String type = 'video',
       int maxResults = 20}) async {
     var order = '';
-    if (q != null && q.isNotEmpty) {
+    if (q.isNotEmpty) {
       order = 'viewCount';
     }
     var params = {
@@ -73,8 +73,8 @@ class _DataApi {
   }
 
   relatedVideo(
-      {String relatedToVideoId,
-      String pageToken,
+      {String relatedToVideoId = "",
+      String pageToken = "",
       String type = 'video',
       int maxResults = 30}) async {
     var params = {
@@ -101,7 +101,9 @@ class _DataApi {
   }
 
   playlistsInChannel(
-      {String channelId, String pageToken, int maxResults = 20}) async {
+      {String channelId = "",
+      String pageToken = "",
+      int maxResults = 20}) async {
     var params = {
       'channelId': channelId,
       'maxResults': maxResults.toString(),
@@ -111,7 +113,9 @@ class _DataApi {
   }
 
   playlistItems(
-      {String playlistId, String pageToken, int maxResults = 30}) async {
+      {String playlistId = "",
+      String pageToken = "",
+      int maxResults = 30}) async {
     var params = {
       'playlistId': playlistId,
       'maxResults': maxResults.toString(),
@@ -120,7 +124,7 @@ class _DataApi {
     return await get('playlistItems', params);
   }
 
-  Future<Uri> buildUrl(String uri, Map<String, String> params) async {
+  Future<Uri> buildUrl(String uri, Map<String, dynamic> params) async {
     if (_base == null) {
       _base = await initBaseUrl();
     }

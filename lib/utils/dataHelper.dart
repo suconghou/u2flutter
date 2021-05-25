@@ -3,7 +3,7 @@ import 'store.dart';
 final String _storeKey = "query_history";
 
 addQueryHistory(String q) async {
-  Set qSet = Set<String>();
+  Set<String> qSet = Set<String>();
   qSet.add(q);
   qSet.addAll(await getQueryHistory());
   return await Store.setSet(_storeKey, qSet);
@@ -21,7 +21,7 @@ clearQueryHistory() async {
 
 Future<Set<String>> getQueryHistory() async {
   var v = await Store.getSet(_storeKey);
-  if (v is Set) {
+  if (v is Set<String>) {
     return v;
   }
   return Set<String>();
@@ -32,7 +32,7 @@ final String _favCIdsKey = 'fav_cids';
 
 Future<Set<String>> getFavVIds() async {
   var v = await Store.getSet(_favVIdsKey);
-  if (v is Set) {
+  if (v is Set<String>) {
     return v;
   }
   return Set<String>();
@@ -40,7 +40,7 @@ Future<Set<String>> getFavVIds() async {
 
 Future<Set<String>> getFavCIds() async {
   var v = await Store.getSet(_favCIdsKey);
-  if (v is Set) {
+  if (v is Set<String>) {
     return v;
   }
   return Set<String>();
