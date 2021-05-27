@@ -11,7 +11,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State with SingleTickerProviderStateMixin {
-  TabController _controller;
+  late TabController _controller;
   @override
   void initState() {
     super.initState();

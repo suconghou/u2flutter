@@ -14,7 +14,7 @@ class HomeTabView extends StatefulWidget {
 
 class _HomeTabViewState extends State {
   int videoCategoryId;
-  Future _refresh;
+  late Future _refresh;
 
   _HomeTabViewState(this.videoCategoryId) {
     _refresh = api.mostPopularVideos(videoCategoryId: videoCategoryId);
@@ -30,7 +30,7 @@ class _HomeTabViewState extends State {
               return _body(snapshot.data);
             } else {
               return Center(
-                child: FlatButton(
+                child: TextButton(
                   child: Text("加载失败，点击重试"),
                   onPressed: () => refresh(),
                 ),

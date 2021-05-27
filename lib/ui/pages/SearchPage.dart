@@ -21,7 +21,7 @@ class SearchPageDelegate extends SearchDelegate<Map> {
           icon: Icon(Icons.clear),
           onPressed: () {
             if (query.isEmpty) {
-              close(context, null);
+              close(context, Map());
             } else {
               query = "";
               showSuggestions(context);
@@ -38,7 +38,7 @@ class SearchPageDelegate extends SearchDelegate<Map> {
           progress: transitionAnimation,
         ),
         onPressed: () {
-          close(context, null);
+          close(context, Map());
         });
   }
 
@@ -104,7 +104,7 @@ class SuggestionPage extends StatelessWidget {
                   });
             } else {
               return Center(
-                child: FlatButton(
+                child: TextButton(
                   child: Text("加载失败"),
                   onPressed: () => {},
                 ),

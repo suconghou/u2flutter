@@ -33,11 +33,8 @@ class SettingsPage extends StatelessWidget {
           Container(
             margin: EdgeInsets.symmetric(vertical: 40),
             height: 40,
-            child: RaisedButton(
+            child: ElevatedButton(
               child: Text("保存"),
-              textColor: Colors.white,
-              color: Colors.blue[500],
-              elevation: 5,
               onPressed: () async {
                 if (baseUrl.value.text.isEmpty) {
                   await Store.remove(_baseUrlKey);

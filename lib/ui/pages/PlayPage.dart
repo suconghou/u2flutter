@@ -12,15 +12,14 @@ enum VideoAction {
 }
 
 class PlayPage extends StatelessWidget {
-  Future<dynamic> _refresh;
-  String videoId;
+  late Future<dynamic> _refresh;
+  String videoId = "";
 
   @override
   Widget build(BuildContext context) {
-    dynamic item = ModalRoute.of(context).settings.arguments;
+    dynamic item = ModalRoute.of(context)?.settings.arguments;
     final String id = getVideoId(item);
     final String title = getVideoTitle(item);
-    ;
     final String desc = getVideoTitle(item);
     final String pubTime = pubAt(item);
     final String count = viewCount(item);
@@ -126,9 +125,9 @@ class RightMenu extends StatefulWidget {
 }
 
 class _RightMenuState extends State<RightMenu> {
-  String videoId;
-  String cid;
-  Future future;
+  late String videoId;
+  late String cid;
+  late Future future;
   _RightMenuState(this.videoId, this.cid);
   @override
   Widget build(BuildContext context) {
@@ -179,7 +178,7 @@ class _RightMenuState extends State<RightMenu> {
               );
             } else {
               return Center(
-                child: FlatButton(
+                child: TextButton(
                   child: Text("加载失败"),
                   onPressed: () => {},
                 ),

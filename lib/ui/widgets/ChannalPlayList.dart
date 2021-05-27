@@ -4,7 +4,7 @@ import '../../utils/videoInfo.dart';
 class ChannelPlayList extends StatelessWidget {
   final List list;
   final ScrollController controller;
-  ChannelPlayList(this.list,{this.controller});
+  ChannelPlayList(this.list, {required this.controller});
   @override
   Widget build(BuildContext context) {
     return ListView(

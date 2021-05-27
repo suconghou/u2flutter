@@ -8,7 +8,7 @@ abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
   LoadingStatus _status = LoadingStatus.NONE;
   int _page = 1;
 
-  StreamSubscription _fetchDataStream;
+  late StreamSubscription _fetchDataStream;
 
   Future<List> fetchData(int page);
 

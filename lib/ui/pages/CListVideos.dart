@@ -6,7 +6,7 @@ import '../widgets/VideoGridWidget.dart';
 class CListVideos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    dynamic item = ModalRoute.of(context).settings.arguments;
+    dynamic item = ModalRoute.of(context)?.settings.arguments;
     String title = getVideoTitle(item);
     String playlistId = item["id"];
     return Scaffold(

@@ -168,7 +168,7 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
 class VideoGridWidget extends StatelessWidget {
   final List list;
   bool grid;
-  ScrollController controller;
+  ScrollController? controller;
   VideoGridWidget(this.list, {this.grid = true, this.controller});
 
   @override

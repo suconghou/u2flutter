@@ -51,9 +51,9 @@ class HomeDrawer extends StatelessWidget {
                 ),
                 trailing: Icon(Icons.chevron_right,
                     color: Theme.of(context).primaryColor),
-                title: Text("下载管理"),
+                title: Text("投屏助手"),
                 onTap: () {
-                  Navigator.pushNamed(context, "/download");
+                  Navigator.pushNamed(context, "/share");
                 },
               ),
               ListTile(

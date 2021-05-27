@@ -16,7 +16,7 @@ class VideoListBuilder {
               return _body(snapshot.data);
             } else {
               return Center(
-                child: FlatButton(
+                child: TextButton(
                   child: Text("加载失败，点击重试"),
                   onPressed: () => refresh(),
                 ),

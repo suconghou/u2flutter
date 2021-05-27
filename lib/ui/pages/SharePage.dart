@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class DownloadPage extends StatelessWidget {
+class SharePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("下载管理"),
+        title: Text("投屏助手"),
       ),
       body: Center(
         child: Column(

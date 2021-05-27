@@ -3,11 +3,11 @@ import '../../api/index.dart';
 import 'ChannelTabPage.dart';
 
 class ChannelPage extends StatelessWidget {
-  Future _refresh;
+  late Future _refresh;
 
   @override
   Widget build(BuildContext context) {
-    String cid = ModalRoute.of(context).settings.arguments;
+    String cid = ModalRoute.of(context)?.settings.arguments as String;
     _refresh = api.channels(cid);
     return main(context, cid);
   }
@@ -21,7 +21,7 @@ class ChannelPage extends StatelessWidget {
               return _body(context, snapshot.data);
             } else {
               return Center(
-                child: FlatButton(
+                child: TextButton(
                   child: Text("加载失败"),
                   onPressed: () => {},
                 ),
@@ -36,7 +36,6 @@ class ChannelPage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             );
-
           }
         });
   }

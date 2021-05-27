@@ -22,7 +22,7 @@ class FavVideoList extends StatelessWidget {
               );
             } else {
               return Center(
-                child: FlatButton(
+                child: TextButton(
                   child: Text("加载失败"),
                   onPressed: () => {},
                 ),
@@ -47,7 +47,7 @@ class FavVideoList extends StatelessWidget {
               return _body(context, snapshot.data);
             } else {
               return Center(
-                child: FlatButton(
+                child: TextButton(
                   child: Text("加载失败"),
                   onPressed: () => {},
                 ),

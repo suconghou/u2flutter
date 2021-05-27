@@ -12,7 +12,7 @@ class VideoStreamPlayer extends StatefulWidget {
 }
 
 class _VideoStreamPlayerState extends State {
-  VideoPlayerController _controller;
+  late VideoPlayerController _controller;
   String videoId;
 
   _VideoStreamPlayerState(this.videoId);
@@ -88,8 +88,8 @@ class _PlayPauseOverlay extends StatefulWidget {
 }
 
 class _PlayPauseOverlayState extends State {
-  final VideoPlayerController controller;
-  bool playing;
+  late final VideoPlayerController controller;
+  bool playing = false;
 
   _PlayPauseOverlayState(this.controller);
 

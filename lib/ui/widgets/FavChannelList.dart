@@ -22,7 +22,7 @@ class FavChannelList extends StatelessWidget {
               );
             } else {
               return Center(
-                child: FlatButton(
+                child: TextButton(
                   child: Text("加载失败"),
                   onPressed: () => {},
                 ),
@@ -46,7 +46,7 @@ class FavChannelList extends StatelessWidget {
               return _body(context, snapshot.data);
             } else {
               return Center(
-                child: FlatButton(
+                child: TextButton(
                   child: Text("加载失败"),
                   onPressed: () => {},
                 ),
@@ -151,14 +151,14 @@ class FavChannelList extends StatelessWidget {
                 title: Text("取消收藏"),
                 content: Text(title),
                 actions: [
-                  new FlatButton(
+                  new TextButton(
                     onPressed: () {
                       delFavCIds(channelId);
                       Navigator.of(context).pop();
                     },
                     child: Text("确认"),
                   ),
-                  new FlatButton(
+                  new TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
