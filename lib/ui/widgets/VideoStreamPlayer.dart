@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoStreamPlayer extends StatefulWidget {
-  String videoId;
+  final String videoId;
   VideoStreamPlayer(this.videoId);
 
   @override
@@ -33,7 +33,7 @@ class _VideoStreamPlayerState extends State {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
-      child: _controller.value.initialized
+      child: _controller.value.isInitialized
           ? AspectRatio(
               aspectRatio: _controller.value.aspectRatio,
               child: Stack(
