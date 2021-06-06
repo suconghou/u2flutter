@@ -3,7 +3,15 @@ String videoCover(Object item) {
   if (id == "") {
     return "https://assets.suconghou.cn/defaultImg.png";
   }
-  return "https://ts.suconghou.cn/video/" + id + ".jpg";
+  return "https://stream.pull.workers.dev/video/" + id + ".jpg";
+}
+
+String videoCover2(Object item) {
+  final String id = getVideoId(item);
+  if (id == "") {
+    return "https://assets.suconghou.cn/defaultImg.png";
+  }
+  return "https://share.suconghou.cn/video/" + id + ".jpg";
 }
 
 String getVideoTitle(dynamic item) {

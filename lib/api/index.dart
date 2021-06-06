@@ -5,6 +5,8 @@ import '../utils/store.dart';
 
 final _default = 'https://r.suconghou.cn/video/api/v3/';
 
+bool _init = false;
+
 late Uri _base;
 
 class _DataApi {
@@ -20,7 +22,7 @@ class _DataApi {
   }
 
   Future<Uri> initBaseUrl() async {
-    final _baseUrl = await Store.getString("baseUrl");
+    final String? _baseUrl = await Store.getString("baseUrl");
     if (_baseUrl != null && _baseUrl.isNotEmpty) {
       _base = Uri.parse(_baseUrl);
     } else {
@@ -125,8 +127,10 @@ class _DataApi {
   }
 
   Future<Uri> buildUrl(String uri, Map<String, dynamic> params) async {
-    if (_base == null) {
+    if (!_init) {
       _base = await initBaseUrl();
+      print(_base);
+      _init = true;
     }
     params.removeWhere((key, value) => value == null || value.isEmpty);
     return Uri(

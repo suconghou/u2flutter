@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api/index.dart';
+import 'package:flutter_app/ui/utils/toast.dart';
 import 'package:flutter_app/utils/dataHelper.dart';
 import '../widgets/VideoListBuilder.dart';
 import '../widgets/VideoStreamPlayer.dart';
@@ -7,13 +8,13 @@ import '../../utils/videoInfo.dart';
 
 enum VideoAction {
   fav,
-  download,
+  dlna,
   favchannel,
 }
 
 class PlayPage extends StatelessWidget {
-  late Future<dynamic> _refresh;
-  String videoId = "";
+  late final Future<dynamic> _refresh;
+  late final String videoId;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,14 @@ class PlayPage extends StatelessWidget {
             style: TextStyle(color: Colors.grey),
           ),
           SizedBox(
-            height: 50,
+            height: 30,
+          ),
+          Text(
+            "相关视频",
+            style: TextStyle(fontSize: 18),
+          ),
+          SizedBox(
+            height: 20,
           ),
           VideoListBuilder(_refresh, refresh).build(),
           SizedBox(
@@ -114,8 +122,8 @@ class PlayPage extends StatelessWidget {
 }
 
 class RightMenu extends StatefulWidget {
-  String videoId;
-  String cid;
+  final String videoId;
+  final String cid;
 
   RightMenu(this.videoId, this.cid);
   @override
@@ -142,19 +150,24 @@ class _RightMenuState extends State<RightMenu> {
               final hasFav = vids.contains(videoId);
               final hasFavCid = cids.contains(cid);
               return PopupMenuButton(
-                onSelected: (result) {
-                  if (result == VideoAction.download) {
+                onSelected: (result) async {
+                  if (result == VideoAction.dlna) {
+                    Toast.toast(context, "投屏助手开发中");
                   } else if (result == VideoAction.fav) {
                     if (hasFav) {
-                      delFavVIds(videoId);
+                      await delFavVIds(videoId);
+                      Toast.toast(context, "已取消收藏");
                     } else {
-                      addFavVIds(videoId);
+                      await addFavVIds(videoId);
+                      Toast.toast(context, "已加入收藏");
                     }
                   } else if (result == VideoAction.favchannel) {
                     if (hasFavCid) {
-                      delFavCIds(cid);
+                      await delFavCIds(cid);
+                      Toast.toast(context, "已取消收藏此频道");
                     } else {
-                      addFavCIds(cid);
+                      await addFavCIds(cid);
+                      Toast.toast(context, "已收藏此频道");
                     }
                   }
                   setState(() {
@@ -163,8 +176,8 @@ class _RightMenuState extends State<RightMenu> {
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem<VideoAction>(
-                    value: VideoAction.download,
-                    child: Text('加入下载队列'),
+                    value: VideoAction.dlna,
+                    child: Text('投屏助手'),
                   ),
                   PopupMenuItem<VideoAction>(
                     value: VideoAction.fav,

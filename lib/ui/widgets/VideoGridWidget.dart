@@ -7,6 +7,7 @@ Widget buildVideoItem(
   signle = false,
 }) {
   String cover = videoCover(item);
+  String cover2 = videoCover2(item);
   String title = getVideoTitle(item);
   String count = viewCount(item);
   String pubTime = pubAt(item);
@@ -53,7 +54,7 @@ Widget buildVideoItem(
           height: 26,
           child: titleWidget,
         );
-
+  const placeholder = "images/loading.gif";
   return Container(
     color: Colors.white,
     padding: EdgeInsets.all(0),
@@ -65,7 +66,7 @@ Widget buildVideoItem(
             child: FadeInImage.assetNetwork(
               image: cover,
               width: 1080,
-              placeholder: "images/loading.gif",
+              placeholder: placeholder,
               placeholderScale: 3,
               fit: BoxFit.cover,
               placeholderErrorBuilder: (c, obj, err) {
@@ -80,11 +81,19 @@ Widget buildVideoItem(
               imageErrorBuilder: (c, obj, err) {
                 print(obj);
                 print(err);
-                return Image.asset(
-                  "images/error.jpg",
-                  fit: BoxFit.cover,
-                  width: 1080,
-                );
+                return FadeInImage.assetNetwork(
+                    placeholder: placeholder,
+                    image: cover2,
+                    width: 1080,
+                    placeholderScale: 3,
+                    fit: BoxFit.cover,
+                    imageErrorBuilder: (c, obj, err) {
+                      return Image.asset(
+                        "images/error.jpg",
+                        fit: BoxFit.cover,
+                        width: 1080,
+                      );
+                    });
               },
             ),
           ),
@@ -167,8 +176,8 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
 
 class VideoGridWidget extends StatelessWidget {
   final List list;
-  bool grid;
-  ScrollController? controller;
+  final bool grid;
+  final ScrollController? controller;
   VideoGridWidget(this.list, {this.grid = true, this.controller});
 
   @override

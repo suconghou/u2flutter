@@ -13,21 +13,21 @@ class CListVideos extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: videosList(playlistId),
+      body: VideosList(playlistId),
     );
   }
 }
 
-class videosList extends StatefulWidget {
-  String playlistId;
-  videosList(this.playlistId);
+class VideosList extends StatefulWidget {
+  final String playlistId;
+  VideosList(this.playlistId);
   @override
   State<StatefulWidget> createState() {
-    return _videosListState(playlistId);
+    return _VideosListState(playlistId);
   }
 }
 
-class _videosListState extends State<videosList> {
+class _VideosListState extends State<VideosList> {
   String playlistId;
   List videoList = [];
   bool loading = false;
@@ -37,12 +37,12 @@ class _videosListState extends State<videosList> {
       TextStyle(color: const Color(0xFF999999), fontSize: 14.0);
   ScrollController _controller = ScrollController();
 
-  _videosListState(this.playlistId) {
+  _VideosListState(this.playlistId) {
     _pullToRefresh();
     _controller.addListener(() {
       var maxScroll = _controller.position.maxScrollExtent;
       var pixel = _controller.position.pixels;
-      if (maxScroll == pixel && nexPageToken != null) {
+      if (maxScroll == pixel && nexPageToken.isNotEmpty) {
         setState(() {
           loadMoreText = "正在加载中...";
           loadMoreTextStyle =
@@ -89,7 +89,7 @@ class _videosListState extends State<videosList> {
   }
 
   loadMoreData() async {
-    if (nexPageToken != null) {
+    if (nexPageToken.isNotEmpty) {
       loading = true;
       final res = await api.playlistItems(
           playlistId: playlistId, pageToken: nexPageToken);

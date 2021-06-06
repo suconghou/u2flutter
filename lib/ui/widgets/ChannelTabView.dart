@@ -34,7 +34,7 @@ class _ChannelTabViewState extends State {
     _controller.addListener(() {
       var maxScroll = _controller.position.maxScrollExtent;
       var pixel = _controller.position.pixels;
-      if (maxScroll == pixel && nexPageToken != null) {
+      if (maxScroll == pixel && nexPageToken.isNotEmpty) {
         setState(() {
           loadMoreText = "正在加载中...";
           loadMoreTextStyle =
@@ -67,15 +67,19 @@ class _ChannelTabViewState extends State {
     } else {
       res = await api.playlistItems(playlistId: channelId);
     }
-    setState(() {
-      listData = res["items"];
-      nexPageToken = res["nextPageToken"];
-    });
+    if (res != null && res["items"] is List) {
+      setState(() {
+        listData = res["items"];
+        if (res["nextPageToken"] is String) {
+          nexPageToken = res["nextPageToken"];
+        }
+      });
+    }
   }
 
   loadMoreData() async {
     print("load more");
-    if (nexPageToken != null) {
+    if (nexPageToken.isNotEmpty) {
       loading = true;
       dynamic res;
       if (ctype == ChannelTab.PLAYLIST) {

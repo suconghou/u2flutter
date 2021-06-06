@@ -13,15 +13,15 @@ class Store {
 
   static getString(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return  prefs.getString(key);
+    return prefs.getString(key);
   }
 
   static getSet(
     String key,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final r =   prefs.getStringList(key);
-    if (r==null){
+    final r = prefs.getStringList(key);
+    if (r == null) {
       return Set<String>();
     }
     return r.toSet();

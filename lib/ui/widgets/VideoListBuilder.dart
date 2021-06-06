@@ -15,6 +15,7 @@ class VideoListBuilder {
             if (!snapshot.hasError) {
               return _body(snapshot.data);
             } else {
+              print(snapshot);
               return Center(
                 child: TextButton(
                   child: Text("加载失败，点击重试"),
@@ -31,6 +32,13 @@ class VideoListBuilder {
   }
 
   Widget _body(dynamic data) {
-    return VideoGridWidget(data["items"],grid: false,);
+    final list = data["items"];
+    if (list is List) {
+      return VideoGridWidget(
+        list,
+        grid: false,
+      );
+    }
+    return Center(child: Text(data.toString()));
   }
 }

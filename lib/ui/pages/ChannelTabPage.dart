@@ -3,7 +3,8 @@ import 'package:flutter_app/utils/videoInfo.dart';
 import '../widgets/ChannelTabView.dart';
 
 class ChannelTabPage extends StatelessWidget {
-  dynamic item;
+  late final item;
+
   final tabTitle = [
     '上传的',
     '收藏的',

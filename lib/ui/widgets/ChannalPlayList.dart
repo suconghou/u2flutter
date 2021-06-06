@@ -21,7 +21,7 @@ class ChannelPlayList extends StatelessWidget {
     String count = viewCount(item);
     String pubTime = pubAt(item);
     String desc = getVideoDesc(item);
-    String cid = getChannelId(item);
+    // String cid = getChannelId(item);
     if (title.isEmpty || cover.isEmpty) {
       return Container();
     }

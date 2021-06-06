@@ -54,8 +54,18 @@ class FavVideoList extends StatelessWidget {
               );
             }
           } else {
-            return Center(
-              child: CircularProgressIndicator(),
+            return Row(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
             );
           }
         });

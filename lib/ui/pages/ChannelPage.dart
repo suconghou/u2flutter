@@ -3,7 +3,7 @@ import '../../api/index.dart';
 import 'ChannelTabPage.dart';
 
 class ChannelPage extends StatelessWidget {
-  late Future _refresh;
+  late final Future _refresh;
 
   @override
   Widget build(BuildContext context) {
