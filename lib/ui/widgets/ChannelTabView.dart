@@ -17,40 +17,47 @@ class ChannelTabView extends StatefulWidget {
 }
 
 class _ChannelTabViewState extends State {
-  String channelId;
+  final String channelId;
+  final ChannelTab ctype;
   String nextPageToken = "";
   List listData = [];
-  final ChannelTab ctype;
   bool loading = false;
-  String nexPageToken = "";
-  String loadMoreText = "没有更多数据";
-  TextStyle loadMoreTextStyle =
-      TextStyle(color: const Color(0xFF999999), fontSize: 14.0);
+  bool nomore = false;
 
-  ScrollController _controller = ScrollController();
+  Widget a = Container(
+    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+    child: Center(
+      child: Text("没有更多数据",
+          style: TextStyle(color: const Color(0xFF999999), fontSize: 14.0)),
+    ),
+  );
+  Widget b = Container(
+    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+    child: Center(
+      child: Text("正在加载中...",
+          style: TextStyle(color: const Color(0xFF4483f6), fontSize: 14.0)),
+    ),
+  );
+
+  final ScrollController _controller = ScrollController();
 
   _ChannelTabViewState(this.ctype, this.channelId) {
     _pullToRefresh();
-    _controller.addListener(() {
-      var maxScroll = _controller.position.maxScrollExtent;
-      var pixel = _controller.position.pixels;
-      if (maxScroll == pixel && nexPageToken.isNotEmpty) {
-        setState(() {
-          loadMoreText = "正在加载中...";
-          loadMoreTextStyle =
-              new TextStyle(color: const Color(0xFF4483f6), fontSize: 14.0);
-        });
-        if (!loading) {
-          loadMoreData();
-        }
-      } else {
-        setState(() {
-          loadMoreText = "没有更多数据";
-          loadMoreTextStyle =
-              new TextStyle(color: const Color(0xFF999999), fontSize: 14.0);
-        });
+    _controller.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_controller.position.extentAfter < 100 && nextPageToken.isNotEmpty) {
+      if (!loading) {
+        loadMoreData();
       }
-    });
+    }
   }
 
   @override
@@ -71,16 +78,24 @@ class _ChannelTabViewState extends State {
       setState(() {
         listData = res["items"];
         if (res["nextPageToken"] is String) {
-          nexPageToken = res["nextPageToken"];
+          nextPageToken = res["nextPageToken"];
+        } else {
+          nomore = true;
         }
       });
     }
   }
 
   loadMoreData() async {
-    print("load more");
-    if (nexPageToken.isNotEmpty) {
-      loading = true;
+    if (loading) {
+      return;
+    }
+    loading = true;
+    print("load more $nextPageToken");
+    if (listData.length == 0 || nextPageToken.isNotEmpty) {
+      setState(() {
+        nomore = false;
+      });
       dynamic res;
       if (ctype == ChannelTab.PLAYLIST) {
         res = await api.playlistsInChannel(
@@ -89,42 +104,52 @@ class _ChannelTabViewState extends State {
         res = await api.playlistItems(
             playlistId: channelId, pageToken: nextPageToken);
       }
-      List resList = (res["items"] is List) ? res["items"] : [];
-      listData.addAll(resList);
-      setState(() {
-        nexPageToken = res["nextPageToken"];
-      });
-      loading = false;
+      if (res != null) {
+        List origin = List.from(listData);
+        List resList = (res["items"] is List) ? res["items"] : [];
+        origin.addAll(resList);
+        nextPageToken =
+            res["nextPageToken"] is String ? res["nextPageToken"] : "";
+        setState(() {
+          listData = origin;
+          nextPageToken = nextPageToken;
+          if (nextPageToken.isEmpty) {
+            nomore = true;
+          }
+        });
+      }
     }
+    loading = false;
   }
 
   Widget _body() {
     final grid = ctype != ChannelTab.PLAYLIST;
 
+    final bottom = nomore ? a : b;
+
     if (grid) {
       return ListView(
+        controller: _controller,
+        cacheExtent: 500,
         children: [
           VideoGridWidget(
             listData,
             grid: grid,
-            controller: _controller,
+            controller: ScrollController(),
           ),
-          Center(
-            child: Text(loadMoreText, style: loadMoreTextStyle),
-          )
+          bottom,
         ],
       );
     }
 
     return ListView(
+      controller: _controller,
       children: [
         ChannelPlayList(
           listData,
-          controller: _controller,
+          controller: ScrollController(),
         ),
-        Center(
-          child: Text(loadMoreText, style: loadMoreTextStyle),
-        )
+        bottom
       ],
     );
   }

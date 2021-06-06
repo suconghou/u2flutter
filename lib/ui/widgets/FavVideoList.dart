@@ -41,7 +41,6 @@ class FavVideoList extends StatelessWidget {
     return FutureBuilder(
         future: _refresh,
         builder: (context, AsyncSnapshot snapshot) {
-          print(snapshot);
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasError) {
               return _body(context, snapshot.data);
@@ -54,18 +53,9 @@ class FavVideoList extends StatelessWidget {
               );
             }
           } else {
-            return Row(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: CircularProgressIndicator(),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 40),
+              child: Center(child: CircularProgressIndicator()),
             );
           }
         });

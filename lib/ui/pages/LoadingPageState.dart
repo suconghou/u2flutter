@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/LoadingStatus.dart';
+import '../../model/video.dart';
 
 abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
     with AutomaticKeepAliveClientMixin {
   final List items = [];
   LoadingStatus _status = LoadingStatus.NONE;
-  int _page = 1;
+  String _page = "";
 
-  late StreamSubscription _fetchDataStream;
-
-  Future<List> fetchData(int page);
+  Future<PageData> fetchData(String page);
 
   @override
   void initState() {
@@ -26,30 +25,28 @@ abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
     setState(() {
       _status = LoadingStatus.LOADING;
     });
-    _fetchDataStream = fetchData(_page)
+    fetchData(_page)
         .catchError((e) {
           debugPrint(e.toString());
           if (mounted) {
             setState(() {
               _status = LoadingStatus.ERROR;
             });
-            //TODO use dialog
-            print(e);
           }
         })
         .asStream()
         .listen((data) {
-          print("load data: ${data.length}");
-          if (data.isEmpty) {
+          _page = data.pageToken;
+          print("load data: ${data.list.length}");
+          if (data.list.isEmpty) {
             setState(() {
               _status = LoadingStatus.NO_MORE;
             });
           } else {
-            _page++;
             if (mounted) {
               setState(() {
                 _status = LoadingStatus.NONE;
-                items.addAll(data);
+                items.addAll(data.list);
                 onLoadComplete();
               });
             }
@@ -73,7 +70,7 @@ abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
             var n = notification as ScrollUpdateNotification;
             if (_status != LoadingStatus.LOADING &&
                 _status != LoadingStatus.ERROR &&
-                n.metrics.extentAfter < 50) {
+                n.metrics.extentAfter < 150) {
               loadMore();
             }
           }

@@ -1,7 +1,5 @@
-class VideoInfo {
-  String id;
-  String cover;
-  String viewCount;
-  String publishedAt;
-  VideoInfo(this.id, this.cover, this.viewCount, this.publishedAt);
+class PageData {
+  List list;
+  String pageToken;
+  PageData(this.list, this.pageToken);
 }

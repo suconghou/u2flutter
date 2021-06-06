@@ -58,18 +58,6 @@ class HomeDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.info,
-                  color: Colors.blue,
-                ),
-                trailing: Icon(Icons.chevron_right,
-                    color: Theme.of(context).primaryColor),
-                title: Text("未知导航"),
-                onTap: () {
-                  Navigator.pushNamed(context, "/about");
-                },
-              ),
-              ListTile(
-                leading: Icon(
                   Icons.settings,
                   color: Colors.blue,
                 ),

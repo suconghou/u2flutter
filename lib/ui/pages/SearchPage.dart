@@ -3,6 +3,7 @@ import '../../utils/dataHelper.dart';
 import 'LoadingPageState.dart';
 import '../widgets/VideoGridWidget.dart';
 import '../../api/index.dart';
+import '../../model/video.dart';
 
 class SearchPageDelegate extends SearchDelegate<Map> {
   SearchPageDelegate()
@@ -130,12 +131,13 @@ class ResultPage extends StatefulWidget {
 
 class ResultPageState extends LoadingPageState<ResultPage> {
   @override
-  Future<List> fetchData(int page) async {
-    var res = await api.search(q: widget.query);
-    if (res["items"] is List) {
-      return res["items"];
+  Future<PageData> fetchData(String page) async {
+    final res = await api.search(q: widget.query, pageToken: page);
+    if (res != null && res["items"] is List) {
+      return PageData(res["items"],
+          res["nextPageToken"] is String ? res["nextPageToken"] : "");
     }
-    return [];
+    return PageData([], "");
   }
 
   @override

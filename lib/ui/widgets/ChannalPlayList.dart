@@ -9,6 +9,7 @@ class ChannelPlayList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.all(10),
       children: list.map((e) => buildItem(context, e)).toList(),
       controller: controller,

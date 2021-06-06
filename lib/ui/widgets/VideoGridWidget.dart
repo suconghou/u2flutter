@@ -55,6 +55,41 @@ Widget buildVideoItem(
           child: titleWidget,
         );
   const placeholder = "images/loading.gif";
+
+  final imgCover = FadeInImage.assetNetwork(
+    image: cover,
+    width: 1080,
+    placeholder: placeholder,
+    placeholderScale: 3,
+    fit: BoxFit.cover,
+    placeholderErrorBuilder: (c, obj, err) {
+      print(obj);
+      print(err);
+      return Image.asset(
+        "images/error.jpg",
+        fit: BoxFit.cover,
+        width: 1080,
+      );
+    },
+    imageErrorBuilder: (c, obj, err) {
+      print(obj);
+      print(err);
+      return FadeInImage.assetNetwork(
+          placeholder: placeholder,
+          image: cover2,
+          width: 1080,
+          placeholderScale: 3,
+          fit: BoxFit.cover,
+          imageErrorBuilder: (c, obj, err) {
+            return Image.asset(
+              "images/error.jpg",
+              fit: BoxFit.cover,
+              width: 1080,
+            );
+          });
+    },
+  );
+
   return Container(
     color: Colors.white,
     padding: EdgeInsets.all(0),
@@ -62,41 +97,7 @@ Widget buildVideoItem(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Stack(children: [
-          Center(
-            child: FadeInImage.assetNetwork(
-              image: cover,
-              width: 1080,
-              placeholder: placeholder,
-              placeholderScale: 3,
-              fit: BoxFit.cover,
-              placeholderErrorBuilder: (c, obj, err) {
-                print(obj);
-                print(err);
-                return Image.asset(
-                  "images/error.jpg",
-                  fit: BoxFit.cover,
-                  width: 1080,
-                );
-              },
-              imageErrorBuilder: (c, obj, err) {
-                print(obj);
-                print(err);
-                return FadeInImage.assetNetwork(
-                    placeholder: placeholder,
-                    image: cover2,
-                    width: 1080,
-                    placeholderScale: 3,
-                    fit: BoxFit.cover,
-                    imageErrorBuilder: (c, obj, err) {
-                      return Image.asset(
-                        "images/error.jpg",
-                        fit: BoxFit.cover,
-                        width: 1080,
-                      );
-                    });
-              },
-            ),
-          ),
+          Center(child: imgCover),
           dur.isEmpty
               ? Container()
               : Positioned(
