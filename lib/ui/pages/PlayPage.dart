@@ -60,7 +60,11 @@ class PlayPage extends StatelessWidget {
               fontSize: 18,
             ),
           ),
-          VideoStreamPlayer(videoId),
+          SizedBox(
+            height: 240,
+            width: double.infinity,
+            child: VideoStreamPlayer(videoId),
+          ),
           cc,
           Row(
             children: [
