@@ -12,14 +12,16 @@ enum VideoAction {
   favchannel,
 }
 
+// ignore: must_be_immutable
 class PlayPage extends StatelessWidget {
-  late final Future<dynamic> _refresh;
-  late final String videoId;
+  late Future<dynamic> _refresh;
+  String videoId = "";
 
   @override
   Widget build(BuildContext context) {
     dynamic item = ModalRoute.of(context)?.settings.arguments;
-    final String id = getVideoId(item);
+    videoId = getVideoId(item);
+
     final String title = getVideoTitle(item);
     final String desc = getVideoTitle(item);
     final String pubTime = pubAt(item);
@@ -27,6 +29,8 @@ class PlayPage extends StatelessWidget {
     final String dur = duration(item);
     final String cid = getChannelId(item);
     final String ctitle = getChannelTitle(item);
+    final player = VideoStreamPlayer(videoId, title);
+
     final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
         ? Container(
             margin: EdgeInsets.only(bottom: 10),
@@ -43,77 +47,101 @@ class PlayPage extends StatelessWidget {
         : SizedBox(
             height: 2,
           );
-    videoId = id;
     refresh(item["channel"] is bool);
 
-    return Scaffold(
+    final page = Scaffold(
       appBar: AppBar(
         title: Text(title),
         actions: [RightMenu(videoId, cid)],
       ),
       body: ListView(
-        padding: EdgeInsets.all(10),
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 18,
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+              ),
             ),
-          ),
-          SizedBox(
-            height: 240,
-            width: double.infinity,
-            child: VideoStreamPlayer(videoId),
-          ),
-          cc,
-          Row(
-            children: [
-              Text(
-                "发布于" + pubTime,
-                style: TextStyle(height: 1),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              Text(
-                dur,
-                style: TextStyle(height: 1, color: Colors.red),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              Text(count,
-                  style: TextStyle(
-                      height: 1,
-                      fontSize: 14,
-                      color: Colors.black87,
-                      decoration: TextDecoration.none)),
-            ],
           ),
           SizedBox(
             height: 10,
           ),
-          Text(
-            desc,
-            style: TextStyle(color: Colors.grey),
+          AspectRatio(
+            aspectRatio: 1.7777,
+            child: player,
           ),
           SizedBox(
-            height: 30,
+            height: 5,
           ),
-          Text(
-            "相关视频",
-            style: TextStyle(fontSize: 18),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: Column(
+              children: [
+                Align(
+                  child: cc,
+                  alignment: Alignment.topLeft,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "发布于" + pubTime,
+                      style: TextStyle(height: 1),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      dur,
+                      style: TextStyle(height: 1, color: Colors.red),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(count,
+                        style: TextStyle(
+                            height: 1,
+                            fontSize: 14,
+                            color: Colors.black87,
+                            decoration: TextDecoration.none)),
+                  ],
+                ),
+              ],
+            ),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          VideoListBuilder(_refresh, refresh).build(),
-          SizedBox(
-            height: 60,
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Text(
+                  desc,
+                  style: TextStyle(color: Colors.grey),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "相关视频",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                VideoListBuilder(_refresh, refresh).build(),
+                SizedBox(
+                  height: 60,
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
+    return page;
   }
 
   refresh(bool channel) {

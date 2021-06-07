@@ -16,7 +16,7 @@ String videoCover2(Object item) {
 
 String getVideoTitle(dynamic item) {
   var v = item["snippet"];
-  if (v is Map) {
+  if (v is Map && v["title"] is String) {
     return v["title"];
   }
   return "";
