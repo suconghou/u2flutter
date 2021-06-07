@@ -63,7 +63,7 @@ class _ChannelTabViewState extends State {
   @override
   Widget build(BuildContext context) {
     return listData.length == 0
-        ? new Center(child: new CircularProgressIndicator())
+        ? Center(child: CircularProgressIndicator())
         : RefreshIndicator(onRefresh: _pullToRefresh, child: _body());
   }
 

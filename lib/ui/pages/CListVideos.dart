@@ -78,7 +78,7 @@ class _VideosListState extends State<VideosList> {
     final bottom = nomore ? a : b;
 
     return videoList.length == 0
-        ? new Center(child: new CircularProgressIndicator())
+        ? Center(child: CircularProgressIndicator())
         : RefreshIndicator(
             onRefresh: _pullToRefresh,
             child: ListView(

@@ -85,7 +85,7 @@ class ChannelPlayList extends StatelessWidget {
         children: [
           Expanded(
             flex: 2,
-            child: new Container(
+            child: Container(
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               child: FadeInImage.assetNetwork(
                 image: cover,
@@ -116,7 +116,7 @@ class ChannelPlayList extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: new Container(
+            child: Container(
               padding: EdgeInsets.only(left: 2, top: 8),
               child: right,
               height: 100,

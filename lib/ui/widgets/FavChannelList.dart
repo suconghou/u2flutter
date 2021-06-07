@@ -149,18 +149,18 @@ class FavChannelList extends StatelessWidget {
           showDialog(
             context: context,
             builder: (context) {
-              return new AlertDialog(
+              return AlertDialog(
                 title: Text("取消收藏"),
                 content: Text(title),
                 actions: [
-                  new TextButton(
+                  TextButton(
                     onPressed: () {
                       delFavCIds(channelId);
                       Navigator.of(context).pop();
                     },
                     child: Text("确认"),
                   ),
-                  new TextButton(
+                  TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

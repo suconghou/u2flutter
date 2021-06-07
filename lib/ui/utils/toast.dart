@@ -52,7 +52,7 @@ class Toast {
   static _buildToastWidget() {
     return Center(
       child: Card(
-        color: Colors.black26,
+        color: Colors.black87,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
           child: Text(
