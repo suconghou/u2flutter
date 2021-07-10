@@ -30,21 +30,20 @@ class PlayPage extends StatelessWidget {
     final String cid = getChannelId(item);
     final String ctitle = getChannelTitle(item);
     final url = streambase + '$videoId.mpd';
-
     final player = VideoStreamPlayer(url, title);
 
     final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
-        ? Container(
-            margin: EdgeInsets.only(bottom: 10),
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, '/channel', arguments: cid);
-              },
+        ? InkWell(
+            child: Container(
+              margin: EdgeInsets.only(bottom: 12),
               child: Text(
                 ctitle,
                 style: TextStyle(fontSize: 14, color: Colors.blue),
               ),
             ),
+            onTap: () {
+              Navigator.pushNamed(context, '/channel', arguments: cid);
+            },
           )
         : SizedBox(
             height: 2,
@@ -117,9 +116,12 @@ class PlayPage extends StatelessWidget {
             padding: EdgeInsets.all(10),
             child: Column(
               children: [
-                Text(
-                  desc,
-                  style: TextStyle(color: Colors.grey),
+                Align(
+                  child: Text(
+                    desc,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  alignment: Alignment.topLeft,
                 ),
                 SizedBox(
                   height: 20,

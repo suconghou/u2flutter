@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 import 'package:u2flutter_player/u2flutter_player.dart';
 
 class VideoStreamPlayer extends StatefulWidget {
@@ -22,34 +21,24 @@ class _VideoStreamPlayerState extends State<VideoStreamPlayer>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller = Players.getInstance(url);
     return VideoPlayerUI(
-      controller: controller,
+      opts: PlayerOpts(url),
       title: title,
     );
   }
 
   @override
   void dispose() {
+    Players.pause();
     super.dispose();
   }
 
   @override
-  bool get wantKeepAlive => true;
-}
-
-class Players {
-  static VideoPlayerController? player;
-  static VideoPlayerController getInstance(String url) {
-    if (player == null) {
-      player = VideoPlayerController.network(url, formatHint: VideoFormat.dash);
-    }
-    // 已经存在实例了,判断是否相同
-    if (player?.dataSource != url) {
-      player?.pause();
-      player?.dispose();
-      player = VideoPlayerController.network(url, formatHint: VideoFormat.dash);
-    }
-    return player!;
+  void deactivate() {
+    Players.pause();
+    super.deactivate();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

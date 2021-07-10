@@ -18,22 +18,22 @@ Widget buildVideoItem(
     return Container();
   }
   final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
-      ? Container(
-          margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-          child: SizedBox(
-            height: 13,
-            child: InkWell(
+      ? InkWell(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+            child: SizedBox(
+              height: 13,
               child: Text(
                 ctitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.blue, fontSize: 12, height: 1),
               ),
-              onTap: () {
-                Navigator.pushNamed(context, '/channel', arguments: cid);
-              },
             ),
           ),
+          onTap: () {
+            Navigator.pushNamed(context, '/channel', arguments: cid);
+          },
         )
       : SizedBox(
           height: 5,
