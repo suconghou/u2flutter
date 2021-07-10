@@ -307,7 +307,7 @@ packages:
       name: u2flutter_player
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.4"
   vector_math:
     dependency: transitive
     description:
