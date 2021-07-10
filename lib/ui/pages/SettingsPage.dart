@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/api/index.dart';
 import 'package:flutter_app/ui/utils/toast.dart';
 import '../../utils/store.dart';
 
@@ -47,6 +48,7 @@ class SettingsPage extends StatelessWidget {
                   await Store.setString(_videoUrlKey, videoUrl.value.text);
                 }
                 Toast.toast(context, "保存成功");
+                await api.initBaseUrl();
               },
             ),
           )

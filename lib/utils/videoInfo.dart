@@ -1,7 +1,8 @@
+const _defaultImg = "https://assets.suconghou.cn/defaultImg.png";
 String videoCover(Object item) {
   final String id = getVideoId(item);
   if (id == "") {
-    return "https://assets.suconghou.cn/defaultImg.png";
+    return _defaultImg;
   }
   return "https://stream.pull.workers.dev/video/" + id + ".jpg";
 }
@@ -9,7 +10,7 @@ String videoCover(Object item) {
 String videoCover2(Object item) {
   final String id = getVideoId(item);
   if (id == "") {
-    return "https://assets.suconghou.cn/defaultImg.png";
+    return _defaultImg;
   }
   return "https://share.suconghou.cn/video/" + id + ".jpg";
 }

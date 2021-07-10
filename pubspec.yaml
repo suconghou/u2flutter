@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  u2flutter_player: ^0.0.1
+  u2flutter_player: ^0.0.3
   shared_preferences: '>=2.0.6'
   
 

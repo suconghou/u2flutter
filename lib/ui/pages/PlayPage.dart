@@ -29,7 +29,9 @@ class PlayPage extends StatelessWidget {
     final String dur = duration(item);
     final String cid = getChannelId(item);
     final String ctitle = getChannelTitle(item);
-    final player = VideoStreamPlayer(videoId, title);
+    final url = streambase + '$videoId.mpd';
+
+    final player = VideoStreamPlayer(url, title);
 
     final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
         ? Container(
@@ -48,6 +50,7 @@ class PlayPage extends StatelessWidget {
             height: 2,
           );
     refresh(item["channel"] is bool);
+    final full = MediaQuery.of(context).orientation == Orientation.landscape;
 
     final page = Scaffold(
       appBar: AppBar(
@@ -141,7 +144,12 @@ class PlayPage extends StatelessWidget {
         ],
       ),
     );
-    return page;
+    return full
+        ? Scaffold(
+            body: Stack(fit: StackFit.expand, children: <Widget>[
+            player,
+          ]))
+        : page;
   }
 
   refresh(bool channel) {

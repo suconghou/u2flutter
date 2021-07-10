@@ -5,9 +5,12 @@ import '../utils/store.dart';
 
 final _default = 'https://r.suconghou.cn/video/api/v3/';
 
+final _defaulstream = 'http://share.suconghou.cn/video/';
+
 bool _init = false;
 
 late Uri _base;
+String streambase = _defaulstream;
 
 class _DataApi {
   var client = HttpClient();
@@ -27,6 +30,12 @@ class _DataApi {
       _base = Uri.parse(_baseUrl);
     } else {
       _base = Uri.parse(_default);
+    }
+    final String? _streambase = await Store.getString("videourl");
+    if (_streambase != null && _streambase.isNotEmpty) {
+      streambase = _streambase;
+    } else {
+      streambase = _defaulstream;
     }
     return _base;
   }
