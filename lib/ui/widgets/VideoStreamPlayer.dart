@@ -28,17 +28,5 @@ class _VideoStreamPlayerState extends State<VideoStreamPlayer>
   }
 
   @override
-  void dispose() {
-    Players.pause();
-    super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    Players.pause();
-    super.deactivate();
-  }
-
-  @override
   bool get wantKeepAlive => true;
 }
