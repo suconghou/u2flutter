@@ -4,7 +4,7 @@ String videoCover(Object item) {
   if (id == "") {
     return _defaultImg;
   }
-  return "https://stream.pull.workers.dev/video/" + id + ".jpg";
+  return "https://app.suconghou.cn/video/" + id + ".jpg";
 }
 
 String videoCover2(Object item) {
@@ -12,7 +12,7 @@ String videoCover2(Object item) {
   if (id == "") {
     return _defaultImg;
   }
-  return "https://share.suconghou.cn/video/" + id + ".jpg";
+  return "https://ustream.vercel.app/video/" + id + ".jpg";
 }
 
 String getVideoTitle(dynamic item) {
