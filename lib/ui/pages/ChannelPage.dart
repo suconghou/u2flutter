@@ -20,10 +20,15 @@ class ChannelPage extends StatelessWidget {
             if (!snapshot.hasError) {
               return _body(context, snapshot.data);
             } else {
-              return Center(
-                child: TextButton(
-                  child: Text("加载失败"),
-                  onPressed: () => {},
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text("Loading"),
+                ),
+                body: Center(
+                  child: TextButton(
+                    child: Text("加载失败"),
+                    onPressed: () => {},
+                  ),
                 ),
               );
             }

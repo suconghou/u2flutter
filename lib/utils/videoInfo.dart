@@ -12,7 +12,7 @@ String videoCover2(Object item) {
   if (id == "") {
     return _defaultImg;
   }
-  return "https://ustream.vercel.app/video/" + id + ".jpg";
+  return "http://stream.pull.workers.dev/video/" + id + ".jpg";
 }
 
 String getVideoTitle(dynamic item) {
