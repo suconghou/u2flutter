@@ -67,7 +67,7 @@ abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
       return NotificationListener(
         onNotification: (notification) {
           if (notification.runtimeType == ScrollUpdateNotification) {
-            var n = notification as ScrollUpdateNotification;
+            final n = notification as ScrollUpdateNotification;
             if (_status != LoadingStatus.LOADING &&
                 _status != LoadingStatus.ERROR &&
                 n.metrics.extentAfter < 150) {

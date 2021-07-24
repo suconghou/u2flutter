@@ -10,7 +10,7 @@ Future<bool> addQueryHistory(String q) async {
 }
 
 Future<bool> delQueryHistory(String q) async {
-  var data = await getQueryHistory();
+  final data = await getQueryHistory();
   data.remove(q);
   return await Store.setSet(_storeKey, data);
 }
@@ -20,7 +20,7 @@ Future<bool> clearQueryHistory() async {
 }
 
 Future<Set<String>> getQueryHistory() async {
-  var v = await Store.getSet(_storeKey);
+  final v = await Store.getSet(_storeKey);
   if (v is Set<String>) {
     return v;
   }
@@ -31,7 +31,7 @@ const String _favVIdsKey = 'fav_vids';
 const String _favCIdsKey = 'fav_cids';
 
 Future<Set<String>> getFavVIds() async {
-  var v = await Store.getSet(_favVIdsKey);
+  final v = await Store.getSet(_favVIdsKey);
   if (v is Set<String>) {
     return v;
   }
@@ -39,7 +39,7 @@ Future<Set<String>> getFavVIds() async {
 }
 
 Future<Set<String>> getFavCIds() async {
-  var v = await Store.getSet(_favCIdsKey);
+  final v = await Store.getSet(_favCIdsKey);
   if (v is Set<String>) {
     return v;
   }
@@ -47,25 +47,25 @@ Future<Set<String>> getFavCIds() async {
 }
 
 Future<bool> addFavVIds(String id) async {
-  var ids = await getFavVIds();
+  final ids = await getFavVIds();
   ids.add(id);
   return await Store.setSet(_favVIdsKey, ids);
 }
 
 Future<bool> addFavCIds(String id) async {
-  var ids = await getFavCIds();
+  final ids = await getFavCIds();
   ids.add(id);
   return await Store.setSet(_favCIdsKey, ids);
 }
 
 Future<bool> delFavVIds(String id) async {
-  var ids = await getFavVIds();
+  final ids = await getFavVIds();
   ids.remove(id);
   return await Store.setSet(_favVIdsKey, ids);
 }
 
 Future<bool> delFavCIds(String id) async {
-  var ids = await getFavCIds();
+  final ids = await getFavCIds();
   ids.remove(id);
   return await Store.setSet(_favCIdsKey, ids);
 }

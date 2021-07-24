@@ -38,7 +38,7 @@ Widget buildVideoItem(
       : SizedBox(
           height: 5,
         );
-  var titleWidget = Text(
+  final titleWidget = Text(
     title,
     maxLines: 2,
     overflow: TextOverflow.ellipsis,
@@ -48,7 +48,7 @@ Widget buildVideoItem(
         color: Colors.black,
         decoration: TextDecoration.none),
   );
-  var titleBox = signle
+  final titleBox = signle
       ? titleWidget
       : SizedBox(
           height: 26,
@@ -165,7 +165,7 @@ Widget buildListVideoItem(BuildContext context, dynamic item,
 }
 
 Widget buildSignleVideoItem(BuildContext context, dynamic item) {
-  var video = buildVideoItem(context, item, signle: true);
+  final video = buildVideoItem(context, item, signle: true);
   return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: InkWell(
@@ -184,7 +184,7 @@ class VideoGridWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!grid) {
-      var children = list
+      final children = list
           .map((item) => buildListVideoItem(
                 context,
                 item,
@@ -195,7 +195,7 @@ class VideoGridWidget extends StatelessWidget {
         children: children,
       );
     }
-    var children =
+    final children =
         list.map((item) => buildListVideoItem(context, item)).toList();
     return GridView.count(
       shrinkWrap: true,

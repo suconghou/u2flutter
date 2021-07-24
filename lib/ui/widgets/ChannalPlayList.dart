@@ -47,7 +47,7 @@ class ChannelPlayList extends StatelessWidget {
           decoration: TextDecoration.none),
     );
 
-    var right = Column(
+    final right = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(height: 30, child: titleBox),

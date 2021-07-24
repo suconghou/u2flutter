@@ -45,7 +45,7 @@ class SearchPageDelegate extends SearchDelegate<Map> {
 
   @override
   Widget buildResults(BuildContext context) {
-    var q = query;
+    final q = query;
     if (q.isEmpty) {
       query = "";
       return Container();

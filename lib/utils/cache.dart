@@ -5,7 +5,7 @@ class CacheItem {
 }
 
 class CacheManager {
-  var cache = Map<String, CacheItem>();
+  final cache = Map<String, CacheItem>();
 
   set(String key, dynamic value, [int ttl = 3600]) {
     int t = DateTime.now().millisecondsSinceEpoch + ttl * 1000;

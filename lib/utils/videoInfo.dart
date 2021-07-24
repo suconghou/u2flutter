@@ -16,7 +16,7 @@ String videoCover2(Object item) {
 }
 
 String getVideoTitle(dynamic item) {
-  var v = item["snippet"];
+  final v = item["snippet"];
   if (v is Map && v["title"] is String) {
     return v["title"];
   }
@@ -24,7 +24,7 @@ String getVideoTitle(dynamic item) {
 }
 
 String getVideoDesc(dynamic item) {
-  var v = item["snippet"];
+  final v = item["snippet"];
   if (v is Map) {
     return v["description"];
   }
@@ -37,13 +37,13 @@ String getVideoId(dynamic item) {
   if (item["kind"] == "youtube#playlist") {
     return getPlayListVid(item);
   }
-  var c = item["contentDetails"];
+  final c = item["contentDetails"];
   if (c is Map) {
     if (c["videoId"] is String) {
       return c["videoId"];
     }
   }
-  var v = item["id"];
+  final v = item["id"];
   if (v is String) {
     id = v;
   } else {
@@ -53,9 +53,9 @@ String getVideoId(dynamic item) {
 }
 
 String getPlayListVid(dynamic item) {
-  var s = item['snippet'];
+  final s = item['snippet'];
   if (s is Map) {
-    var t = s['thumbnails'];
+    final t = s['thumbnails'];
     if (t is Map) {
       var w = t['medium'];
       if (t['default'] is Map) {
@@ -65,9 +65,9 @@ String getPlayListVid(dynamic item) {
       } else if (t['high'] is Map) {
         w = t['high'];
       }
-      var u = w['url'];
-      var r = RegExp(r"/([\w\-]{6,12})/");
-      var match = r.firstMatch(u);
+      final u = w['url'];
+      final r = RegExp(r"/([\w\-]{6,12})/");
+      final match = r.firstMatch(u);
       return match?.group(1) ?? "";
     }
   }
@@ -76,7 +76,7 @@ String getPlayListVid(dynamic item) {
 
 String getChannelId(dynamic item) {
   String id = "";
-  var v = item["snippet"];
+  final v = item["snippet"];
   if (v is Map) {
     id = v["channelId"];
   }
@@ -85,7 +85,7 @@ String getChannelId(dynamic item) {
 
 String getChannelTitle(dynamic item) {
   String title = "";
-  var v = item["snippet"];
+  final v = item["snippet"];
   if (v is Map) {
     title = v["channelTitle"];
   }
@@ -94,7 +94,7 @@ String getChannelTitle(dynamic item) {
 
 String viewCount(dynamic item) {
   var n = 0;
-  var v = item["statistics"];
+  final v = item["statistics"];
   if (v is Map) {
     n = int.parse(v["viewCount"]);
   }
@@ -108,13 +108,13 @@ String viewCount(dynamic item) {
 }
 
 String pubAt(dynamic item) {
-  var v = item["snippet"];
+  final v = item["snippet"];
   var n = 0;
   if (v is Map) {
-    var t = DateTime.parse(v["publishedAt"]);
+    final t = DateTime.parse(v["publishedAt"]);
     n = t.millisecondsSinceEpoch;
   }
-  var d = (DateTime.now().millisecondsSinceEpoch - n) / 1000;
+  final d = (DateTime.now().millisecondsSinceEpoch - n) / 1000;
   const f = [
     [31536000, '年'],
     [2592000, '个月'],
@@ -125,9 +125,9 @@ String pubAt(dynamic item) {
     [1, '秒']
   ];
   for (var i = 0; i < f.length; i++) {
-    var t = f[i][0] as num;
-    var e = f[i][1];
-    var c = (d / t).floor();
+    final t = f[i][0] as num;
+    final e = f[i][1];
+    final c = (d / t).floor();
     if (c != 0 && c > 0) {
       return "$c$e前";
     }
@@ -136,25 +136,25 @@ String pubAt(dynamic item) {
 }
 
 String duration(dynamic item) {
-  var v = item["contentDetails"];
+  final v = item["contentDetails"];
   if (v is Map) {
-    var t = v["duration"].toString();
+    final t = v["duration"].toString();
     if (t == "P0D") {
       return "直播";
     }
     var r = RegExp(r"([1-9]+)M$");
-    var f = r.firstMatch(t);
+    final f = r.firstMatch(t);
     if (f != null) {
-      var f1 = f.group(1)!;
+      final f1 = f.group(1)!;
       if (f1.length == 1) {
         return "0$f1:00";
       }
       return "$f1:00";
     }
     r = RegExp(r"\d+");
-    var arr = [];
-    for (var item in r.allMatches(t)) {
-      var x = item.group(0)!;
+    final arr = [];
+    for (final item in r.allMatches(t)) {
+      final x = item.group(0)!;
       if (x.length == 1) {
         arr.add("0$x");
       } else {
@@ -167,10 +167,10 @@ String duration(dynamic item) {
 }
 
 String getSubscriberCount(dynamic item) {
-  var v = item["statistics"];
+  final v = item["statistics"];
   var n = 0;
   if (v is Map) {
-    var c = v["subscriberCount"];
+    final c = v["subscriberCount"];
     if (c is String) {
       n = int.parse(c);
     }
@@ -185,10 +185,10 @@ String getSubscriberCount(dynamic item) {
 }
 
 String getVideoCount(dynamic item) {
-  var v = item["statistics"];
+  final v = item["statistics"];
   var n = 0;
   if (v is Map) {
-    var c = v["videoCount"];
+    final c = v["videoCount"];
     if (c is String) {
       n = int.parse(c);
     }
@@ -197,9 +197,9 @@ String getVideoCount(dynamic item) {
 }
 
 String getChannelUploadId(dynamic item) {
-  var v = item["contentDetails"];
+  final v = item["contentDetails"];
   if (v is Map) {
-    var c = v["relatedPlaylists"];
+    final c = v["relatedPlaylists"];
     if (c is Map) {
       return c["uploads"];
     }
@@ -208,9 +208,9 @@ String getChannelUploadId(dynamic item) {
 }
 
 String getChannelFavoriteId(dynamic item) {
-  var v = item["contentDetails"];
+  final v = item["contentDetails"];
   if (v is Map) {
-    var c = v["favorites"];
+    final c = v["favorites"];
     if (c is Map) {
       return c["uploads"];
     }

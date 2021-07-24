@@ -13,8 +13,8 @@ late Uri _base;
 String streambase = _defaulstream;
 
 class _DataApi {
-  var client = HttpClient();
-  var cache = CacheManager();
+  final client = HttpClient();
+  final cache = CacheManager();
 
   _DataApi(
       [int timeout = 15,
@@ -44,7 +44,7 @@ class _DataApi {
       {String regionCode = 'HK',
       int videoCategoryId = 1,
       int maxResults = 30}) async {
-    var params = {
+    final params = {
       'chart': 'mostPopular',
       'maxResults': maxResults.toString(),
       'regionCode': regionCode,
@@ -54,7 +54,7 @@ class _DataApi {
   }
 
   videoInfo(String id) async {
-    var params = {
+    final params = {
       'id': id,
     };
     return await get('videos', params);
@@ -71,7 +71,7 @@ class _DataApi {
     if (q.isNotEmpty) {
       order = 'viewCount';
     }
-    var params = {
+    final params = {
       'q': q,
       'type': type,
       'order': order,
@@ -88,7 +88,7 @@ class _DataApi {
       String pageToken = "",
       String type = 'video',
       int maxResults = 30}) async {
-    var params = {
+    final params = {
       'type': type,
       'relatedToVideoId': relatedToVideoId,
       'pageToken': pageToken,
@@ -98,14 +98,14 @@ class _DataApi {
   }
 
   channels(String id) async {
-    var params = {
+    final params = {
       'id': id,
     };
     return await get('channels', params);
   }
 
   playlists(String id) async {
-    var params = {
+    final params = {
       'id': id,
     };
     return await get('playlists', params);
@@ -115,7 +115,7 @@ class _DataApi {
       {String channelId = "",
       String pageToken = "",
       int maxResults = 20}) async {
-    var params = {
+    final params = {
       'channelId': channelId,
       'maxResults': maxResults.toString(),
       'pageToken': pageToken,
@@ -127,7 +127,7 @@ class _DataApi {
       {String playlistId = "",
       String pageToken = "",
       int maxResults = 30}) async {
-    var params = {
+    final params = {
       'playlistId': playlistId,
       'maxResults': maxResults.toString(),
       'pageToken': pageToken,
@@ -151,20 +151,20 @@ class _DataApi {
   }
 
   get(String uri, Map<String, Object> params) async {
-    var target = await buildUrl(uri, params);
-    var key = target.toString();
-    var v = cache.get(key);
+    final target = await buildUrl(uri, params);
+    final key = target.toString();
+    final v = cache.get(key);
     if (v != null) {
       return v;
     }
     const timeout = Duration(seconds: 15);
-    var req = await client.getUrl(target);
-    var res = await req.close().timeout(timeout);
+    final req = await client.getUrl(target);
+    final res = await req.close().timeout(timeout);
     if (res.statusCode != HttpStatus.ok) {
       throw Exception("request $uri error , status ${res.statusCode}");
     }
-    var body = await res.transform(utf8.decoder).join().timeout(timeout);
-    var data = jsonDecode(body);
+    final body = await res.transform(utf8.decoder).join().timeout(timeout);
+    final data = jsonDecode(body);
     cache.set(key, data);
     return data;
   }
