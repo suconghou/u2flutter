@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/DlnaDeviceList.dart';
 
 class SharePage extends StatelessWidget {
   @override
@@ -7,12 +8,9 @@ class SharePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("投屏助手"),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text("下载任务的管理"),
-          ],
-        ),
+      body: Container(
+        child: DlnaDiviceList(),
+        margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
       ),
     );
   }

@@ -24,7 +24,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  u2flutter_player: ^0.0.5
+  u2flutter_player: 
+    path: /Users/admin/data/git/flutter/u2flutter_player
+  dlna_dart:
+    path: /Users/admin/data/git/flutter/dlna_dart
   shared_preferences: '>=2.0.6'
   
 
