@@ -152,29 +152,32 @@ class DlnaDialogState extends State {
         });
       },
     );
+    final content = videoId != null && videoId!.isNotEmpty
+        ? DlnaStreamItems(dev, videoId!)
+        : Column(
+            children: [
+              TextField(
+                  controller: videoUrl,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.link),
+                    labelText: "http地址",
+                  )),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: [ok],
+              ),
+            ],
+          );
     final push = ElevatedButton(
       child: Text("投屏"),
       onPressed: () => showModalBottomSheet(
+          isScrollControlled: true,
           context: context,
-          builder: (BuildContext context) => Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                height: 180.0,
-                child: videoId != null && videoId!.isNotEmpty
-                    ? DlnaStreamItems(dev, videoId!)
-                    : Column(
-                        children: [
-                          TextField(
-                              controller: videoUrl,
-                              decoration: InputDecoration(
-                                icon: Icon(Icons.link),
-                                labelText: "http地址",
-                              )),
-                          ButtonBar(
-                            alignment: MainAxisAlignment.center,
-                            children: [ok],
-                          ),
-                        ],
-                      ),
+          builder: (BuildContext context) => SingleChildScrollView(
+                child: Container(
+                    child: content,
+                    padding: EdgeInsets.fromLTRB(
+                        10, 10, 10, MediaQuery.of(context).viewInsets.bottom)),
               )),
     );
     final play = SizedBox(
