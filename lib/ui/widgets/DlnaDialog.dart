@@ -105,12 +105,14 @@ class DlnaDialogState extends State {
                 Toast.toast(context, "已复制");
               },
             ))));
-    slist.add(Container(
-      child: Align(
-        child: Text(position!.AbsTime + " / " + position!.TrackDuration),
-        alignment: Alignment.topLeft,
-      ),
-    ));
+    if (position!.AbsTime.isNotEmpty) {
+      slist.add(Container(
+        child: Align(
+          child: Text(position!.AbsTime + " / " + position!.TrackDuration),
+          alignment: Alignment.topLeft,
+        ),
+      ));
+    }
     return Container(
         alignment: Alignment.topLeft,
         padding: EdgeInsets.all(10),

@@ -5,6 +5,8 @@ import 'package:dlna_dart/dlna.dart';
 import './DlnaDialog.dart';
 import '../utils/toast.dart';
 
+Map<String, device> cacheDeviceList = Map();
+
 class DlnaDiviceList extends StatefulWidget {
   DlnaDiviceList();
 
@@ -32,11 +34,16 @@ class DlnaDiviceListState extends State {
     m = await searcher.start();
     started = true;
     timer.cancel();
-    timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      setState(() {
-        deviceList = m.deviceList;
+    final callback = (timer) {
+      m.deviceList.forEach((key, value) {
+        cacheDeviceList[key] = value;
       });
-    });
+      setState(() {
+        deviceList = cacheDeviceList;
+      });
+    };
+    timer = Timer.periodic(Duration(seconds: 5), callback);
+    callback(null);
   }
 
   @override
@@ -54,8 +61,11 @@ class DlnaDiviceListState extends State {
   }
 
   Future _pullToRefresh() async {
+    m.deviceList.forEach((key, value) {
+      cacheDeviceList[key] = value;
+    });
     setState(() {
-      deviceList = m.deviceList;
+      deviceList = cacheDeviceList;
     });
   }
 
