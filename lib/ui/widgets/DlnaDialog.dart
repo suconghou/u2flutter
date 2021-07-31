@@ -238,7 +238,8 @@ class DlnaDialogState extends State {
               setState(() {
                 position = p;
               });
-              dev.seekByCurrent(curr, -30);
+              final ret = await dev.seekByCurrent(curr, -30);
+              print(ret);
             },
             child: Text("快退30秒", style: style)));
     final next30 = SizedBox(
@@ -251,7 +252,7 @@ class DlnaDialogState extends State {
               setState(() {
                 position = p;
               });
-              final ret = dev.seekByCurrent(curr, 30);
+              final ret = await dev.seekByCurrent(curr, 30);
               print(ret);
             },
             child: Text("快进30秒", style: style)));
