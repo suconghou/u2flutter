@@ -4,6 +4,7 @@ import 'package:flutter_app/ui/utils/toast.dart';
 import 'package:flutter_app/utils/dataHelper.dart';
 import '../widgets/VideoListBuilder.dart';
 import '../widgets/VideoStreamPlayer.dart';
+import '../widgets/DlnaDeviceList.dart';
 import '../../utils/videoInfo.dart';
 
 enum VideoAction {
@@ -194,7 +195,11 @@ class _RightMenuState extends State<RightMenu> {
               return PopupMenuButton(
                 onSelected: (result) async {
                   if (result == VideoAction.dlna) {
-                    Toast.toast(context, "投屏助手开发中");
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return DlnaDeviceList(videoId: videoId);
+                        });
                   } else if (result == VideoAction.fav) {
                     if (hasFav) {
                       await delFavVIds(videoId);

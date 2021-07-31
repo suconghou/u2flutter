@@ -6,14 +6,16 @@ import 'package:dlna_dart/dlna.dart';
 import 'package:dlna_dart/xmlParser.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/ui/utils/toast.dart';
+import './DlnaStreamItems.dart';
 
 class DlnaDialog extends StatefulWidget {
   final device dev;
-  DlnaDialog(this.dev);
+  final String? videoId;
+  DlnaDialog(this.dev, {this.videoId});
 
   @override
   State<StatefulWidget> createState() {
-    return DlnaDialogState(dev);
+    return DlnaDialogState(dev, videoId: videoId);
   }
 }
 
@@ -22,8 +24,8 @@ class DlnaDialogState extends State {
   positionParser? position;
   TextEditingController videoUrl = TextEditingController();
   Timer timer = Timer(Duration(seconds: 1), () {});
-
-  DlnaDialogState(this.dev) {
+  final String? videoId;
+  DlnaDialogState(this.dev, {this.videoId}) {
     final callback = (_) async {
       final text = await dev.position();
       final p = positionParser(text);
@@ -138,8 +140,11 @@ class DlnaDialogState extends State {
           Toast.toast(context, "请输入http地址");
           return;
         }
-        final ret = await dev.setUrl(v);
-        print(ret);
+        try {
+          await dev.setUrl(v);
+        } catch (e) {
+          Toast.toast(context, "$e");
+        }
         Navigator.pop(context);
         Timer(Duration(seconds: 2), () async {
           final text = await dev.position();
@@ -154,28 +159,34 @@ class DlnaDialogState extends State {
           builder: (BuildContext context) => Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 height: 180.0,
-                child: Column(
-                  children: [
-                    TextField(
-                        controller: videoUrl,
-                        decoration: InputDecoration(
-                          icon: Icon(Icons.link),
-                          labelText: "http地址",
-                        )),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.center,
-                      children: [ok],
-                    ),
-                  ],
-                ),
+                child: videoId != null && videoId!.isNotEmpty
+                    ? DlnaStreamItems(dev, videoId!)
+                    : Column(
+                        children: [
+                          TextField(
+                              controller: videoUrl,
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.link),
+                                labelText: "http地址",
+                              )),
+                          ButtonBar(
+                            alignment: MainAxisAlignment.center,
+                            children: [ok],
+                          ),
+                        ],
+                      ),
               )),
     );
     final play = SizedBox(
         width: 60,
         height: 30,
         child: ElevatedButton(
-          onPressed: () {
-            dev.play();
+          onPressed: () async {
+            try {
+              await dev.play();
+            } catch (e) {
+              Toast.toast(context, "$e");
+            }
           },
           child: Text(
             "播放",
@@ -186,8 +197,12 @@ class DlnaDialogState extends State {
         width: 60,
         height: 30,
         child: ElevatedButton(
-            onPressed: () {
-              dev.pause();
+            onPressed: () async {
+              try {
+                await dev.pause();
+              } catch (e) {
+                Toast.toast(context, "$e");
+              }
             },
             child: Text(
               "暂停",
@@ -197,8 +212,12 @@ class DlnaDialogState extends State {
         width: 60,
         height: 30,
         child: ElevatedButton(
-            onPressed: () {
-              dev.stop();
+            onPressed: () async {
+              try {
+                await dev.stop();
+              } catch (e) {
+                Toast.toast(context, "$e");
+              }
             },
             child: Text("停止", style: style)));
     final prev10 = SizedBox(
@@ -206,12 +225,16 @@ class DlnaDialogState extends State {
         height: 30,
         child: ElevatedButton(
             onPressed: () async {
-              final curr = await dev.position();
-              final p = positionParser(curr);
-              setState(() {
-                position = p;
-              });
-              dev.seekByCurrent(curr, -10);
+              try {
+                final curr = await dev.position();
+                final p = positionParser(curr);
+                setState(() {
+                  position = p;
+                });
+                dev.seekByCurrent(curr, -10);
+              } catch (e) {
+                Toast.toast(context, "$e");
+              }
             },
             child: Text("快退10秒", style: style)));
     final next10 = SizedBox(
@@ -219,12 +242,16 @@ class DlnaDialogState extends State {
         height: 30,
         child: ElevatedButton(
             onPressed: () async {
-              final curr = await dev.position();
-              final p = positionParser(curr);
-              setState(() {
-                position = p;
-              });
-              dev.seekByCurrent(curr, 10);
+              try {
+                final curr = await dev.position();
+                final p = positionParser(curr);
+                setState(() {
+                  position = p;
+                });
+                dev.seekByCurrent(curr, 10);
+              } catch (e) {
+                Toast.toast(context, "$e");
+              }
             },
             child: Text("快进10秒", style: style)));
 
@@ -233,13 +260,16 @@ class DlnaDialogState extends State {
         height: 30,
         child: ElevatedButton(
             onPressed: () async {
-              final curr = await dev.position();
-              final p = positionParser(curr);
-              setState(() {
-                position = p;
-              });
-              final ret = await dev.seekByCurrent(curr, -30);
-              print(ret);
+              try {
+                final curr = await dev.position();
+                final p = positionParser(curr);
+                setState(() {
+                  position = p;
+                });
+                await dev.seekByCurrent(curr, -30);
+              } catch (e) {
+                Toast.toast(context, "$e");
+              }
             },
             child: Text("快退30秒", style: style)));
     final next30 = SizedBox(
@@ -247,13 +277,16 @@ class DlnaDialogState extends State {
         height: 30,
         child: ElevatedButton(
             onPressed: () async {
-              final curr = await dev.position();
-              final p = positionParser(curr);
-              setState(() {
-                position = p;
-              });
-              final ret = await dev.seekByCurrent(curr, 30);
-              print(ret);
+              try {
+                final curr = await dev.position();
+                final p = positionParser(curr);
+                setState(() {
+                  position = p;
+                });
+                await dev.seekByCurrent(curr, 30);
+              } catch (e) {
+                Toast.toast(context, "$e");
+              }
             },
             child: Text("快进30秒", style: style)));
 

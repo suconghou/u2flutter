@@ -7,21 +7,24 @@ import '../utils/toast.dart';
 
 Map<String, device> cacheDeviceList = Map();
 
-class DlnaDiviceList extends StatefulWidget {
-  DlnaDiviceList();
+class DlnaDeviceList extends StatefulWidget {
+  final String? videoId;
+  DlnaDeviceList({this.videoId});
 
   @override
   State<StatefulWidget> createState() {
-    return DlnaDiviceListState();
+    return DlnaDeviceListState(videoId: videoId);
   }
 }
 
-class DlnaDiviceListState extends State {
+class DlnaDeviceListState extends State {
   bool started = false;
   late search searcher;
   late final manager m;
   Timer timer = Timer(Duration(seconds: 1), () {});
   Map<String, device> deviceList = Map();
+  final String? videoId;
+  DlnaDeviceListState({this.videoId});
 
   @override
   initState() {
@@ -166,7 +169,12 @@ class DlnaDiviceListState extends State {
               context: context,
               builder: (context) {
                 return SimpleDialog(
-                  children: [DlnaDialog(device)],
+                  children: [
+                    DlnaDialog(
+                      device,
+                      videoId: videoId,
+                    )
+                  ],
                 );
               });
         },

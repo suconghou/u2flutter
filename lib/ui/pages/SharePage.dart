@@ -9,7 +9,7 @@ class SharePage extends StatelessWidget {
         title: Text("投屏助手"),
       ),
       body: Container(
-        child: DlnaDiviceList(),
+        child: DlnaDeviceList(),
         margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
       ),
     );
