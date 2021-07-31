@@ -15,9 +15,10 @@ class DlnaStreamItems extends StatelessWidget {
       return "$base?prefer=18,59,22,37";
     } else if (type == 2) {
       return "$base?prefer=37,22,59,18";
-    } else {
+    } else if (type == 3) {
       return "$base?prefer=251,250,140,599";
     }
+    return "$base?prefer=247,244,243,136,135";
   }
 
   @override
@@ -86,7 +87,7 @@ class DlnaStreamItems extends StatelessWidget {
           ),
           onTap: () async {
             try {
-              await dev.setUrl(getUrl(3));
+              await dev.setUrl(getUrl(4));
             } catch (e) {
               Toast.toast(context, "$e");
             }
