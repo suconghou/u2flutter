@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:dlna_dart/dlna.dart';
+import './DlnaDialog.dart';
+import '../utils/toast.dart';
 
 class DlnaDiviceList extends StatefulWidget {
   DlnaDiviceList();
@@ -16,17 +18,21 @@ class DlnaDiviceListState extends State {
   bool started = false;
   late search searcher;
   late final manager m;
-  final timer = Timer(Duration(seconds: 1), () {});
+  Timer timer = Timer(Duration(seconds: 1), () {});
   Map<String, device> deviceList = Map();
-  DlnaDiviceListState() {
+
+  @override
+  initState() {
+    super.initState();
     searcher = search();
     init();
   }
+
   init() async {
     m = await searcher.start();
     started = true;
     timer.cancel();
-    Timer.periodic(Duration(seconds: 5), (timer) {
+    timer = Timer.periodic(Duration(seconds: 5), (timer) {
       setState(() {
         deviceList = m.deviceList;
       });
@@ -74,7 +80,8 @@ class DlnaDiviceListState extends State {
     final title = device.info.friendlyName;
     final subtitle = uri + '\r\n' + device.info.deviceType;
     var icon = Icons.wifi;
-    if (subtitle.toLowerCase().contains("gateway")) {
+    final router = subtitle.toLowerCase().contains("gateway");
+    if (router) {
       icon = Icons.router;
     }
     final card = Card(
@@ -140,8 +147,18 @@ class DlnaDiviceListState extends State {
       child: InkWell(
         child: card,
         onTap: () {
-          print(uri);
-          print(device.info.friendlyName);
+          if (router) {
+            final msg = "路由设备不支持投屏";
+            Toast.toast(context, msg);
+            return;
+          }
+          showDialog(
+              context: context,
+              builder: (context) {
+                return SimpleDialog(
+                  children: [DlnaDialog(device)],
+                );
+              });
         },
       ),
     );

@@ -46,7 +46,7 @@ class HomeDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.file_download,
+                  Icons.cast,
                   color: Colors.blue,
                 ),
                 trailing: Icon(Icons.chevron_right,
