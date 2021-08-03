@@ -67,7 +67,6 @@ class CacheService {
   process(HttpRequest req) async {
     try {
       req.response.deadline = Duration(minutes: 5);
-      req.response.headers.add("Accept-Ranges", "bytes");
       final rr = req.headers.value("range");
       if (reqTs.hasMatch(req.uri.path)) {
         handle(req, req.uri.path);
@@ -156,6 +155,7 @@ class CacheService {
   }
 
   Future<String> getMpdXml(Map<String, dynamic> info) async {
+    final videoId = info['id'];
     final duration = getDuration(info);
     final streams = info['streams'] as Map<String, dynamic>;
     final text = [
@@ -174,12 +174,11 @@ class CacheService {
       final type = (value["type"] as String).split(";");
       final mime = type[0];
       final codecs = type[1];
-      final baseurl = "http://127.0.0.1:${server.port}/${info['id']}/$itag/";
-      final indexUri =
-          "/${info['id']}/$itag/${index['start']}-${index['end']}.ts";
+      final baseurl = "http://127.0.0.1:${server.port}/$videoId/$itag/";
+      final indexUri = "/$videoId/$itag/${index['start']}-${index['end']}.ts";
       final bandwidth =
           8 * int.parse(value["len"]) ~/ int.parse(info["duration"]);
-      final seg = await getSegment(indexUri, value);
+      final seg = await getSegment(indexUri, videoId, value);
       final segmentList = seg.buildXml();
       final item =
           "<Representation id=\"$itag\" bandwidth=\"$bandwidth\" $codecs mimeType=\"$mime\"><BaseURL>$baseurl</BaseURL>$segmentList</Representation>";
@@ -325,8 +324,8 @@ class CacheService {
   }
 
   Future<Segment> getSegment(
-      String indexRange, Map<String, dynamic> itagItem) async {
-    final key = itagItem['itag'];
+      String indexRange, String videoId, Map<String, dynamic> itagItem) async {
+    final key = videoId + ':' + itagItem['itag'];
     final v = cache.get(key);
     if (v is Segment) {
       return v;
@@ -336,11 +335,4 @@ class CacheService {
     cache.set(key, ss);
     return ss;
   }
-}
-
-main(List<String> args) async {
-  List<String> mirrors = ["http://share.suconghou.cn/video"];
-  final s = CacheService(mirrors);
-  print(await s.start());
-  await s.listen();
 }
