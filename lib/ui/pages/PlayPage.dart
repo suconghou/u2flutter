@@ -6,12 +6,16 @@ import '../widgets/VideoListBuilder.dart';
 import '../widgets/VideoStreamPlayer.dart';
 import '../widgets/DlnaDeviceList.dart';
 import '../../utils/videoInfo.dart';
+import '../../stream/http.dart';
 
 enum VideoAction {
   fav,
   dlna,
   favchannel,
 }
+
+late final CacheService cacheproxy;
+int serverport = 0;
 
 // ignore: must_be_immutable
 class PlayPage extends StatelessWidget {
@@ -30,8 +34,7 @@ class PlayPage extends StatelessWidget {
     final String dur = duration(item);
     final String cid = getChannelId(item);
     final String ctitle = getChannelTitle(item);
-    final url = streambase + '$videoId.mpd';
-    final player = VideoStreamPlayer(url, title);
+    final player = videoplayer(videoId, title);
 
     final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
         ? InkWell(
@@ -162,6 +165,41 @@ class PlayPage extends StatelessWidget {
       _refresh = api.relatedVideo(relatedToVideoId: videoId);
     }
   }
+
+  videoplayer(String videoId, String title) {
+    if (serverport == 0) {
+      final arr = streambase.split(";");
+      arr.remove("");
+      cacheproxy = CacheService(arr);
+    }
+    String url = "http://127.0.0.1:";
+    return FutureBuilder(
+      future: () async {
+        if (serverport == 0) {
+          serverport = await cacheproxy.start();
+          cacheproxy.listen();
+        }
+        return url + "$serverport/$videoId.mpd";
+      }(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (!snapshot.hasError) {
+            print(snapshot.data);
+            return VideoStreamPlayer(snapshot.data, title);
+          }
+          return Center(
+            child: TextButton(
+              child: Text("加载失败"),
+              onPressed: () => {},
+            ),
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
 }
 
 class RightMenu extends StatefulWidget {
@@ -236,19 +274,17 @@ class _RightMenuState extends State<RightMenu> {
                   ),
                 ],
               );
-            } else {
-              return Center(
-                child: TextButton(
-                  child: Text("加载失败"),
-                  onPressed: () => {},
-                ),
-              );
             }
-          } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: TextButton(
+                child: Text("加载失败"),
+                onPressed: () => {},
+              ),
             );
           }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         });
   }
 

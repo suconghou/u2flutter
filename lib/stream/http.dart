@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter_app/stream/segment.dart';
+import 'segment.dart';
+import 'filestore.dart';
 
 import '../utils/cache.dart';
-
-final fileNameReg = RegExp(r"(\d+)-(\d+).ts");
 
 const videoitags = [
   "247",
@@ -33,35 +32,6 @@ String trimLeading(String pattern, String from) {
   return from.substring(i);
 }
 
-class FileCache {
-  String uri;
-  late File file;
-  FileCache(this.uri) {
-    file = File("cache" + uri);
-  }
-  Future<bool> get ok async {
-    if (await file.exists()) {
-      final l = await file.length();
-      final matches = fileNameReg.firstMatch(uri);
-      final start = int.parse(matches?.group(1) ?? "");
-      final end = int.parse(matches?.group(2) ?? "");
-      if (end - start + 1 == l) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  Stream<List<int>> openRead() {
-    return file.openRead();
-  }
-
-  writeAsBytes(List<int> bytes) async {
-    await file.parent.create(recursive: true);
-    return file.writeAsBytes(bytes, flush: true);
-  }
-}
-
 class CacheService {
   late HttpServer server;
   final HttpClient client = HttpClient();
@@ -84,36 +54,39 @@ class CacheService {
 
   Future<int> start() async {
     server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+    await FileCacheManager.init();
     return server.port;
   }
 
   listen() async {
     await for (HttpRequest req in server) {
-      try {
-        print(req.uri.path);
-        print(req.headers);
-        req.response.deadline = Duration(minutes: 5);
-        final rr = req.headers.value("range");
-        if (reqTs.hasMatch(req.uri.path)) {
-          handle(req, req.uri.path);
-        } else if (reqPath.hasMatch(req.uri.path) &&
-            rr != null &&
-            reqRange.hasMatch(rr)) {
-          req.response.headers.add("Accept-Ranges", "bytes");
-          handlePart(req, rr);
-        } else if (reqJson.hasMatch(req.uri.path)) {
-          handleJson(req);
-        } else {
-          req.response.statusCode = HttpStatus.notFound;
-          req.response.write("404 not found");
-          req.response.close();
-        }
-      } catch (e) {
-        req.response.statusCode = HttpStatus.internalServerError;
-        req.response.write("$e");
+      process(req);
+    }
+  }
+
+  process(HttpRequest req) async {
+    try {
+      req.response.deadline = Duration(minutes: 5);
+      req.response.headers.add("Accept-Ranges", "bytes");
+      final rr = req.headers.value("range");
+      if (reqTs.hasMatch(req.uri.path)) {
+        handle(req, req.uri.path);
+      } else if (reqPath.hasMatch(req.uri.path) &&
+          rr != null &&
+          reqRange.hasMatch(rr)) {
+        await handlePart(req, rr);
+      } else if (reqJson.hasMatch(req.uri.path)) {
+        await handleJson(req);
+      } else {
+        req.response.statusCode = HttpStatus.notFound;
+        req.response.write("404 not found");
         req.response.close();
-        print("${req.uri.path} : $e");
       }
+    } catch (e) {
+      req.response.statusCode = HttpStatus.internalServerError;
+      req.response.write("$e");
+      req.response.close();
+      print("${req.uri.path} : $e");
     }
   }
 
@@ -172,6 +145,7 @@ class CacheService {
   outputMpd(HttpRequest req, Map<String, dynamic> info) async {
     try {
       final text = await getMpdXml(info);
+      req.response.headers.add("Content-Type", "application/dash+xml");
       req.response.write(text);
       await req.response.close();
     } catch (e) {
@@ -258,7 +232,7 @@ class CacheService {
 
   // 首先尝试文件缓存,否则计算镜像请求http
   Future<List<int>> fetch(String uri) async {
-    final file = FileCache(uri);
+    final file = FileCacheManager.cache(uri);
     if (await file.ok) {
       final res = await file.openRead().toList();
       return res.reduce((a, b) => a + b);
