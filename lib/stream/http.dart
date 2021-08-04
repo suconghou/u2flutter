@@ -92,7 +92,7 @@ class CacheService {
   handle(HttpRequest req, String reqPath) async {
     final s = await fetch(reqPath);
     req.response.headers.contentType = ContentType.binary;
-    req.response.add(s);
+    await req.response.addStream(s);
     await req.response.close();
   }
 
@@ -230,11 +230,11 @@ class CacheService {
   }
 
   // 首先尝试文件缓存,否则计算镜像请求http
-  Future<List<int>> fetch(String uri) async {
+  Future<Stream<List<int>>> fetch(String uri) async {
     final file = FileCacheManager.cache(uri);
     if (await file.ok) {
-      final res = await file.openRead().toList();
-      return res.reduce((a, b) => a + b);
+      final res = file.openRead();
+      return res;
     }
     var mirrorList = [...mirrors];
     var i = 0;
@@ -243,9 +243,9 @@ class CacheService {
       try {
         final curr = buildUrl(uri, mirror);
         final res = await get(curr);
-        final s = await res.reduce((a, b) => a + b);
+        final s = await res.toList();
         file.writeAsBytes(s);
-        return s;
+        return Stream.fromIterable(s);
       } catch (e) {
         print("error get $mirror $uri $i $e");
         if (i >= retry) {
@@ -330,7 +330,8 @@ class CacheService {
     if (v is Segment) {
       return v;
     }
-    final buffer = await fetch(indexRange);
+    final res = await fetch(indexRange);
+    final buffer = await res.reduce((a, b) => a + b);
     final ss = Segment(buffer, itagItem);
     cache.set(key, ss);
     return ss;

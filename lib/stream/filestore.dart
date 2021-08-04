@@ -28,9 +28,11 @@ class FileCache {
     return file.openRead();
   }
 
-  writeAsBytes(List<int> bytes) async {
+  writeAsBytes(List<List<int>> bytes) async {
     await file.parent.create(recursive: true);
-    return file.writeAsBytes(bytes, flush: true);
+    for (final item in bytes) {
+      await file.writeAsBytes(item);
+    }
   }
 }
 
