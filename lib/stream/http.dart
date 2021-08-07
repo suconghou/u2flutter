@@ -244,7 +244,7 @@ class CacheService {
         final curr = buildUrl(uri, mirror);
         final res = await get(curr);
         final s = await res.toList();
-        file.writeAsBytes(s);
+        await file.writeAsBytes(s);
         return Stream.fromIterable(s);
       } catch (e) {
         print("error get $mirror $uri $i $e");

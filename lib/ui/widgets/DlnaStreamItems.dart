@@ -10,7 +10,7 @@ class DlnaStreamItems extends StatelessWidget {
   DlnaStreamItems(this.dev, this.videoId);
 
   String getUrl(int type) {
-    final base = streambase + '$videoId.webm';
+    final base = streambase.split(";").first + '$videoId.webm';
     if (type == 1) {
       return "$base?prefer=18,59,22,37";
     } else if (type == 2) {
