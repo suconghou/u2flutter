@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'VideoGridWidget.dart';
 
-class VideoListBuilder {
-  Future<dynamic> _refresh;
+class VideoListBuilder extends StatefulWidget {
+  final Function refresh;
+  VideoListBuilder(this.refresh);
+
+  @override
+  State<StatefulWidget> createState() {
+    return VideoListBuilderState(refresh);
+  }
+}
+
+class VideoListBuilderState extends State {
   Function refresh;
+  Future<dynamic> _refresh;
 
-  VideoListBuilder(this._refresh, this.refresh);
+  VideoListBuilderState(this.refresh) : _refresh = refresh();
 
-  Widget build() {
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder(
         future: _refresh,
         builder: (context, AsyncSnapshot snapshot) {
@@ -15,11 +26,14 @@ class VideoListBuilder {
             if (!snapshot.hasError) {
               return _body(snapshot.data);
             } else {
-              print(snapshot);
               return Center(
                 child: TextButton(
                   child: Text("加载失败，点击重试"),
-                  onPressed: () => refresh(),
+                  onPressed: () {
+                    setState(() {
+                      _refresh = refresh();
+                    });
+                  },
                 ),
               );
             }

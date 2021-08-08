@@ -40,7 +40,7 @@ class _DataApi {
     return _base;
   }
 
-  mostPopularVideos(
+  Future<dynamic> mostPopularVideos(
       {String regionCode = 'HK',
       int videoCategoryId = 1,
       int maxResults = 30}) async {
@@ -53,14 +53,14 @@ class _DataApi {
     return await get('videos', params);
   }
 
-  videoInfo(String id) async {
+  Future<dynamic> videoInfo(String id) async {
     final params = {
       'id': id,
     };
     return await get('videos', params);
   }
 
-  search(
+  Future<dynamic> search(
       {String q = "",
       String pageToken = "",
       String channelId = "",
@@ -83,7 +83,7 @@ class _DataApi {
     return await get('search', params);
   }
 
-  relatedVideo(
+  Future<dynamic> relatedVideo(
       {String relatedToVideoId = "",
       String pageToken = "",
       String type = 'video',
@@ -97,21 +97,21 @@ class _DataApi {
     return await get('search', params);
   }
 
-  channels(String id) async {
+  Future<dynamic> channels(String id) async {
     final params = {
       'id': id,
     };
     return await get('channels', params);
   }
 
-  playlists(String id) async {
+  Future<dynamic> playlists(String id) async {
     final params = {
       'id': id,
     };
     return await get('playlists', params);
   }
 
-  playlistsInChannel(
+  Future<dynamic> playlistsInChannel(
       {String channelId = "",
       String pageToken = "",
       int maxResults = 20}) async {
@@ -123,7 +123,7 @@ class _DataApi {
     return await get('playlists', params);
   }
 
-  playlistItems(
+  Future<dynamic> playlistItems(
       {String playlistId = "",
       String pageToken = "",
       int maxResults = 30}) async {
@@ -150,7 +150,7 @@ class _DataApi {
         queryParameters: params);
   }
 
-  get(String uri, Map<String, Object> params) async {
+  Future<dynamic> get(String uri, Map<String, Object> params) async {
     final target = await buildUrl(uri, params);
     final key = target.toString();
     final v = cache.get(key);

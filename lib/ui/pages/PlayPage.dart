@@ -19,7 +19,6 @@ int serverport = 0;
 
 // ignore: must_be_immutable
 class PlayPage extends StatelessWidget {
-  late Future<dynamic> _refresh;
   String videoId = "";
 
   @override
@@ -52,8 +51,12 @@ class PlayPage extends StatelessWidget {
         : SizedBox(
             height: 2,
           );
-    refresh(item["channel"] is bool);
+
     final full = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    Future<dynamic> fn() async {
+      return refresh(item["channel"] is bool);
+    }
 
     final page = Scaffold(
       appBar: AppBar(
@@ -140,7 +143,7 @@ class PlayPage extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                VideoListBuilder(_refresh, refresh).build(),
+                VideoListBuilder(fn),
                 SizedBox(
                   height: 60,
                 ),
@@ -158,12 +161,11 @@ class PlayPage extends StatelessWidget {
         : page;
   }
 
-  refresh(bool channel) {
+  Future<dynamic> refresh(bool channel) {
     if (channel) {
-      _refresh = api.playlistsInChannel(channelId: videoId);
-    } else {
-      _refresh = api.relatedVideo(relatedToVideoId: videoId);
+      return api.playlistsInChannel(channelId: videoId);
     }
+    return api.relatedVideo(relatedToVideoId: videoId);
   }
 
   videoplayer(String videoId, String title) {
