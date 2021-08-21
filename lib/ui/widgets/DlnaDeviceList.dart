@@ -18,7 +18,6 @@ class DlnaDeviceList extends StatefulWidget {
 }
 
 class DlnaDeviceListState extends State {
-  bool started = false;
   late search searcher;
   late final manager m;
   Timer timer = Timer(Duration(seconds: 1), () {});
@@ -35,7 +34,6 @@ class DlnaDeviceListState extends State {
 
   init() async {
     m = await searcher.start();
-    started = true;
     timer.cancel();
     final callback = (timer) {
       m.deviceList.forEach((key, value) {
