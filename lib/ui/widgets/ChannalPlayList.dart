@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../utils/videoInfo.dart';
+import 'ImgLoader.dart';
 
 class ChannelPlayList extends StatelessWidget {
   final List list;
@@ -18,6 +19,7 @@ class ChannelPlayList extends StatelessWidget {
 
   Widget buildItem(BuildContext context, item) {
     String cover = videoCover(item);
+    String cover2 = videoCover2(item);
     String title = getVideoTitle(item);
     String count = viewCount(item);
     String pubTime = pubAt(item);
@@ -87,31 +89,7 @@ class ChannelPlayList extends StatelessWidget {
             flex: 2,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-              child: FadeInImage.assetNetwork(
-                image: cover,
-                width: 1080,
-                placeholder: "images/loading.gif",
-                placeholderScale: 3,
-                fit: BoxFit.cover,
-                placeholderErrorBuilder: (c, obj, err) {
-                  print(obj);
-                  print(err);
-                  return Image.asset(
-                    "images/error.jpg",
-                    fit: BoxFit.cover,
-                    width: 1080,
-                  );
-                },
-                imageErrorBuilder: (c, obj, err) {
-                  print(obj);
-                  print(err);
-                  return Image.asset(
-                    "images/error.jpg",
-                    fit: BoxFit.cover,
-                    width: 1080,
-                  );
-                },
-              ),
+              child: imgShow(cover, cover2),
             ),
           ),
           Expanded(

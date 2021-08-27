@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../utils/videoInfo.dart';
+import 'ImgLoader.dart';
 
 Widget buildVideoItem(
   BuildContext context,
@@ -54,41 +55,6 @@ Widget buildVideoItem(
           height: 26,
           child: titleWidget,
         );
-  const placeholder = "images/loading.gif";
-
-  final imgCover = FadeInImage.assetNetwork(
-    image: cover,
-    width: 1080,
-    placeholder: placeholder,
-    placeholderScale: 3,
-    fit: BoxFit.cover,
-    placeholderErrorBuilder: (c, obj, err) {
-      print(obj);
-      print(err);
-      return Image.asset(
-        "images/error.jpg",
-        fit: BoxFit.cover,
-        width: 1080,
-      );
-    },
-    imageErrorBuilder: (c, obj, err) {
-      print(obj);
-      print(err);
-      return FadeInImage.assetNetwork(
-          placeholder: placeholder,
-          image: cover2,
-          width: 1080,
-          placeholderScale: 3,
-          fit: BoxFit.cover,
-          imageErrorBuilder: (c, obj, err) {
-            return Image.asset(
-              "images/error.jpg",
-              fit: BoxFit.cover,
-              width: 1080,
-            );
-          });
-    },
-  );
 
   return Container(
     color: Colors.white,
@@ -97,7 +63,7 @@ Widget buildVideoItem(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Stack(children: [
-          Center(child: imgCover),
+          Center(child: imgShow(cover, cover2)),
           dur.isEmpty
               ? Container()
               : Positioned(

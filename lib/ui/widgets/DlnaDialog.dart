@@ -73,6 +73,7 @@ class DlnaDialogState extends State {
     return SizedBox(
       child: dialog,
       height: 430,
+      width: MediaQuery.of(context).size.width-100,
     );
   }
 
