@@ -96,7 +96,14 @@ String viewCount(dynamic item) {
   var n = 0;
   final v = item["statistics"];
   if (v is Map) {
-    n = int.parse(v["viewCount"]);
+    if (v["viewCount"] == null) {
+      return "";
+    }
+    final t = int.tryParse(v["viewCount"]);
+    if (t == null) {
+      return "";
+    }
+    n = t;
   }
   if (n < 1) {
     return "";
@@ -142,16 +149,25 @@ String duration(dynamic item) {
     if (t == "P0D") {
       return "直播";
     }
-    var r = RegExp(r"([1-9]+)M$");
-    final f = r.firstMatch(t);
-    if (f != null) {
-      final f1 = f.group(1)!;
-      if (f1.length == 1) {
-        return "0$f1:00";
-      }
-      return "$f1:00";
+    final g1 = RegExp(r"PT(\d+)S$").firstMatch(t);
+    if (g1 != null) {
+      final g = g1.group(1)!;
+      return g.length == 1 ? "00:0$g" : "00:$g";
     }
-    r = RegExp(r"\d+");
+    final g2 = RegExp(r"PT(\d+)M$").firstMatch(t);
+    if (g2 != null) {
+      final g = g2.group(1)!;
+      return g.length == 1 ? "0$g:00" : "$g:00";
+    }
+    final g3 = RegExp(r"PT(\d+)H(\d+)M$").firstMatch(t);
+    if (g3 != null) {
+      final h = g3.group(1)!;
+      final m = g3.group(2)!;
+      final hh = h.length == 1 ? "0$h" : h;
+      final mm = m.length == 1 ? "0$m" : m;
+      return "$hh:$mm:00";
+    }
+    final r = RegExp(r"\d+");
     final arr = [];
     for (final item in r.allMatches(t)) {
       final x = item.group(0)!;

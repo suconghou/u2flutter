@@ -51,10 +51,10 @@ class _HomeTabViewState extends State {
   }
 
   Widget _body(dynamic data) {
+    final child = data["items"] is List ? VideoGridWidget(data["items"]) : Text("数据错误");
     return RefreshIndicator(
       onRefresh: () async => refresh(),
-      child:
-          data["items"] is List ? VideoGridWidget(data["items"]) : Text("数据错误"),
+      child: child,
     );
   }
 }
