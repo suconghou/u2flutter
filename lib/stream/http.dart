@@ -36,7 +36,7 @@ class CacheService {
   late HttpServer server;
   final HttpClient client = HttpClient();
   final List<String> mirrors;
-  final int retry = 3;
+  static const int retry = 3;
   final RegExp reqPath = RegExp(r"^/[\w\-]{5,16}/\d+$");
   final RegExp reqRange = RegExp(r"^bytes=(\d+)-(\d+)?$");
   final RegExp reqTs = RegExp(r"^/[\w\-]{5,16}/\d+/\d+-\d+.ts$");
