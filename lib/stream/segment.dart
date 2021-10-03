@@ -18,9 +18,9 @@ class Segment {
 
   String buildXml() {
     final init = itagItem['initRange'] as Map<String, dynamic>;
-
+    final audio = type.contains("audio");
     final List<String> text = [
-      "<SegmentList>",
+      "<SegmentList duration=\"${audio?10:5}\">",
       '''<Initialization sourceURL="${init['start']}-${init['end']}.ts"/>'''
     ];
     for (final item in infoList) {

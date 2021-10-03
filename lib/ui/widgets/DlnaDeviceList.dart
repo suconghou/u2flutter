@@ -90,9 +90,10 @@ class DlnaDeviceListState extends State {
   Widget buildItem(String uri, device device) {
     final title = device.info.friendlyName;
     final subtitle = uri + '\r\n' + device.info.deviceType;
+    final s = subtitle.toLowerCase();
     var icon = Icons.wifi;
-    final router = subtitle.toLowerCase().contains("gateway");
-    if (router) {
+    final support = s.contains("mediarenderer") || s.contains("avtransport");
+    if (!support) {
       icon = Icons.router;
     }
     final card = Card(
@@ -158,8 +159,8 @@ class DlnaDeviceListState extends State {
       child: InkWell(
         child: card,
         onTap: () {
-          if (router) {
-            final msg = "路由设备不支持投屏";
+          if (!support) {
+            final msg = "该设备不支持投屏";
             Toast.toast(context, msg);
             return;
           }
