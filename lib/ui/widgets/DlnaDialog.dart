@@ -73,7 +73,7 @@ class DlnaDialogState extends State {
     return SizedBox(
       child: dialog,
       height: 430,
-      width: MediaQuery.of(context).size.width-100,
+      width: MediaQuery.of(context).size.width - 100,
     );
   }
 
@@ -92,13 +92,17 @@ class DlnaDialogState extends State {
         style: TextStyle(color: Colors.green),
       ),
     ));
+    var currUrl = position!.TrackURI;
+    if (currUrl.length > 100) {
+      currUrl = currUrl.substring(0, 100) + '...';
+    }
     slist.add(Container(
         margin: EdgeInsets.symmetric(vertical: 10),
         child: Align(
             alignment: Alignment.topLeft,
             child: InkWell(
               child: Text(
-                position!.TrackURI,
+                currUrl,
                 style: TextStyle(fontSize: 12, color: Colors.orange),
                 textAlign: TextAlign.left,
               ),
