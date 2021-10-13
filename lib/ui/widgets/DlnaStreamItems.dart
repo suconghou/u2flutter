@@ -37,6 +37,7 @@ class DlnaStreamItems extends StatelessWidget {
           onTap: () async {
             try {
               await dev.setUrl(getUrl(1));
+              await dev.play();
             } catch (e) {
               Toast.toast(context, "$e");
             }
@@ -54,6 +55,7 @@ class DlnaStreamItems extends StatelessWidget {
           onTap: () async {
             try {
               await dev.setUrl(getUrl(2));
+              await dev.play();
             } catch (e) {
               Toast.toast(context, "$e");
             }
@@ -71,6 +73,7 @@ class DlnaStreamItems extends StatelessWidget {
           onTap: () async {
             try {
               await dev.setUrl(getUrl(3));
+              await dev.play();
             } catch (e) {
               Toast.toast(context, "$e");
             }
@@ -88,6 +91,7 @@ class DlnaStreamItems extends StatelessWidget {
           onTap: () async {
             try {
               await dev.setUrl(getUrl(4));
+              await dev.play();
             } catch (e) {
               Toast.toast(context, "$e");
             }

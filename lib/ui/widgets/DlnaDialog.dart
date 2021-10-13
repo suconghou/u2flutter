@@ -143,6 +143,7 @@ class DlnaDialogState extends State {
         }
         try {
           await dev.setUrl(v);
+          await dev.play();
         } catch (e) {
           Toast.toast(context, "$e");
         }
