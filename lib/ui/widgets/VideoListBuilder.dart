@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/utils/toast.dart';
 import 'VideoGridWidget.dart';
 
 class VideoListBuilder extends StatefulWidget {
@@ -26,6 +27,7 @@ class VideoListBuilderState extends State {
             if (!snapshot.hasError) {
               return _body(snapshot.data);
             } else {
+              Toast.toast(context, snapshot.error.toString());
               return Center(
                 child: TextButton(
                   child: Text("加载失败，点击重试"),
@@ -48,9 +50,14 @@ class VideoListBuilderState extends State {
   Widget _body(dynamic data) {
     final list = data["items"];
     if (list is List) {
-      return VideoGridWidget(
-        list,
-        grid: false,
+      final children = list
+          .map((item) => buildSignleVideoItem(
+                context,
+                item,
+              ))
+          .toList();
+      return Column(
+        children: children,
       );
     }
     return Center(child: Text(data.toString()));

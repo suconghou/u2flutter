@@ -85,6 +85,7 @@ class PlayPage extends StatelessWidget {
             height: 5,
           ),
           Container(
+            color: Colors.grey[100],
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Column(
               children: [
@@ -120,24 +121,31 @@ class PlayPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            color: Colors.grey[100],
+            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
             child: Column(
               children: [
-                Align(
-                  child: Text(
-                    desc,
-                    style: TextStyle(color: Colors.grey),
+                Container(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Align(
+                    child: Text(
+                      desc,
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    alignment: Alignment.topLeft,
                   ),
-                  alignment: Alignment.topLeft,
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "相关视频",
-                    style: TextStyle(fontSize: 18),
+                Container(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "相关视频",
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -192,7 +200,8 @@ class PlayPage extends StatelessWidget {
           return Center(
             child: TextButton(
               child: Text("加载失败"),
-              onPressed: () => {},
+              onPressed: () =>
+                  {Toast.toast(context, snapshot.error.toString())},
             ),
           );
         }

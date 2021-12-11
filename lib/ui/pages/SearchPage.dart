@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/utils/toast.dart';
 import '../../utils/dataHelper.dart';
 import 'LoadingPageState.dart';
 import '../widgets/VideoGridWidget.dart';
@@ -51,7 +52,11 @@ class SearchPageDelegate extends SearchDelegate<Map> {
       return Container();
     }
     addQueryHistory(q);
-    return ResultPage(q);
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      color: Colors.grey[200],
+      child: ResultPage(q),
+    );
   }
 
   @override
@@ -107,7 +112,8 @@ class SuggestionPage extends StatelessWidget {
               return Center(
                 child: TextButton(
                   child: Text("加载失败"),
-                  onPressed: () => {},
+                  onPressed: () =>
+                      {Toast.toast(context, snapshot.error.toString())},
                 ),
               );
             }

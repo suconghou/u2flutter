@@ -30,8 +30,8 @@ dependencies:
     path: /Users/admin/data/git/flutter/dlna_dart
   mediaindex_dart:
     path: /Users/admin/data/git/flutter/mediaindex_dart
-  shared_preferences: '>=2.0.6'
-  path_provider: '>=2.0.2'
+  shared_preferences: '>=2.0.11'
+  path_provider: '>=2.0.8'
   
   
 

@@ -134,7 +134,6 @@ class _ChannelTabViewState extends State {
         children: [
           VideoGridWidget(
             listData,
-            grid: grid,
             controller: ScrollController(),
           ),
           bottom,
