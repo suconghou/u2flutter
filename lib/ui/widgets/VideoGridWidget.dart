@@ -130,6 +130,8 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
   String pubTime = pubAt(item);
   String cid = getChannelId(item);
   String ctitle = getChannelTitle(item);
+  String count = viewCount(item);
+
   if (title.isEmpty || cover.isEmpty) {
     return Container();
   }
@@ -162,7 +164,8 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
             ),
           )),
       Container(
-        alignment: Alignment.center,
+        alignment: Alignment.topLeft,
+        padding: EdgeInsets.only(right: 5),
         child: Row(
           children: <Widget>[
             Text(
@@ -174,6 +177,15 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
                 decoration: TextDecoration.none,
               ),
             ),
+            count.isEmpty ? Container() : Expanded(child: Container()),
+            count.isEmpty
+                ? Container()
+                : Text(count,
+                    style: TextStyle(
+                        fontSize: 12,
+                        height: 1,
+                        color: Colors.grey,
+                        decoration: TextDecoration.none))
           ],
         ),
       ),

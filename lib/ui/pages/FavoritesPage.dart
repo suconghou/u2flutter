@@ -18,7 +18,7 @@ class FavoritesPage extends StatelessWidget {
           ),
         ),
         body: Container(
-          margin: EdgeInsets.all(10),
+          color: Colors.grey[100],
           child: TabBarView(
             children: [
               FavVideoList(),

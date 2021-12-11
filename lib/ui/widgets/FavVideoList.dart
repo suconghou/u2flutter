@@ -19,6 +19,7 @@ class FavVideoList extends StatelessWidget {
                 );
               }
               return ListView(
+                padding: EdgeInsets.only(top: 10),
                 children: ids.map((e) => buildItem(e)).toList(),
               );
             } else {

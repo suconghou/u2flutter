@@ -19,6 +19,7 @@ class FavChannelList extends StatelessWidget {
                 );
               }
               return ListView(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                 children: ids.map((e) => buildItem(e)).toList(),
               );
             } else {
