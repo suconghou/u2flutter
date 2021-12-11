@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/utils/toast.dart';
 import '../../utils/dataHelper.dart';
 import '../../api/index.dart';
 import '../widgets/VideoGridWidget.dart';
@@ -24,7 +25,9 @@ class FavVideoList extends StatelessWidget {
               return Center(
                 child: TextButton(
                   child: Text("加载失败"),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    {Toast.toast(context, snapshot.error.toString())},
+                  },
                 ),
               );
             }
@@ -48,7 +51,9 @@ class FavVideoList extends StatelessWidget {
               return Center(
                 child: TextButton(
                   child: Text("加载失败"),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    {Toast.toast(context, snapshot.error.toString())},
+                  },
                 ),
               );
             }

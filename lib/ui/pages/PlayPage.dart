@@ -66,7 +66,7 @@ class PlayPage extends StatelessWidget {
       body: ListView(
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.fromLTRB(10, 15, 0, 10),
             child: Text(
               title,
               style: TextStyle(
@@ -81,12 +81,9 @@ class PlayPage extends StatelessWidget {
             aspectRatio: 1.7777,
             child: player,
           ),
-          SizedBox(
-            height: 5,
-          ),
           Container(
             color: Colors.grey[100],
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
             child: Column(
               children: [
                 Align(
@@ -153,7 +150,7 @@ class PlayPage extends StatelessWidget {
                 ),
                 VideoListBuilder(fn),
                 SizedBox(
-                  height: 60,
+                  height: 30,
                 ),
               ],
             ),
@@ -289,7 +286,8 @@ class _RightMenuState extends State<RightMenu> {
             return Center(
               child: TextButton(
                 child: Text("加载失败"),
-                onPressed: () => {},
+                onPressed: () =>
+                    {Toast.toast(context, snapshot.error.toString())},
               ),
             );
           }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/utils/toast.dart';
 import '../../api/index.dart';
 import 'ChannelTabPage.dart';
 
@@ -27,7 +28,8 @@ class ChannelPage extends StatelessWidget {
                 body: Center(
                   child: TextButton(
                     child: Text("加载失败"),
-                    onPressed: () => {},
+                    onPressed: () =>
+                        {Toast.toast(context, snapshot.error.toString())},
                   ),
                 ),
               );
