@@ -21,7 +21,6 @@ abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
     if (_status == LoadingStatus.NO_MORE || _status == LoadingStatus.LOADING) {
       return;
     }
-    print("load more page: $_page");
     setState(() {
       _status = LoadingStatus.LOADING;
     });
@@ -37,7 +36,6 @@ abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
         .asStream()
         .listen((data) {
           _page = data.pageToken;
-          print("load data: ${data.list.length}");
           if (data.list.isEmpty) {
             setState(() {
               _status = LoadingStatus.NO_MORE;

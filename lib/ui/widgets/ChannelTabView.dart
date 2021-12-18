@@ -91,7 +91,6 @@ class _ChannelTabViewState extends State {
       return;
     }
     loading = true;
-    print("load more $nextPageToken");
     if (listData.length == 0 || nextPageToken.isNotEmpty) {
       setState(() {
         nomore = false;

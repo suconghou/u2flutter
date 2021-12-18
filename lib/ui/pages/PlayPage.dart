@@ -191,7 +191,6 @@ class PlayPage extends StatelessWidget {
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (!snapshot.hasError) {
-            print(snapshot.data);
             return VideoStreamPlayer(snapshot.data, title);
           }
           return Center(

@@ -16,8 +16,6 @@ FadeInImage imgShow(String cover, String cover2) {
     placeholderScale: 3,
     fit: BoxFit.cover,
     placeholderErrorBuilder: (c, obj, err) {
-      print(obj);
-      print(err);
       return errimg;
     },
     imageErrorBuilder: (c, obj, err) {

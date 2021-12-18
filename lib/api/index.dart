@@ -138,7 +138,6 @@ class _DataApi {
   Future<Uri> buildUrl(String uri, Map<String, dynamic> params) async {
     if (!_init) {
       _base = await initBaseUrl();
-      print(_base);
       _init = true;
     }
     params.removeWhere((key, value) => value == null || value.isEmpty);

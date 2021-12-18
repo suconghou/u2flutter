@@ -99,7 +99,6 @@ class _VideosListState extends State<VideosList> {
       return;
     }
     setState(() {
-      print(res);
       videoList = res["items"] is List ? res["items"] : [];
       if (res["nextPageToken"] is String) {
         nextPageToken = res["nextPageToken"];
@@ -114,7 +113,6 @@ class _VideosListState extends State<VideosList> {
       return;
     }
     loading = true;
-    print("load more $nextPageToken");
     if (videoList.length == 0 || nextPageToken.isNotEmpty) {
       final res = await api.playlistItems(
           playlistId: playlistId, pageToken: nextPageToken);
