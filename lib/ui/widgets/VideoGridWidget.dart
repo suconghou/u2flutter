@@ -17,9 +17,9 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
   final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
       ? InkWell(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+            padding: EdgeInsets.only(top: 5, left: 5, right: 5),
             child: SizedBox(
-              height: 13,
+              height: 18,
               child: Text(
                 ctitle,
                 maxLines: 1,
@@ -78,13 +78,11 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
                   ),
                 ),
         ]),
-        Container(
-            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            child: titleBox),
+        Container(margin: EdgeInsets.fromLTRB(5, 5, 5, 0), child: titleBox),
         cc,
         Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+          margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
           child: Row(
             children: <Widget>[
               Text(
@@ -149,9 +147,13 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
   final right = Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-      Container(height: 56, child: titleBox),
       Container(
-          height: 16,
+          height: 54, padding: EdgeInsets.only(right: 4), child: titleBox),
+      Container(
+          padding: EdgeInsets.only(
+            top: 4,
+          ),
+          height: 22,
           child: InkWell(
             onTap: () {
               Navigator.pushNamed(context, '/channel', arguments: cid);
@@ -207,7 +209,7 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
         Expanded(
           flex: 2,
           child: Container(
-            padding: EdgeInsets.only(left: 2, top: 8),
+            padding: EdgeInsets.only(top: 6),
             child: right,
             height: 100,
           ),
