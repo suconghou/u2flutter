@@ -11,7 +11,12 @@ class HomeDrawer extends StatelessWidget {
             padding: EdgeInsets.all(0),
             margin: EdgeInsets.all(0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/player',
+                );
+              },
               child: Column(
                 children: [
                   Container(

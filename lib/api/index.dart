@@ -5,7 +5,8 @@ import '../utils/store.dart';
 
 final _default = 'https://r.suconghou.cn/video/api/v3/';
 
-final _defaulstream = 'http://share.suconghou.cn/video/';
+final _defaulstream =
+    'http://share.suconghou.cn/video/;https://stream.pull.workers.dev/video/';
 
 bool _init = false;
 
