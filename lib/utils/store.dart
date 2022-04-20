@@ -22,7 +22,7 @@ class Store {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final r = prefs.getStringList(key);
     if (r == null) {
-      return Set<String>();
+      return <String>{};
     }
     return r.toSet();
   }

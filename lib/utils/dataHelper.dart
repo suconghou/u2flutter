@@ -1,9 +1,11 @@
+// ignore_for_file: file_names
+
 import 'store.dart';
 
 const String _storeKey = "query_history";
 
 Future<bool> addQueryHistory(String q) async {
-  Set<String> qSet = Set<String>();
+  Set<String> qSet = <String>{};
   qSet.add(q);
   qSet.addAll(await getQueryHistory());
   return await Store.setSet(_storeKey, qSet);
@@ -24,7 +26,7 @@ Future<Set<String>> getQueryHistory() async {
   if (v is Set<String>) {
     return v;
   }
-  return Set<String>();
+  return <String>{};
 }
 
 const String _favVIdsKey = 'fav_vids';
@@ -35,7 +37,7 @@ Future<Set<String>> getFavVIds() async {
   if (v is Set<String>) {
     return v;
   }
-  return Set<String>();
+  return <String>{};
 }
 
 Future<Set<String>> getFavCIds() async {
@@ -43,7 +45,7 @@ Future<Set<String>> getFavCIds() async {
   if (v is Set<String>) {
     return v;
   }
-  return Set<String>();
+  return <String>{};
 }
 
 Future<bool> addFavVIds(String id) async {

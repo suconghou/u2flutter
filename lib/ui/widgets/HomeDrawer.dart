@@ -1,6 +1,10 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class HomeDrawer extends StatelessWidget {
+  const HomeDrawer({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -8,8 +12,8 @@ class HomeDrawer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DrawerHeader(
-            padding: EdgeInsets.all(0),
-            margin: EdgeInsets.all(0),
+            padding: const EdgeInsets.all(0),
+            margin: const EdgeInsets.all(0),
             child: InkWell(
               onTap: () {
                 Navigator.pushNamed(
@@ -30,7 +34,7 @@ class HomeDrawer extends StatelessWidget {
                     ),
                   ),
                   Container(height: 20),
-                  Text("U2FLUTTER"),
+                  const Text("U2FLUTTER"),
                 ],
               ),
             )),
@@ -38,49 +42,49 @@ class HomeDrawer extends StatelessWidget {
           child: ListView(
             children: [
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.favorite,
                   color: Colors.blue,
                 ),
                 trailing: Icon(Icons.chevron_right,
                     color: Theme.of(context).primaryColor),
-                title: Text("我的收藏"),
+                title: const Text("我的收藏"),
                 onTap: () {
                   Navigator.pushNamed(context, "/favorites");
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.cast,
                   color: Colors.blue,
                 ),
                 trailing: Icon(Icons.chevron_right,
                     color: Theme.of(context).primaryColor),
-                title: Text("投屏助手"),
+                title: const Text("投屏助手"),
                 onTap: () {
                   Navigator.pushNamed(context, "/share");
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.settings,
                   color: Colors.blue,
                 ),
                 trailing: Icon(Icons.chevron_right,
                     color: Theme.of(context).primaryColor),
-                title: Text("系统设置"),
+                title: const Text("系统设置"),
                 onTap: () {
                   Navigator.pushNamed(context, "/settings");
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.info,
                   color: Colors.blue,
                 ),
                 trailing: Icon(Icons.chevron_right,
                     color: Theme.of(context).primaryColor),
-                title: Text("关于应用"),
+                title: const Text("关于应用"),
                 onTap: () {
                   Navigator.pushNamed(context, "/about");
                 },

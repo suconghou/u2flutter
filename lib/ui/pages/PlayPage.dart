@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api/index.dart';
 import 'package:flutter_app/ui/utils/toast.dart';
@@ -17,9 +19,11 @@ enum VideoAction {
 late final CacheService cacheproxy;
 int serverport = 0;
 
-// ignore: must_be_immutable
 class PlayPage extends StatelessWidget {
-  String videoId = "";
+  late final String videoId;
+
+  // ignore: prefer_const_constructors_in_immutables
+  PlayPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +42,17 @@ class PlayPage extends StatelessWidget {
     final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
         ? InkWell(
             child: Container(
-              margin: EdgeInsets.only(bottom: 12),
+              margin: const EdgeInsets.only(bottom: 12),
               child: Text(
                 ctitle,
-                style: TextStyle(fontSize: 14, color: Colors.blue),
+                style: const TextStyle(fontSize: 14, color: Colors.blue),
               ),
             ),
             onTap: () {
               Navigator.pushNamed(context, '/channel', arguments: cid);
             },
           )
-        : SizedBox(
+        : const SizedBox(
             height: 2,
           );
 
@@ -66,15 +70,15 @@ class PlayPage extends StatelessWidget {
       body: ListView(
         children: [
           Container(
-            padding: EdgeInsets.fromLTRB(10, 15, 0, 10),
+            padding: const EdgeInsets.fromLTRB(10, 15, 0, 10),
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           AspectRatio(
@@ -83,7 +87,7 @@ class PlayPage extends StatelessWidget {
           ),
           Container(
             color: Colors.grey[100],
-            padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
+            padding: const EdgeInsets.fromLTRB(10, 15, 0, 0),
             child: Column(
               children: [
                 Align(
@@ -94,20 +98,20 @@ class PlayPage extends StatelessWidget {
                   children: [
                     Text(
                       "发布于" + pubTime,
-                      style: TextStyle(height: 1),
+                      style: const TextStyle(height: 1),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     Text(
                       dur,
-                      style: TextStyle(height: 1, color: Colors.red),
+                      style: const TextStyle(height: 1, color: Colors.red),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     Text(count,
-                        style: TextStyle(
+                        style: const TextStyle(
                             height: 1,
                             fontSize: 14,
                             color: Colors.black87,
@@ -119,25 +123,25 @@ class PlayPage extends StatelessWidget {
           ),
           Container(
             color: Colors.grey[100],
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(left: 10),
                   child: Align(
                     child: Text(
                       desc,
-                      style: TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.grey),
                     ),
                     alignment: Alignment.topLeft,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Align(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
                       "相关视频",
@@ -145,11 +149,11 @@ class PlayPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 VideoListBuilder(fn),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
               ],
@@ -195,13 +199,13 @@ class PlayPage extends StatelessWidget {
           }
           return Center(
             child: TextButton(
-              child: Text("加载失败"),
+              child: const Text("加载失败"),
               onPressed: () =>
                   {Toast.toast(context, snapshot.error.toString())},
             ),
           );
         }
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },
@@ -213,18 +217,15 @@ class RightMenu extends StatefulWidget {
   final String videoId;
   final String cid;
 
-  RightMenu(this.videoId, this.cid);
+  const RightMenu(this.videoId, this.cid, {Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    return _RightMenuState(videoId, cid);
+    return _RightMenuState();
   }
 }
 
 class _RightMenuState extends State<RightMenu> {
-  late String videoId;
-  late String cid;
   late Future future;
-  _RightMenuState(this.videoId, this.cid);
   @override
   Widget build(BuildContext context) {
     future = myFav();
@@ -235,30 +236,30 @@ class _RightMenuState extends State<RightMenu> {
             if (!snapshot.hasError) {
               final Set<String> vids = snapshot.data[0];
               final Set<String> cids = snapshot.data[1];
-              final hasFav = vids.contains(videoId);
-              final hasFavCid = cids.contains(cid);
+              final hasFav = vids.contains(widget.videoId);
+              final hasFavCid = cids.contains(widget.cid);
               return PopupMenuButton(
                 onSelected: (result) async {
                   if (result == VideoAction.dlna) {
                     showModalBottomSheet(
                         context: context,
                         builder: (context) {
-                          return DlnaDeviceList(videoId: videoId);
+                          return DlnaDeviceList(videoId: widget.videoId);
                         });
                   } else if (result == VideoAction.fav) {
                     if (hasFav) {
-                      await delFavVIds(videoId);
+                      await delFavVIds(widget.videoId);
                       Toast.toast(context, "已取消收藏");
                     } else {
-                      await addFavVIds(videoId);
+                      await addFavVIds(widget.videoId);
                       Toast.toast(context, "已加入收藏");
                     }
                   } else if (result == VideoAction.favchannel) {
                     if (hasFavCid) {
-                      await delFavCIds(cid);
+                      await delFavCIds(widget.cid);
                       Toast.toast(context, "已取消收藏此频道");
                     } else {
-                      await addFavCIds(cid);
+                      await addFavCIds(widget.cid);
                       Toast.toast(context, "已收藏此频道");
                     }
                   }
@@ -267,7 +268,7 @@ class _RightMenuState extends State<RightMenu> {
                   });
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  PopupMenuItem<VideoAction>(
+                  const PopupMenuItem<VideoAction>(
                     value: VideoAction.dlna,
                     child: Text('投屏助手'),
                   ),
@@ -284,13 +285,13 @@ class _RightMenuState extends State<RightMenu> {
             }
             return Center(
               child: TextButton(
-                child: Text("加载失败"),
+                child: const Text("加载失败"),
                 onPressed: () =>
                     {Toast.toast(context, snapshot.error.toString())},
               ),
             );
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         });

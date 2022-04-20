@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/utils/toast.dart';
 import 'package:flutter_app/utils/videoInfo.dart';
@@ -5,6 +7,8 @@ import '../../utils/dataHelper.dart';
 import '../../api/index.dart';
 
 class FavChannelList extends StatelessWidget {
+  const FavChannelList({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -13,19 +17,19 @@ class FavChannelList extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasError) {
               final Set<String> ids = snapshot.data;
-              if (ids.length < 1) {
-                return Center(
+              if (ids.isEmpty) {
+                return const Center(
                   child: Text("无数据"),
                 );
               }
               return ListView(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                 children: ids.map((e) => buildItem(e)).toList(),
               );
             } else {
               return Center(
                 child: TextButton(
-                  child: Text("加载失败"),
+                  child: const Text("加载失败"),
                   onPressed: () =>
                       {Toast.toast(context, snapshot.error.toString())},
                 ),
@@ -33,8 +37,8 @@ class FavChannelList extends StatelessWidget {
             }
           } else {
             return Container(
-              margin: EdgeInsets.symmetric(vertical: 40),
-              child: Center(child: CircularProgressIndicator()),
+              margin: const EdgeInsets.symmetric(vertical: 40),
+              child: const Center(child: CircularProgressIndicator()),
             );
           }
         });
@@ -51,7 +55,7 @@ class FavChannelList extends StatelessWidget {
             } else {
               return Center(
                 child: TextButton(
-                  child: Text("加载失败"),
+                  child: const Text("加载失败"),
                   onPressed: () => {
                     {Toast.toast(context, snapshot.error.toString())},
                   },
@@ -60,8 +64,8 @@ class FavChannelList extends StatelessWidget {
             }
           } else {
             return Container(
-              margin: EdgeInsets.symmetric(vertical: 40),
-              child: Center(child: CircularProgressIndicator()),
+              margin: const EdgeInsets.symmetric(vertical: 40),
+              child: const Center(child: CircularProgressIndicator()),
             );
           }
         });
@@ -81,18 +85,18 @@ class FavChannelList extends StatelessWidget {
         elevation: 1,
         color: Colors.white,
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               Align(
                 alignment: Alignment.centerLeft,
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ),
               ),
@@ -101,15 +105,15 @@ class FavChannelList extends StatelessWidget {
                   Text(
                     "创建于" + pubTime,
                     style:
-                        TextStyle(fontSize: 13, color: Colors.grey, height: 1),
+                        const TextStyle(fontSize: 13, color: Colors.grey, height: 1),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 6,
                   ),
                   Text(
                     count,
                     style:
-                        TextStyle(fontSize: 13, color: Colors.red, height: 1.5),
+                        const TextStyle(fontSize: 13, color: Colors.red, height: 1.5),
                   ),
                 ],
               ),
@@ -117,28 +121,28 @@ class FavChannelList extends StatelessWidget {
                 children: [
                   Text(
                     subCount,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 13, color: Colors.blue, height: 1.5),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 6,
                   ),
                   Text(
                     videoNum,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 13, color: Colors.green, height: 1.5),
                   )
                 ],
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.symmetric(vertical: 10),
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       desc,
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     )),
               ),
             ],
@@ -155,7 +159,7 @@ class FavChannelList extends StatelessWidget {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text("取消收藏"),
+                title: const Text("取消收藏"),
                 content: Text(title),
                 actions: [
                   TextButton(
@@ -163,13 +167,13 @@ class FavChannelList extends StatelessWidget {
                       delFavCIds(channelId);
                       Navigator.of(context).pop();
                     },
-                    child: Text("确认"),
+                    child: const Text("确认"),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text("取消"),
+                    child: const Text("取消"),
                   ),
                 ],
               );

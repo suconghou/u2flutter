@@ -3,9 +3,9 @@ import 'dart:io';
 import '../utils/cache.dart';
 import '../utils/store.dart';
 
-final _default = 'https://r.suconghou.cn/video/api/v3/';
+const _default = 'https://r.suconghou.cn/video/api/v3/';
 
-final _defaulstream =
+const _defaulstream =
     'http://share.suconghou.cn/video/;https://stream.pull.workers.dev/video/';
 
 bool _init = false;

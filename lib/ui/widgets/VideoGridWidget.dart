@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import '../../utils/videoInfo.dart';
 import 'ImgLoader.dart';
@@ -17,14 +19,14 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
   final cc = (cid.isNotEmpty && ctitle.isNotEmpty)
       ? InkWell(
           child: Container(
-            padding: EdgeInsets.only(top: 5, left: 5, right: 5),
+            padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
             child: SizedBox(
               height: 18,
               child: Text(
                 ctitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Colors.blue, fontSize: 12, height: 1),
+                style: const TextStyle(color: Colors.blue, fontSize: 12, height: 1),
               ),
             ),
           ),
@@ -32,14 +34,14 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
             Navigator.pushNamed(context, '/channel', arguments: cid);
           },
         )
-      : SizedBox(
+      : const SizedBox(
           height: 5,
         );
   final titleWidget = Text(
     title,
     maxLines: 2,
     overflow: TextOverflow.ellipsis,
-    style: TextStyle(
+    style: const TextStyle(
         height: 1.1,
         fontSize: 12,
         color: Colors.black,
@@ -52,7 +54,7 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
 
   return Container(
     color: Colors.white,
-    padding: EdgeInsets.all(0),
+    padding: const EdgeInsets.all(0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -64,13 +66,13 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
                   bottom: 3,
                   right: 3,
                   child: Container(
-                    margin: EdgeInsets.all(2),
+                    margin: const EdgeInsets.all(2),
                     color: Colors.black,
-                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     child: Text(dur,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           color: Colors.white,
                           decoration: TextDecoration.none,
@@ -78,16 +80,16 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
                   ),
                 ),
         ]),
-        Container(margin: EdgeInsets.fromLTRB(5, 5, 5, 0), child: titleBox),
+        Container(margin: const EdgeInsets.fromLTRB(5, 5, 5, 0), child: titleBox),
         cc,
         Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
+          margin: const EdgeInsets.fromLTRB(5, 0, 5, 5),
           child: Row(
             children: <Widget>[
               Text(
                 pubTime,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   height: 1,
                   color: Colors.black87,
@@ -96,7 +98,7 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
               ),
               Expanded(child: Container()),
               Text(count,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 12,
                       height: 1,
                       color: Colors.grey,
@@ -137,7 +139,7 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
     title,
     maxLines: 4,
     overflow: TextOverflow.ellipsis,
-    style: TextStyle(
+    style: const TextStyle(
         height: 1.1,
         fontSize: 12,
         color: Colors.black,
@@ -148,9 +150,9 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Container(
-          height: 54, padding: EdgeInsets.only(right: 4), child: titleBox),
+          height: 54, padding: const EdgeInsets.only(right: 4), child: titleBox),
       Container(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: 4,
           ),
           height: 22,
@@ -162,17 +164,17 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
               ctitle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.blue, fontSize: 12, height: 1),
+              style: const TextStyle(color: Colors.blue, fontSize: 12, height: 1),
             ),
           )),
       Container(
         alignment: Alignment.topLeft,
-        padding: EdgeInsets.only(right: 5),
+        padding: const EdgeInsets.only(right: 5),
         child: Row(
           children: <Widget>[
             Text(
               pubTime,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
                 height: 1,
                 color: Colors.black87,
@@ -183,7 +185,7 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
             count.isEmpty
                 ? Container()
                 : Text(count,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 12,
                         height: 1,
                         color: Colors.grey,
@@ -195,21 +197,21 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
   );
   final cardItem = Container(
     color: Colors.white,
-    margin: EdgeInsets.symmetric(vertical: 4),
-    padding: EdgeInsets.all(0),
+    margin: const EdgeInsets.symmetric(vertical: 4),
+    padding: const EdgeInsets.all(0),
     child: Row(
       children: [
         Expanded(
           flex: 2,
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             child: imgShow(cover, cover2),
           ),
         ),
         Expanded(
           flex: 2,
           child: Container(
-            padding: EdgeInsets.only(top: 6),
+            padding: const EdgeInsets.only(top: 6),
             child: right,
             height: 100,
           ),
@@ -218,7 +220,7 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
     ),
   );
   return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
       child: InkWell(
           onTap: () {
             Navigator.pushNamed(context, "/play", arguments: item);
@@ -229,7 +231,7 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
 class VideoGridWidget extends StatelessWidget {
   final List list;
   final ScrollController? controller;
-  VideoGridWidget(this.list, {this.controller});
+  const VideoGridWidget(this.list, {Key? key, this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +239,7 @@ class VideoGridWidget extends StatelessWidget {
         list.map((item) => buildListVideoItem(context, item)).toList();
     return GridView.count(
       shrinkWrap: true,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       crossAxisCount: 2,
       mainAxisSpacing: 0,
       crossAxisSpacing: 10,

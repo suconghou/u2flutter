@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -5,25 +7,24 @@ import 'package:dlna_dart/dlna.dart';
 import './DlnaDialog.dart';
 import '../utils/toast.dart';
 
-Map<String, device> cacheDeviceList = Map();
+Map<String, device> cacheDeviceList = {};
 
 class DlnaDeviceList extends StatefulWidget {
   final String? videoId;
-  DlnaDeviceList({this.videoId});
+  const DlnaDeviceList({Key? key, this.videoId}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return DlnaDeviceListState(videoId: videoId);
+    return _DlnaDeviceListState();
   }
 }
 
-class DlnaDeviceListState extends State {
+class _DlnaDeviceListState extends State<DlnaDeviceList> {
   late search searcher;
   late final manager m;
-  Timer timer = Timer(Duration(seconds: 1), () {});
-  Map<String, device> deviceList = Map();
-  final String? videoId;
-  DlnaDeviceListState({this.videoId});
+  Timer timer = Timer(const Duration(seconds: 1), () {});
+  Map<String, device> deviceList = {};
+  _DlnaDeviceListState();
 
   @override
   initState() {
@@ -35,15 +36,16 @@ class DlnaDeviceListState extends State {
   init() async {
     m = await searcher.start();
     timer.cancel();
-    final callback = (timer) {
+    callback(timer) {
       m.deviceList.forEach((key, value) {
         cacheDeviceList[key] = value;
       });
       setState(() {
         deviceList = cacheDeviceList;
       });
-    };
-    timer = Timer.periodic(Duration(seconds: 5), callback);
+    }
+
+    timer = Timer.periodic(const Duration(seconds: 5), callback);
     callback(null);
   }
 
@@ -56,8 +58,8 @@ class DlnaDeviceListState extends State {
 
   @override
   Widget build(BuildContext context) {
-    return deviceList.length == 0
-        ? Center(child: CircularProgressIndicator())
+    return deviceList.isEmpty
+        ? const Center(child: CircularProgressIndicator())
         : RefreshIndicator(onRefresh: _pullToRefresh, child: _body());
   }
 
@@ -71,15 +73,15 @@ class DlnaDeviceListState extends State {
   }
 
   Widget _body() {
-    if (deviceList.length < 0) {
-      return SizedBox(
+    if (deviceList.isEmpty) {
+      return const SizedBox(
         height: 200,
         child: CircularProgressIndicator(),
       );
     }
     final List<Widget> dlist = [];
-    deviceList.forEach((uri, device) {
-      dlist.add(buildItem(uri, device));
+    deviceList.forEach((uri, devi) {
+      dlist.add(buildItem(uri, devi));
     });
 
     return ListView(
@@ -92,7 +94,9 @@ class DlnaDeviceListState extends State {
     final subtitle = uri + '\r\n' + device.info.deviceType;
     final s = subtitle.toLowerCase();
     var icon = Icons.wifi;
-    final support = s.contains("mediarenderer") || s.contains("avtransport");
+    final support = s.contains("mediarenderer") ||
+        s.contains("avtransport") ||
+        s.contains('mediaserver');
     if (!support) {
       icon = Icons.router;
     }
@@ -102,7 +106,7 @@ class DlnaDeviceListState extends State {
         ),
         child: Row(children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               top: 16,
               left: 16,
               bottom: 30,
@@ -116,10 +120,10 @@ class DlnaDeviceListState extends State {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(left: 16),
+                  margin: const EdgeInsets.only(left: 16),
                   child: Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 100, 100, 135),
@@ -127,7 +131,7 @@ class DlnaDeviceListState extends State {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 8,
                     left: 16,
                     right: 16,
@@ -140,7 +144,7 @@ class DlnaDeviceListState extends State {
                           softWrap: false,
                           maxLines: 2,
                           overflow: TextOverflow.fade,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: Color.fromARGB(255, 100, 100, 135),
                           ),
@@ -155,12 +159,12 @@ class DlnaDeviceListState extends State {
         ]));
 
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       child: InkWell(
         child: card,
         onTap: () {
           if (!support) {
-            final msg = "该设备不支持投屏";
+            const msg = "该设备不支持投屏";
             Toast.toast(context, msg);
             return;
           }
@@ -171,7 +175,7 @@ class DlnaDeviceListState extends State {
                   children: [
                     DlnaDialog(
                       device,
-                      videoId: videoId,
+                      videoId: widget.videoId,
                     )
                   ],
                 );

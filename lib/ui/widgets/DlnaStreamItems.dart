@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api/index.dart';
 import 'package:dlna_dart/dlna.dart';
@@ -6,7 +8,7 @@ import 'package:flutter_app/ui/utils/toast.dart';
 class DlnaStreamItems extends StatelessWidget {
   final device dev;
   final String videoId;
-  DlnaStreamItems(this.dev, this.videoId);
+  const DlnaStreamItems(this.dev, this.videoId, {Key? key}) : super(key: key);
 
   String getUrl(int type) {
     final base = streambase.split(";").first + '$videoId.webm';
@@ -28,8 +30,8 @@ class DlnaStreamItems extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
-                child: Text("标清"),
+                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+                child: const Text("标清"),
               )
             ],
           ),
@@ -46,8 +48,8 @@ class DlnaStreamItems extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
-                child: Text("高清"),
+                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+                child: const Text("高清"),
               )
             ],
           ),
@@ -64,8 +66,8 @@ class DlnaStreamItems extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
-                child: Text("仅音频模式"),
+                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+                child: const Text("仅音频模式"),
               )
             ],
           ),
@@ -82,8 +84,8 @@ class DlnaStreamItems extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
-                child: Text("仅视频模式"),
+                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+                child: const Text("仅视频模式"),
               )
             ],
           ),

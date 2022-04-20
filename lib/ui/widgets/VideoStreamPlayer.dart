@@ -1,29 +1,29 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:u2flutter_player/u2flutter_player.dart';
 
 class VideoStreamPlayer extends StatefulWidget {
   final String url;
   final String title;
-  VideoStreamPlayer(this.url, this.title);
+  const VideoStreamPlayer(this.url, this.title, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _VideoStreamPlayerState(url, title);
+    return _VideoStreamPlayerState();
   }
 }
 
 class _VideoStreamPlayerState extends State<VideoStreamPlayer>
     with AutomaticKeepAliveClientMixin {
-  final String url;
-  final String title;
-  _VideoStreamPlayerState(this.url, this.title);
+  _VideoStreamPlayerState();
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return VideoPlayerUI(
-      opts: PlayerOpts(url),
-      title: title,
+      opts: PlayerOpts(widget.url),
+      title: widget.title,
     );
   }
 

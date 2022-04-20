@@ -22,13 +22,17 @@ const audioitags = ["250", "249", "251", "600", "140", "599"];
 
 String removeTrailing(String pattern, String from) {
   int i = from.length;
-  while (from.startsWith(pattern, i - pattern.length)) i -= pattern.length;
+  while (from.startsWith(pattern, i - pattern.length)) {
+    i -= pattern.length;
+  }
   return from.substring(0, i);
 }
 
 String trimLeading(String pattern, String from) {
   int i = 0;
-  while (from.startsWith(pattern, i)) i += pattern.length;
+  while (from.startsWith(pattern, i)) {
+    i += pattern.length;
+  }
   return from.substring(i);
 }
 
@@ -66,7 +70,7 @@ class CacheService {
 
   process(HttpRequest req) async {
     try {
-      req.response.deadline = Duration(minutes: 5);
+      req.response.deadline = const Duration(minutes: 5);
       final rr = req.headers.value("range");
       if (reqTs.hasMatch(req.uri.path)) {
         handle(req, req.uri.path);
@@ -85,6 +89,7 @@ class CacheService {
       req.response.statusCode = HttpStatus.internalServerError;
       req.response.write("$e");
       req.response.close();
+      // ignore: avoid_print
       print("${req.uri.path} : $e");
     }
   }
@@ -247,12 +252,13 @@ class CacheService {
         await file.writeAsBytes(s);
         return Stream.fromIterable(s);
       } catch (e) {
+        // ignore: avoid_print
         print("error get $mirror $uri $i $e");
         if (i >= retry) {
           rethrow;
         }
         mirrorList.removeWhere((element) => element == mirror);
-        if (mirrorList.length == 0) {
+        if (mirrorList.isEmpty) {
           mirrorList = [...mirrors];
         }
       }
@@ -288,7 +294,7 @@ class CacheService {
       mirrorList.addAll(mirrors);
     }
     var i = 0;
-    var s = Map<String, dynamic>();
+    var s = <String, dynamic>{};
     for (String item in mirrorList) {
       try {
         i++;
@@ -296,6 +302,7 @@ class CacheService {
         s = await getvinfo(curr);
         return s;
       } catch (e) {
+        // ignore: avoid_print
         print("error when load $id info $e");
         if (i >= mirrorList.length) {
           rethrow;

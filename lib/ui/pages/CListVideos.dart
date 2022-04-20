@@ -1,9 +1,13 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/videoInfo.dart';
 import 'package:flutter_app/api/index.dart';
 import '../widgets/VideoGridWidget.dart';
 
 class CListVideos extends StatelessWidget {
+  const CListVideos({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     dynamic item = ModalRoute.of(context)?.settings.arguments;
@@ -20,15 +24,14 @@ class CListVideos extends StatelessWidget {
 
 class VideosList extends StatefulWidget {
   final String playlistId;
-  VideosList(this.playlistId);
+  const VideosList(this.playlistId, {Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    return _VideosListState(playlistId);
+    return _VideosListState();
   }
 }
 
 class _VideosListState extends State<VideosList> {
-  String playlistId;
   List videoList = [];
   bool loading = false;
   String nextPageToken = "";
@@ -36,25 +39,25 @@ class _VideosListState extends State<VideosList> {
   bool nomore = false;
 
   Widget a = Container(
-    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-    child: Center(
+    margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+    child: const Center(
       child: Text("没有更多数据",
-          style: TextStyle(color: const Color(0xFF999999), fontSize: 14.0)),
+          style: TextStyle(color: Color(0xFF999999), fontSize: 14.0)),
     ),
   );
   Widget b = Container(
-    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-    child: Center(
+    margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+    child: const Center(
       child: Text("正在加载中...",
-          style: TextStyle(color: const Color(0xFF4483f6), fontSize: 14.0)),
+          style: TextStyle(color: Color(0xFF4483f6), fontSize: 14.0)),
     ),
   );
 
   TextStyle loadMoreTextStyle =
-      TextStyle(color: const Color(0xFF999999), fontSize: 14.0);
-  ScrollController _controller = ScrollController();
+      const TextStyle(color: Color(0xFF999999), fontSize: 14.0);
+  final ScrollController _controller = ScrollController();
 
-  _VideosListState(this.playlistId) {
+  _VideosListState() {
     _pullToRefresh();
     _controller.addListener(_scrollListener);
   }
@@ -77,8 +80,8 @@ class _VideosListState extends State<VideosList> {
   Widget build(BuildContext context) {
     final bottom = nomore ? a : b;
 
-    return videoList.length == 0
-        ? Center(child: CircularProgressIndicator())
+    return videoList.isEmpty
+        ? const Center(child: CircularProgressIndicator())
         : RefreshIndicator(
             onRefresh: _pullToRefresh,
             child: ListView(
@@ -94,7 +97,7 @@ class _VideosListState extends State<VideosList> {
   }
 
   Future _pullToRefresh() async {
-    final res = await api.playlistItems(playlistId: playlistId);
+    final res = await api.playlistItems(playlistId: widget.playlistId);
     if (res == null) {
       return;
     }
@@ -113,9 +116,9 @@ class _VideosListState extends State<VideosList> {
       return;
     }
     loading = true;
-    if (videoList.length == 0 || nextPageToken.isNotEmpty) {
+    if (videoList.isEmpty || nextPageToken.isNotEmpty) {
       final res = await api.playlistItems(
-          playlistId: playlistId, pageToken: nextPageToken);
+          playlistId: widget.playlistId, pageToken: nextPageToken);
       if (res != null) {
         final origin = List.from(videoList);
         List resList = (res["items"] is List) ? res["items"] : [];

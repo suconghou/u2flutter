@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 const _defaultImg = "https://assets.suconghou.cn/defaultImg.png";
 String videoCover(Object item) {
   final String id = getVideoId(item);

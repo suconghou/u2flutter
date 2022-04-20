@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 const _placeholder = "images/loading.gif";
@@ -19,7 +21,9 @@ FadeInImage imgShow(String cover, String cover2) {
       return errimg;
     },
     imageErrorBuilder: (c, obj, err) {
+      // ignore: avoid_print
       print(obj);
+      // ignore: avoid_print
       print(err);
       return FadeInImage.assetNetwork(
           placeholder: _placeholder,

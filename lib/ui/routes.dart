@@ -10,13 +10,13 @@ import 'pages/ChannelPage.dart';
 import 'pages/CListVideos.dart';
 
 final Map<String, WidgetBuilder> routes = {
-  "/": (c) => MainPage(),
-  '/favorites': (c) => FavoritesPage(),
-  '/share': (c) => SharePage(),
+  "/": (c) => const MainPage(),
+  '/favorites': (c) => const FavoritesPage(),
+  '/share': (c) => const SharePage(),
   '/channel': (c) => ChannelPage(),
-  '/listvideos': (c) => CListVideos(),
+  '/listvideos': (c) => const CListVideos(),
   '/play': (c) => PlayPage(),
-  '/player': (c) => PlayerPage(),
-  '/about': (c) => AboutPage(),
-  '/settings': (c) => SettingsPage(),
+  '/player': (c) => const PlayerPage(),
+  '/about': (c) => const AboutPage(),
+  '/settings': (c) => const SettingsPage(),
 };

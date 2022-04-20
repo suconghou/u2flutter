@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import '../../utils/videoInfo.dart';
 import 'ImgLoader.dart';
@@ -5,13 +7,13 @@ import 'ImgLoader.dart';
 class ChannelPlayList extends StatelessWidget {
   final List list;
   final ScrollController controller;
-  ChannelPlayList(this.list, {required this.controller});
+  const ChannelPlayList(this.list, {Key? key, required this.controller}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.all(10),
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(10),
       children: list.map((e) => buildItem(context, e)).toList(),
       controller: controller,
     );
@@ -32,7 +34,7 @@ class ChannelPlayList extends StatelessWidget {
       title,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: TextStyle(
+      style: const TextStyle(
           height: 1.1,
           fontSize: 14,
           color: Colors.black,
@@ -42,7 +44,7 @@ class ChannelPlayList extends StatelessWidget {
       desc,
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
-      style: TextStyle(
+      style: const TextStyle(
           height: 1.18,
           fontSize: 11,
           color: Colors.grey,
@@ -52,15 +54,15 @@ class ChannelPlayList extends StatelessWidget {
     final right = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(height: 30, child: titleBox),
-        Container(margin: EdgeInsets.only(top: 3), height: 43, child: descBox),
+        SizedBox(height: 30, child: titleBox),
+        Container(margin: const EdgeInsets.only(top: 3), height: 43, child: descBox),
         Container(
           alignment: Alignment.center,
           child: Row(
             children: <Widget>[
               Text(
                 pubTime,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   height: 1,
                   color: Colors.black87,
@@ -69,7 +71,7 @@ class ChannelPlayList extends StatelessWidget {
               ),
               Expanded(child: Container()),
               Text(count,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 12,
                       height: 1,
                       color: Colors.grey,
@@ -81,21 +83,21 @@ class ChannelPlayList extends StatelessWidget {
     );
     final cardItem = Container(
       color: Colors.white,
-      margin: EdgeInsets.symmetric(vertical: 4),
-      padding: EdgeInsets.all(0),
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.all(0),
       child: Row(
         children: [
           Expanded(
             flex: 2,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               child: imgShow(cover, cover2),
             ),
           ),
           Expanded(
             flex: 2,
             child: Container(
-              padding: EdgeInsets.only(left: 2, top: 8),
+              padding: const EdgeInsets.only(left: 2, top: 8),
               child: right,
               height: 100,
             ),

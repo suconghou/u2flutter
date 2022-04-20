@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/utils/toast.dart';
 import '../../utils/dataHelper.dart';
@@ -10,7 +12,7 @@ class SearchPageDelegate extends SearchDelegate<Map> {
   SearchPageDelegate()
       : super(
           searchFieldLabel: "输入关键词搜索",
-          searchFieldStyle: TextStyle(
+          searchFieldStyle: const TextStyle(
             fontSize: 14,
             color: Colors.black54,
           ),
@@ -20,10 +22,10 @@ class SearchPageDelegate extends SearchDelegate<Map> {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-          icon: Icon(Icons.clear),
+          icon: const Icon(Icons.clear),
           onPressed: () {
             if (query.isEmpty) {
-              close(context, Map());
+              close(context, {});
             } else {
               query = "";
               showSuggestions(context);
@@ -40,7 +42,7 @@ class SearchPageDelegate extends SearchDelegate<Map> {
           progress: transitionAnimation,
         ),
         onPressed: () {
-          close(context, Map());
+          close(context, {});
         });
   }
 
@@ -53,7 +55,7 @@ class SearchPageDelegate extends SearchDelegate<Map> {
     }
     addQueryHistory(q);
     return Container(
-      padding: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10),
       color: Colors.grey[200],
       child: ResultPage(q),
     );
@@ -75,7 +77,7 @@ class SuggestionPage extends StatelessWidget {
   final Function onShowResult;
   final Function onQuery;
 
-  SuggestionPage(this.query, this.onShowResult, this.onQuery);
+  const SuggestionPage(this.query, this.onShowResult, this.onQuery, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -93,17 +95,17 @@ class SuggestionPage extends StatelessWidget {
                         onShowResult(suggestions.elementAt(i));
                       },
                       title: Text(suggestions.elementAt(i)),
-                      trailing: Container(
+                      trailing: SizedBox(
                         width: 24,
                         height: 24,
                         child: IconButton(
                           iconSize: 24,
-                          padding: EdgeInsets.all(0),
+                          padding: const EdgeInsets.all(0),
                           onPressed: () {
                             delQueryHistory(suggestions.elementAt(i));
                             onQuery(query);
                           },
-                          icon: Icon(Icons.close),
+                          icon: const Icon(Icons.close),
                         ),
                       ),
                     );
@@ -111,14 +113,14 @@ class SuggestionPage extends StatelessWidget {
             } else {
               return Center(
                 child: TextButton(
-                  child: Text("加载失败"),
+                  child: const Text("加载失败"),
                   onPressed: () =>
                       {Toast.toast(context, snapshot.error.toString())},
                 ),
               );
             }
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -129,7 +131,7 @@ class SuggestionPage extends StatelessWidget {
 class ResultPage extends StatefulWidget {
   final String query;
 
-  ResultPage(this.query);
+  const ResultPage(this.query, {Key? key}) : super(key: key);
 
   @override
   State createState() => ResultPageState();

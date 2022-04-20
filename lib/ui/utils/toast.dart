@@ -24,12 +24,12 @@ class Toast {
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 80.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 80.0),
                       child: AnimatedOpacity(
                         opacity: _showing ? 1.0 : 0.0, //目标透明度
                         duration: _showing
-                            ? Duration(milliseconds: 100)
-                            : Duration(milliseconds: 400),
+                            ? const Duration(milliseconds: 100)
+                            : const Duration(milliseconds: 400),
                         child: _buildToastWidget(),
                       ),
                     )),
@@ -39,7 +39,7 @@ class Toast {
       //重新绘制UI，类似setState
       _overlayEntry!.markNeedsBuild();
     }
-    await Future.delayed(Duration(milliseconds: 2000)); //等待两秒
+    await Future.delayed(const Duration(milliseconds: 2000)); //等待两秒
 
     //2秒后 到底消失不消失
     if (DateTime.now().difference(_startedTime).inMilliseconds >= 2000) {
@@ -54,10 +54,10 @@ class Toast {
       child: Card(
         color: Colors.black87,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
           child: Text(
             _msg,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14.0,
               color: Colors.white,
             ),

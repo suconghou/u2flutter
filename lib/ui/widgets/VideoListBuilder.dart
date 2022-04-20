@@ -1,25 +1,25 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/utils/toast.dart';
 import 'VideoGridWidget.dart';
 
 class VideoListBuilder extends StatefulWidget {
   final Function refresh;
-  VideoListBuilder(this.refresh);
+  const VideoListBuilder(this.refresh, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return VideoListBuilderState(refresh);
+    return _VideoListBuilderState();
   }
 }
 
-class VideoListBuilderState extends State {
-  Function refresh;
-  Future<dynamic> _refresh;
-
-  VideoListBuilderState(this.refresh) : _refresh = refresh();
+class _VideoListBuilderState extends State<VideoListBuilder> {
+  late Future<dynamic> _refresh;
 
   @override
   Widget build(BuildContext context) {
+    _refresh = widget.refresh();
     return FutureBuilder(
         future: _refresh,
         builder: (context, AsyncSnapshot snapshot) {
@@ -30,17 +30,17 @@ class VideoListBuilderState extends State {
               Toast.toast(context, snapshot.error.toString());
               return Center(
                 child: TextButton(
-                  child: Text("加载失败，点击重试"),
+                  child: const Text("加载失败，点击重试"),
                   onPressed: () {
                     setState(() {
-                      _refresh = refresh();
+                      _refresh = widget.refresh();
                     });
                   },
                 ),
               );
             }
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/utils/toast.dart';
 import '../../utils/dataHelper.dart';
@@ -5,6 +7,8 @@ import '../../api/index.dart';
 import '../widgets/VideoGridWidget.dart';
 
 class FavVideoList extends StatelessWidget {
+  const FavVideoList({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -13,19 +17,19 @@ class FavVideoList extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasError) {
               final Set<String> ids = snapshot.data;
-              if (ids.length < 1) {
-                return Center(
+              if (ids.isEmpty) {
+                return const Center(
                   child: Text("无数据"),
                 );
               }
               return ListView(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 children: ids.map((e) => buildItem(e)).toList(),
               );
             } else {
               return Center(
                 child: TextButton(
-                  child: Text("加载失败"),
+                  child: const Text("加载失败"),
                   onPressed: () => {
                     {Toast.toast(context, snapshot.error.toString())},
                   },
@@ -33,7 +37,7 @@ class FavVideoList extends StatelessWidget {
               );
             }
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -51,7 +55,7 @@ class FavVideoList extends StatelessWidget {
             } else {
               return Center(
                 child: TextButton(
-                  child: Text("加载失败"),
+                  child: const Text("加载失败"),
                   onPressed: () => {
                     {Toast.toast(context, snapshot.error.toString())},
                   },
@@ -60,8 +64,8 @@ class FavVideoList extends StatelessWidget {
             }
           } else {
             return Container(
-              margin: EdgeInsets.symmetric(vertical: 40),
-              child: Center(child: CircularProgressIndicator()),
+              margin: const EdgeInsets.symmetric(vertical: 40),
+              child: const Center(child: CircularProgressIndicator()),
             );
           }
         });

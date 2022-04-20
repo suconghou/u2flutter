@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -6,6 +8,8 @@ import 'package:flutter_app/ui/utils/toast.dart';
 import '../widgets/VideoStreamPlayer.dart';
 
 class PlayerPage extends StatefulWidget {
+  const PlayerPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _PlayerPageState();
@@ -23,7 +27,7 @@ class _PlayerPageState extends State {
     final player = _buildPlayer(url);
     final page = Scaffold(
       appBar: AppBar(
-        title: Text("播放器"),
+        title: const Text("播放器"),
       ),
       body: ListView(
         children: [
@@ -32,17 +36,17 @@ class _PlayerPageState extends State {
             child: player,
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: const EdgeInsets.all(5),
             child: Row(
               children: [
-                Text(
+                const Text(
                   "比例:",
                   style: TextStyle(fontSize: 14),
                 ),
                 ButtonBar(
                   children: [
                     TextButton(
-                      child: Text("4:3"),
+                      child: const Text("4:3"),
                       onPressed: () {
                         setState(() {
                           ratio = 4 / 3;
@@ -50,7 +54,7 @@ class _PlayerPageState extends State {
                       },
                     ),
                     TextButton(
-                      child: Text("16:9"),
+                      child: const Text("16:9"),
                       onPressed: () {
                         setState(() {
                           ratio = 16 / 9;
@@ -58,7 +62,7 @@ class _PlayerPageState extends State {
                       },
                     ),
                     TextButton(
-                      child: Text("16:10"),
+                      child: const Text("16:10"),
                       onPressed: () {
                         setState(() {
                           ratio = 16 / 10;
@@ -71,17 +75,17 @@ class _PlayerPageState extends State {
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: const EdgeInsets.all(5),
             child: Column(
               children: [
                 TextField(
                     controller: urlController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       icon: Icon(Icons.web),
                       labelText: "URL",
                     )),
                 ElevatedButton(
-                    child: Text("加载"),
+                    child: const Text("加载"),
                     onPressed: () {
                       setState(() {
                         final u = urlController.value.text.trim();
@@ -97,7 +101,7 @@ class _PlayerPageState extends State {
                         urls.remove(u);
                         urls.add(u);
                         urlController.value = TextEditingValue.empty;
-                        Timer(Duration(milliseconds: 80), () {
+                        Timer(const Duration(milliseconds: 80), () {
                           setState(() {
                             url = u;
                           });
@@ -109,18 +113,18 @@ class _PlayerPageState extends State {
           ),
           Container(
             alignment: Alignment.topLeft,
-            margin: EdgeInsets.all(5),
+            margin: const EdgeInsets.all(5),
             height: 500,
             child: ListView(
               children: urls
                   .map((e) => InkWell(
                         child: Container(
-                          padding: EdgeInsets.only(top: 6, bottom: 6, right: 3),
+                          padding: const EdgeInsets.only(top: 6, bottom: 6, right: 3),
                           child: Text(
                             e,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(overflow: TextOverflow.ellipsis),
+                            style: const TextStyle(overflow: TextOverflow.ellipsis),
                           ),
                         ),
                         onTap: () {
@@ -149,7 +153,7 @@ class _PlayerPageState extends State {
     if (url.isEmpty) {
       return Container(
         color: Colors.black,
-        child: Center(
+        child: const Center(
           child: Text(
             "无播放资源",
             style: TextStyle(color: Colors.white),

@@ -1,47 +1,47 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import '../../api/index.dart';
 import 'VideoGridWidget.dart';
 import 'ChannalPlayList.dart';
 
-enum ChannelTab { UPLOAD, FAVORITE, PLAYLIST }
+enum ChannelTab { upload, favorite, playlist }
 
 class ChannelTabView extends StatefulWidget {
   final String channelId;
   final ChannelTab ctype;
-  ChannelTabView(this.ctype, this.channelId);
+  const ChannelTabView(this.ctype, this.channelId, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _ChannelTabViewState(ctype, channelId);
+    return _ChannelTabViewState();
   }
 }
 
-class _ChannelTabViewState extends State {
-  final String channelId;
-  final ChannelTab ctype;
+class _ChannelTabViewState extends State<ChannelTabView> {
   String nextPageToken = "";
   List listData = [];
   bool loading = false;
   bool nomore = false;
 
   Widget a = Container(
-    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-    child: Center(
+    margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+    child: const Center(
       child: Text("没有更多数据",
-          style: TextStyle(color: const Color(0xFF999999), fontSize: 14.0)),
+          style: TextStyle(color: Color(0xFF999999), fontSize: 14.0)),
     ),
   );
   Widget b = Container(
-    margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-    child: Center(
+    margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+    child: const Center(
       child: Text("正在加载中...",
-          style: TextStyle(color: const Color(0xFF4483f6), fontSize: 14.0)),
+          style: TextStyle(color: Color(0xFF4483f6), fontSize: 14.0)),
     ),
   );
 
   final ScrollController _controller = ScrollController();
 
-  _ChannelTabViewState(this.ctype, this.channelId) {
+  _ChannelTabViewState() {
     _pullToRefresh();
     _controller.addListener(_scrollListener);
   }
@@ -62,17 +62,17 @@ class _ChannelTabViewState extends State {
 
   @override
   Widget build(BuildContext context) {
-    return listData.length == 0
-        ? Center(child: CircularProgressIndicator())
+    return listData.isEmpty
+        ? const Center(child: CircularProgressIndicator())
         : RefreshIndicator(onRefresh: _pullToRefresh, child: _body());
   }
 
   Future _pullToRefresh() async {
     dynamic res;
-    if (ctype == ChannelTab.PLAYLIST) {
-      res = await api.playlistsInChannel(channelId: channelId);
+    if (widget.ctype == ChannelTab.playlist) {
+      res = await api.playlistsInChannel(channelId: widget.channelId);
     } else {
-      res = await api.playlistItems(playlistId: channelId);
+      res = await api.playlistItems(playlistId: widget.channelId);
     }
     if (res != null && res["items"] is List) {
       setState(() {
@@ -91,17 +91,17 @@ class _ChannelTabViewState extends State {
       return;
     }
     loading = true;
-    if (listData.length == 0 || nextPageToken.isNotEmpty) {
+    if (listData.isEmpty || nextPageToken.isNotEmpty) {
       setState(() {
         nomore = false;
       });
       dynamic res;
-      if (ctype == ChannelTab.PLAYLIST) {
+      if (widget.ctype == ChannelTab.playlist) {
         res = await api.playlistsInChannel(
-            channelId: channelId, pageToken: nextPageToken);
+            channelId: widget.channelId, pageToken: nextPageToken);
       } else {
         res = await api.playlistItems(
-            playlistId: channelId, pageToken: nextPageToken);
+            playlistId: widget.channelId, pageToken: nextPageToken);
       }
       if (res != null) {
         List origin = List.from(listData);
@@ -122,7 +122,7 @@ class _ChannelTabViewState extends State {
   }
 
   Widget _body() {
-    final grid = ctype != ChannelTab.PLAYLIST;
+    final grid = widget.ctype != ChannelTab.playlist;
 
     final bottom = nomore ? a : b;
 
