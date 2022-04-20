@@ -10,7 +10,8 @@ enum ChannelTab { upload, favorite, playlist }
 class ChannelTabView extends StatefulWidget {
   final String channelId;
   final ChannelTab ctype;
-  const ChannelTabView(this.ctype, this.channelId, {Key? key}) : super(key: key);
+  const ChannelTabView(this.ctype, this.channelId, {Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -41,7 +42,9 @@ class _ChannelTabViewState extends State<ChannelTabView> {
 
   final ScrollController _controller = ScrollController();
 
-  _ChannelTabViewState() {
+  @override
+  void initState() {
+    super.initState();
     _pullToRefresh();
     _controller.addListener(_scrollListener);
   }
@@ -68,6 +71,9 @@ class _ChannelTabViewState extends State<ChannelTabView> {
   }
 
   Future _pullToRefresh() async {
+    if (!mounted) {
+      return;
+    }
     dynamic res;
     if (widget.ctype == ChannelTab.playlist) {
       res = await api.playlistsInChannel(channelId: widget.channelId);
@@ -87,6 +93,9 @@ class _ChannelTabViewState extends State<ChannelTabView> {
   }
 
   loadMoreData() async {
+    if (!mounted) {
+      return;
+    }
     if (loading) {
       return;
     }

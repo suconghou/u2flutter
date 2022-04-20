@@ -17,12 +17,10 @@ class HomeTabView extends StatefulWidget {
 class _HomeTabViewState extends State<HomeTabView> {
   late Future _refresh;
 
-  _HomeTabViewState() {
-    _refresh = api.mostPopularVideos(videoCategoryId: widget.videoCategoryId);
-  }
-
   @override
   Widget build(BuildContext context) {
+    _refresh = api.mostPopularVideos(videoCategoryId: widget.videoCategoryId);
+
     return FutureBuilder(
         future: _refresh,
         builder: (context, AsyncSnapshot snapshot) {

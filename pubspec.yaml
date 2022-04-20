@@ -30,12 +30,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  u2flutter_player: 
-    path: /Users/admin/data/git/flutter/u2flutter_player
-  dlna_dart:
-    path: /Users/admin/data/git/flutter/dlna_dart
-  mediaindex_dart:
-    path: /Users/admin/data/git/flutter/mediaindex_dart
+  u2flutter_player: '>=0.0.6'
+  dlna_dart: '>=0.0.4'
+  mediaindex_dart: '>=0.0.1'
   shared_preferences: '>=2.0.13'
   path_provider: '>=2.0.9'
 

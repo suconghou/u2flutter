@@ -24,7 +24,10 @@ class _DlnaDialogState extends State<DlnaDialog> {
   positionParser? position;
   TextEditingController videoUrl = TextEditingController();
   Timer timer = Timer(const Duration(seconds: 1), () {});
-  _DlnaDialogState() {
+
+  @override
+  void initState() {
+    super.initState();
     callback(_) async {
       final text = await widget.dev.position();
       final p = positionParser(text);
@@ -56,6 +59,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
         ),
         Container(
           margin: const EdgeInsets.all(10),
+          alignment: Alignment.topCenter,
           child: Text(
             widget.dev.info.URLBase,
             style: TextStyle(fontSize: 14, color: Colors.grey[400]),
