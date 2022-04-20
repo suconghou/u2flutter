@@ -57,7 +57,9 @@ class _VideosListState extends State<VideosList> {
       const TextStyle(color: Color(0xFF999999), fontSize: 14.0);
   final ScrollController _controller = ScrollController();
 
-  _VideosListState() {
+  @override
+  void initState() {
+    super.initState();
     _pullToRefresh();
     _controller.addListener(_scrollListener);
   }
