@@ -35,7 +35,7 @@ class _VideosListState extends State<VideosList> {
   List videoList = [];
   bool loading = false;
   String nextPageToken = "";
-
+  late Future loadData;
   bool nomore = false;
 
   Widget a = Container(
@@ -60,7 +60,7 @@ class _VideosListState extends State<VideosList> {
   @override
   void initState() {
     super.initState();
-    _pullToRefresh();
+    loadData = _pullToRefresh();
     _controller.addListener(_scrollListener);
   }
 
@@ -81,21 +81,41 @@ class _VideosListState extends State<VideosList> {
   @override
   Widget build(BuildContext context) {
     final bottom = nomore ? a : b;
-
-    return videoList.isEmpty
-        ? const Center(child: CircularProgressIndicator())
-        : RefreshIndicator(
-            onRefresh: _pullToRefresh,
-            child: ListView(
-              controller: _controller,
-              children: [
-                VideoGridWidget(
-                  videoList,
-                  controller: ScrollController(),
+    return FutureBuilder(
+        future: loadData,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (!snapshot.hasError) {
+              return RefreshIndicator(
+                  onRefresh: _pullToRefresh,
+                  child: ListView(
+                    controller: _controller,
+                    children: [
+                      VideoGridWidget(
+                        videoList,
+                        controller: ScrollController(),
+                      ),
+                      bottom,
+                    ],
+                  ));
+            } else {
+              return Center(
+                child: TextButton(
+                  child: const Text("加载失败，点击重试"),
+                  onPressed: () => {
+                    setState(() {
+                      loadData = _pullToRefresh();
+                    })
+                  },
                 ),
-                bottom,
-              ],
-            ));
+              );
+            }
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 
   Future _pullToRefresh() async {
