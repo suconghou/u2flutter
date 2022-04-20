@@ -19,10 +19,10 @@ enum VideoAction {
 late final CacheService cacheproxy;
 int serverport = 0;
 
+// ignore: must_be_immutable
 class PlayPage extends StatelessWidget {
-  late final String videoId;
+  late String videoId;
 
-  // ignore: prefer_const_constructors_in_immutables
   PlayPage({Key? key}) : super(key: key);
 
   @override
