@@ -29,32 +29,33 @@ abstract class LoadingPageState<P extends StatefulWidget> extends State<P>
     fetchData(_page)
         .catchError((e) {
           debugPrint(e.toString());
-          if (mounted) {
-            setState(() {
-              _status = LoadingStatus.error;
-            });
-          }
+          return PageData([], "", true);
         })
         .asStream()
         .listen((data) {
+          if (!mounted) {
+            return;
+          }
+          if (data.error) {
+            setState(() {
+              _status = LoadingStatus.error;
+            });
+            return;
+          }
+
           _page = data.pageToken;
           if (data.list.isEmpty) {
             setState(() {
               _status = LoadingStatus.nomore;
             });
           } else {
-            if (mounted) {
-              setState(() {
-                _status = LoadingStatus.none;
-                items.addAll(data.list);
-                onLoadComplete();
-              });
-            }
+            setState(() {
+              _status = LoadingStatus.none;
+              items.addAll(data.list);
+            });
           }
         });
   }
-
-  void onLoadComplete() {}
 
   @override
   Widget build(BuildContext context) {

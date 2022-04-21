@@ -1,5 +1,6 @@
 class PageData {
   List list;
   String pageToken;
-  PageData(this.list, this.pageToken);
+  bool error;
+  PageData(this.list, this.pageToken, [this.error = false]);
 }
