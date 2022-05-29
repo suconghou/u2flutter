@@ -40,7 +40,8 @@ class CacheService {
   late HttpServer server;
   final HttpClient client = HttpClient();
   final List<String> mirrors;
-  static const int retry = 3;
+  int mirrorIndex = 0;
+  static const int retry = 5;
   final RegExp reqPath = RegExp(r"^/[\w\-]{5,16}/\d+$");
   final RegExp reqRange = RegExp(r"^bytes=(\d+)-(\d+)?$");
   final RegExp reqTs = RegExp(r"^/[\w\-]{5,16}/\d+/\d+-\d+.ts$");
@@ -48,11 +49,10 @@ class CacheService {
   final cache = CacheManager();
   CacheService(
     this.mirrors, {
-    int timeout = 30,
     String userAgent =
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15',
   }) {
-    client.connectionTimeout = Duration(seconds: timeout);
+    client.connectionTimeout = const Duration(seconds: 5);
     client.userAgent = userAgent;
   }
 
@@ -220,7 +220,7 @@ class CacheService {
   }
 
   String getMirror(String uri, List<String> mirrors) {
-    final c = uri.hashCode % mirrors.length;
+    final c = mirrorIndex++ % mirrors.length;
     return mirrors[c];
   }
 
@@ -243,7 +243,7 @@ class CacheService {
     }
     var mirrorList = [...mirrors];
     var i = 0;
-    for (i = 1; i <= retry; i++) {
+    while (true) {
       final mirror = getMirror(uri, mirrorList);
       try {
         final curr = buildUrl(uri, mirror);
@@ -253,8 +253,8 @@ class CacheService {
         return Stream.fromIterable(s);
       } catch (e) {
         // ignore: avoid_print
-        print("error get $mirror $uri $i $e");
-        if (i >= retry) {
+        print("http fetch error $mirror $uri $i $retry $e");
+        if (++i > retry) {
           rethrow;
         }
         mirrorList.removeWhere((element) => element == mirror);
@@ -263,12 +263,11 @@ class CacheService {
         }
       }
     }
-    throw "invalid retry $retry";
   }
 
   // 根据uri负载均衡,我们要根据hash算法计算均衡逻辑
   Future<Stream<List<int>>> get(Uri uri) async {
-    const timeout = Duration(seconds: 30);
+    const timeout = Duration(seconds: 15);
     final req = await client.getUrl(uri);
     final res = await req.close().timeout(timeout);
     if (res.statusCode != HttpStatus.ok) {
@@ -289,6 +288,10 @@ class CacheService {
   }
 
   Future<Map<String, dynamic>> videoinfo(String id) async {
+    final v = cache.get(id);
+    if (v != null) {
+      return v;
+    }
     final mirrorList = [...mirrors];
     if (mirrorList.length < retry) {
       mirrorList.addAll(mirrors);
@@ -298,8 +301,9 @@ class CacheService {
     for (String item in mirrorList) {
       try {
         i++;
-        final curr = buildInfoUrl(id, item);
+        final Uri curr = buildInfoUrl(id, item);
         s = await getvinfo(curr);
+        cache.set(id, s);
         return s;
       } catch (e) {
         // ignore: avoid_print
@@ -313,20 +317,9 @@ class CacheService {
   }
 
   Future<Map<String, dynamic>> getvinfo(Uri uri) async {
-    final key = uri.toString();
-    final v = cache.get(key);
-    if (v != null) {
-      return v;
-    }
-    const timeout = Duration(seconds: 30);
-    final req = await client.getUrl(uri);
-    final res = await req.close().timeout(timeout);
-    if (res.statusCode != HttpStatus.ok) {
-      throw Exception("request $uri error , status ${res.statusCode}");
-    }
-    final body = await res.transform(utf8.decoder).join().timeout(timeout);
+    final res = await get(uri);
+    final body = await res.transform(utf8.decoder).join();
     final data = jsonDecode(body);
-    cache.set(key, data);
     return data;
   }
 

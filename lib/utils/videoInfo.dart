@@ -14,7 +14,7 @@ String videoCover2(Object item) {
   if (id == "") {
     return _defaultImg;
   }
-  return "https://stream.pull.workers.dev/video/" + id + ".jpg";
+  return "https://u2worker.deno.dev/video/" + id + ".jpg";
 }
 
 String getVideoTitle(dynamic item) {

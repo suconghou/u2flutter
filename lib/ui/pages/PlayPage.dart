@@ -180,7 +180,7 @@ class PlayPage extends StatelessWidget {
   videoplayer(String videoId, String title) {
     if (serverport == 0) {
       final arr = streambase.split(";");
-      arr.remove("");
+      arr.removeWhere((element) => element.isEmpty);
       cacheproxy = CacheService(arr);
     }
     String url = "http://127.0.0.1:";
