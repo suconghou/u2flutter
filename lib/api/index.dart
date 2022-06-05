@@ -26,15 +26,15 @@ class _DataApi {
   }
 
   Future<Uri> initBaseUrl() async {
-    final String? _baseUrl = await Store.getString("baseUrl");
-    if (_baseUrl != null && _baseUrl.isNotEmpty) {
-      _base = Uri.parse(_baseUrl);
+    final String? baseUrl = await Store.getString("baseUrl");
+    if (baseUrl != null && baseUrl.isNotEmpty) {
+      _base = Uri.parse(baseUrl);
     } else {
       _base = Uri.parse(_default);
     }
-    final String? _streambase = await Store.getString("videourl");
-    if (_streambase != null && _streambase.isNotEmpty) {
-      streambase = _streambase;
+    final String? sbase = await Store.getString("videourl");
+    if (sbase != null && sbase.isNotEmpty) {
+      streambase = sbase;
     } else {
       streambase = _defaulstream;
     }

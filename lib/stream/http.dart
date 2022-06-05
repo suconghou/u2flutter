@@ -137,12 +137,12 @@ class CacheService {
     final min = (t % 3600) / 60;
     final sec = (t % 60);
     if (hour >= 1) {
-      text.add(hour.floor().toString() + "H");
+      text.add("${hour.floor()}H");
     }
     if (min >= 1) {
-      text.add(min.floor().toString() + "M");
+      text.add("${min.floor()}M");
     }
-    text.add(sec.toString() + "S");
+    text.add("${sec}S");
     return text.join();
   }
 
@@ -230,7 +230,7 @@ class CacheService {
       scheme: base.scheme,
       host: base.host,
       port: base.port,
-      path: removeTrailing("/", base.path) + '/' + trimLeading("/", uri),
+      path: '${removeTrailing("/", base.path)}/${trimLeading("/", uri)}',
     );
   }
 
@@ -283,7 +283,7 @@ class CacheService {
       scheme: base.scheme,
       host: base.host,
       port: base.port,
-      path: removeTrailing("/", base.path) + "/$id.json",
+      path: "${removeTrailing("/", base.path)}/$id.json",
     );
   }
 
@@ -325,7 +325,7 @@ class CacheService {
 
   Future<Segment> getSegment(
       String indexRange, String videoId, Map<String, dynamic> itagItem) async {
-    final key = videoId + ':' + itagItem['itag'];
+    final key = "$videoId:${itagItem['itag']}";
     final v = cache.get(key);
     if (v is Segment) {
       return v;

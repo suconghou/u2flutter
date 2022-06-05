@@ -91,13 +91,13 @@ class PlayPage extends StatelessWidget {
             child: Column(
               children: [
                 Align(
-                  child: cc,
                   alignment: Alignment.topLeft,
+                  child: cc,
                 ),
                 Row(
                   children: [
                     Text(
-                      "发布于" + pubTime,
+                      "发布于$pubTime",
                       style: const TextStyle(height: 1),
                     ),
                     const SizedBox(
@@ -129,11 +129,11 @@ class PlayPage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(left: 10),
                   child: Align(
+                    alignment: Alignment.topLeft,
                     child: Text(
                       desc,
                       style: const TextStyle(color: Colors.grey),
                     ),
-                    alignment: Alignment.topLeft,
                   ),
                 ),
                 const SizedBox(
@@ -190,7 +190,7 @@ class PlayPage extends StatelessWidget {
           serverport = await cacheproxy.start();
           cacheproxy.listen();
         }
-        return url + "$serverport/$videoId.mpd";
+        return "$url$serverport/$videoId.mpd";
       }(),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {

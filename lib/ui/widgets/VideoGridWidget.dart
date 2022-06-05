@@ -212,8 +212,8 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
           flex: 2,
           child: Container(
             padding: const EdgeInsets.only(top: 6),
-            child: right,
             height: 100,
+            child: right,
           ),
         ),
       ],
@@ -244,8 +244,8 @@ class VideoGridWidget extends StatelessWidget {
       mainAxisSpacing: 0,
       crossAxisSpacing: 10,
       childAspectRatio: 0.98,
-      children: children,
       controller: controller,
+      children: children,
     );
   }
 }

@@ -74,9 +74,9 @@ class _DlnaDialogState extends State<DlnaDialog> {
     );
 
     return SizedBox(
-      child: dialog,
       height: 430,
       width: MediaQuery.of(context).size.width - 100,
+      child: dialog,
     );
   }
 
@@ -97,7 +97,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
     ));
     var currUrl = position!.TrackURI;
     if (currUrl.length > 100) {
-      currUrl = currUrl.substring(0, 100) + '...';
+      currUrl = '${currUrl.substring(0, 100)}...';
     }
     slist.add(Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -117,8 +117,8 @@ class _DlnaDialogState extends State<DlnaDialog> {
             ))));
     if (position!.AbsTime.isNotEmpty) {
       slist.add(Align(
-        child: Text(position!.AbsTime + " / " + position!.TrackDuration),
         alignment: Alignment.topLeft,
+        child: Text("${position!.AbsTime} / ${position!.TrackDuration}"),
       ));
     }
     return Container(
@@ -182,9 +182,9 @@ class _DlnaDialogState extends State<DlnaDialog> {
           context: context,
           builder: (BuildContext context) => SingleChildScrollView(
                 child: Container(
-                    child: content,
                     padding: EdgeInsets.fromLTRB(
-                        10, 10, 10, MediaQuery.of(context).viewInsets.bottom)),
+                        10, 10, 10, MediaQuery.of(context).viewInsets.bottom),
+                    child: content),
               )),
     );
     final play = SizedBox(

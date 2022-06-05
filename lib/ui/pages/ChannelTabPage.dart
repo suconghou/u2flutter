@@ -69,7 +69,7 @@ class ChannelTabPage extends StatelessWidget {
                                   ),
                                   Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text("创建于" + pubTime,
+                                    child: Text("创建于$pubTime",
                                         style: const TextStyle(fontSize: 14)),
                                   ),
                                   Align(

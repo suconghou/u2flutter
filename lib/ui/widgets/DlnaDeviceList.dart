@@ -91,7 +91,7 @@ class _DlnaDeviceListState extends State<DlnaDeviceList> {
 
   Widget buildItem(String uri, device device) {
     final title = device.info.friendlyName;
-    final subtitle = uri + '\r\n' + device.info.deviceType;
+    final subtitle = '$uri\r\n${device.info.deviceType}';
     final s = subtitle.toLowerCase();
     var icon = Icons.wifi;
     final support = s.contains("mediarenderer") ||

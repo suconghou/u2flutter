@@ -13,8 +13,8 @@ class SharePage extends StatelessWidget {
         title: const Text("投屏助手"),
       ),
       body: Container(
-        child: const DlnaDeviceList(),
         margin: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+        child: const DlnaDeviceList(),
       ),
     );
   }

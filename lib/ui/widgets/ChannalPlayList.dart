@@ -14,8 +14,8 @@ class ChannelPlayList extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(10),
-      children: list.map((e) => buildItem(context, e)).toList(),
       controller: controller,
+      children: list.map((e) => buildItem(context, e)).toList(),
     );
   }
 
@@ -98,8 +98,8 @@ class ChannelPlayList extends StatelessWidget {
             flex: 2,
             child: Container(
               padding: const EdgeInsets.only(left: 2, top: 8),
-              child: right,
               height: 100,
+              child: right,
             ),
           ),
         ],

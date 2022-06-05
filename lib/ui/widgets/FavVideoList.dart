@@ -45,9 +45,9 @@ class FavVideoList extends StatelessWidget {
   }
 
   Widget buildItem(String id) {
-    final Future _refresh = api.videoInfo(id);
+    final Future refresh = api.videoInfo(id);
     return FutureBuilder(
-        future: _refresh,
+        future: refresh,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasError) {

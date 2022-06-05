@@ -9,7 +9,7 @@ class FileCache {
   Directory appDocDir;
   late File file;
   FileCache(this.uri, this.appDocDir) {
-    file = File(appDocDir.path + "/cache" + uri);
+    file = File("${appDocDir.path}/cache$uri");
   }
   Future<bool> get ok async {
     if (await file.exists()) {

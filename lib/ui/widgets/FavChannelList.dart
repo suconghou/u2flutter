@@ -45,9 +45,9 @@ class FavChannelList extends StatelessWidget {
   }
 
   Widget buildItem(String id) {
-    final Future _refresh = api.channels(id);
+    final Future refresh = api.channels(id);
     return FutureBuilder(
-        future: _refresh,
+        future: refresh,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasError) {
@@ -103,7 +103,7 @@ class FavChannelList extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "创建于" + pubTime,
+                    "创建于$pubTime",
                     style:
                         const TextStyle(fontSize: 13, color: Colors.grey, height: 1),
                   ),
