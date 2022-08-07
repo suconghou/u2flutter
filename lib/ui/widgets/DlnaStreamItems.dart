@@ -6,7 +6,7 @@ import 'package:dlna_dart/dlna.dart';
 import 'package:flutter_app/ui/utils/toast.dart';
 
 class DlnaStreamItems extends StatelessWidget {
-  final device dev;
+  final DLNADevice dev;
   final String videoId;
   const DlnaStreamItems(this.dev, this.videoId, {Key? key}) : super(key: key);
 

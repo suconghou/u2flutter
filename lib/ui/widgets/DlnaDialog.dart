@@ -10,7 +10,7 @@ import 'package:flutter_app/ui/utils/toast.dart';
 import './DlnaStreamItems.dart';
 
 class DlnaDialog extends StatefulWidget {
-  final device dev;
+  final DLNADevice dev;
   final String? videoId;
   const DlnaDialog(this.dev, {Key? key, this.videoId}) : super(key: key);
 
@@ -21,7 +21,7 @@ class DlnaDialog extends StatefulWidget {
 }
 
 class _DlnaDialogState extends State<DlnaDialog> {
-  positionParser? position;
+  PositionParser? position;
   TextEditingController videoUrl = TextEditingController();
   Timer timer = Timer(const Duration(seconds: 1), () {});
 
@@ -30,7 +30,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
     super.initState();
     callback(_) async {
       final text = await widget.dev.position();
-      final p = positionParser(text);
+      final p = PositionParser(text);
       setState(() {
         position = p;
       });
@@ -155,7 +155,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
         Navigator.pop(context);
         Timer(const Duration(seconds: 2), () async {
           final text = await widget.dev.position();
-          position = positionParser(text);
+          position = PositionParser(text);
         });
       },
     );
@@ -237,7 +237,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
             onPressed: () async {
               try {
                 final curr = await widget.dev.position();
-                final p = positionParser(curr);
+                final p = PositionParser(curr);
                 setState(() {
                   position = p;
                 });
@@ -254,7 +254,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
             onPressed: () async {
               try {
                 final curr = await widget.dev.position();
-                final p = positionParser(curr);
+                final p = PositionParser(curr);
                 setState(() {
                   position = p;
                 });
@@ -272,7 +272,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
             onPressed: () async {
               try {
                 final curr = await widget.dev.position();
-                final p = positionParser(curr);
+                final p = PositionParser(curr);
                 setState(() {
                   position = p;
                 });
@@ -289,7 +289,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
             onPressed: () async {
               try {
                 final curr = await widget.dev.position();
-                final p = positionParser(curr);
+                final p = PositionParser(curr);
                 setState(() {
                   position = p;
                 });

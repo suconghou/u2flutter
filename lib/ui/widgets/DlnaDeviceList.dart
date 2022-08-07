@@ -7,7 +7,7 @@ import 'package:dlna_dart/dlna.dart';
 import './DlnaDialog.dart';
 import '../utils/toast.dart';
 
-Map<String, device> cacheDeviceList = {};
+Map<String, DLNADevice> cacheDeviceList = {};
 
 class DlnaDeviceList extends StatefulWidget {
   final String? videoId;
@@ -20,47 +20,40 @@ class DlnaDeviceList extends StatefulWidget {
 }
 
 class _DlnaDeviceListState extends State<DlnaDeviceList> {
-  late search searcher;
-  late final manager m;
-  Timer timer = Timer(const Duration(seconds: 1), () {});
-  Map<String, device> deviceList = {};
+  late DLNAManager searcher;
+  late final DeviceManager m;
+  Map<String, DLNADevice> deviceList = {};
   _DlnaDeviceListState();
 
   @override
   initState() {
     super.initState();
-    searcher = search();
+    searcher = DLNAManager();
     init();
   }
 
   init() async {
     m = await searcher.start();
-    timer.cancel();
-    callback(timer) {
-      m.deviceList.forEach((key, value) {
+    m.devices.stream.listen((dlist) {
+      dlist.forEach((key, value) {
         cacheDeviceList[key] = value;
       });
       setState(() {
         deviceList = cacheDeviceList;
       });
-    }
-
-    timer = Timer.periodic(const Duration(seconds: 5), callback);
-    callback(null);
+    });
+    await _pullToRefresh();
   }
 
   @override
   void dispose() {
-    timer.cancel();
     searcher.stop();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return deviceList.isEmpty
-        ? const Center(child: CircularProgressIndicator())
-        : RefreshIndicator(onRefresh: _pullToRefresh, child: _body());
+    return RefreshIndicator(onRefresh: _pullToRefresh, child: _body());
   }
 
   Future _pullToRefresh() async {
@@ -74,8 +67,7 @@ class _DlnaDeviceListState extends State<DlnaDeviceList> {
 
   Widget _body() {
     if (deviceList.isEmpty) {
-      return const SizedBox(
-        height: 200,
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -89,7 +81,7 @@ class _DlnaDeviceListState extends State<DlnaDeviceList> {
     );
   }
 
-  Widget buildItem(String uri, device device) {
+  Widget buildItem(String uri, DLNADevice device) {
     final title = device.info.friendlyName;
     final subtitle = '$uri\r\n${device.info.deviceType}';
     final s = subtitle.toLowerCase();

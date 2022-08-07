@@ -110,8 +110,11 @@ String viewCount(dynamic item) {
   if (n < 1) {
     return "";
   }
-  if (n > 10000) {
-    return "${(n / 1000).round()}万观看";
+  if (n > 1e8) {
+    return "${(n / 1e8).toStringAsFixed(2)}亿观看";
+  }
+  if (n > 1e4) {
+    return "${(n / 1e4).toStringAsFixed(1)}万观看";
   }
   return "$n观看";
 }
@@ -123,7 +126,7 @@ String pubAt(dynamic item) {
     final t = DateTime.parse(v["publishedAt"]);
     n = t.millisecondsSinceEpoch;
   }
-  final d = (DateTime.now().millisecondsSinceEpoch - n) / 1000;
+  final d = (DateTime.now().millisecondsSinceEpoch - n) / 1e3;
   const f = [
     [31536000, '年'],
     [2592000, '个月'],
@@ -196,8 +199,8 @@ String getSubscriberCount(dynamic item) {
   if (n < 1) {
     return "";
   }
-  if (n > 10000) {
-    return "${(n / 1000).round()}万订阅者";
+  if (n > 1e4) {
+    return "${(n / 1e4).toStringAsFixed(1)}万订阅者";
   }
   return "$n订阅者";
 }
