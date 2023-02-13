@@ -13,7 +13,7 @@ class Toast {
     _msg = msg;
     _startedTime = DateTime.now();
     //获取OverlayState
-    OverlayState overlayState = Overlay.of(context)!;
+    OverlayState overlayState = Overlay.of(context);
     _showing = true;
     if (_overlayEntry == null) {
       _overlayEntry = OverlayEntry(

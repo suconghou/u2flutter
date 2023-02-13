@@ -162,6 +162,7 @@ class CacheService {
   Future<String> getMpdXml(Map<String, dynamic> info) async {
     final videoId = info['id'];
     final duration = getDuration(info);
+    final durationInt = int.parse(info["duration"]);
     final streams = info['streams'] as Map<String, dynamic>;
     final text = [
       "<MPD xmlns=\"urn:mpeg:dash:schema:mpd:2011\" profiles=\"urn:mpeg:dash:profile:isoff-on-demand:2011\" minBufferTime=\"PT2S\" mediaPresentationDuration=\"$duration\" type=\"static\"><Period>"
@@ -181,9 +182,8 @@ class CacheService {
       final codecs = type[1];
       final baseurl = "http://127.0.0.1:${server.port}/$videoId/$itag/";
       final indexUri = "/$videoId/$itag/${index['start']}-${index['end']}.ts";
-      final bandwidth =
-          8 * int.parse(value["len"]) ~/ int.parse(info["duration"]);
-      final seg = await getSegment(indexUri, videoId, value);
+      final bandwidth = 8 * int.parse(value["len"]) ~/ durationInt;
+      final seg = await getSegment(indexUri, videoId, durationInt, value);
       final segmentList = seg.buildXml();
       final item =
           "<Representation id=\"$itag\" bandwidth=\"$bandwidth\" $codecs mimeType=\"$mime\"><BaseURL>$baseurl</BaseURL>$segmentList</Representation>";
@@ -323,8 +323,8 @@ class CacheService {
     return data;
   }
 
-  Future<Segment> getSegment(
-      String indexRange, String videoId, Map<String, dynamic> itagItem) async {
+  Future<Segment> getSegment(String indexRange, String videoId, int durationInt,
+      Map<String, dynamic> itagItem) async {
     final key = "$videoId:${itagItem['itag']}";
     final v = cache.get(key);
     if (v is Segment) {
@@ -332,7 +332,7 @@ class CacheService {
     }
     final res = await fetch(indexRange);
     final buffer = await res.reduce((a, b) => a + b);
-    final ss = Segment(buffer, itagItem);
+    final ss = Segment(buffer, durationInt, itagItem);
     cache.set(key, ss);
     return ss;
   }
