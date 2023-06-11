@@ -190,6 +190,8 @@ class PlayPage extends StatelessWidget {
           serverport = await cacheproxy.start();
           cacheproxy.listen();
         }
+        // 视频播放信息JSON
+        await cacheproxy.videoinfo(videoId);
         return "$url$serverport/$videoId.mpd";
       }(),
       builder: (context, AsyncSnapshot snapshot) {
@@ -199,7 +201,7 @@ class PlayPage extends StatelessWidget {
           }
           return Center(
             child: TextButton(
-              child: const Text("加载失败"),
+              child: const Text("获取视频信息失败"),
               onPressed: () =>
                   {Toast.toast(context, snapshot.error.toString())},
             ),

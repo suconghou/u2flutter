@@ -28,7 +28,7 @@ baseurl
 
 videourl
 
-`http://share.suconghou.cn/video/`
+`http://modest-borg-0c6cd6.netlify.app/video/`
 
 
 TODO

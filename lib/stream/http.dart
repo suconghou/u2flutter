@@ -40,7 +40,6 @@ class CacheService {
   late HttpServer server;
   final HttpClient client = HttpClient();
   final List<String> mirrors;
-  int mirrorIndex = 0;
   static const int retry = 5;
   final RegExp reqPath = RegExp(r"^/[\w\-]{5,16}/\d+$");
   final RegExp reqRange = RegExp(r"^bytes=(\d+)-(\d+)?$");
@@ -219,9 +218,9 @@ class CacheService {
     }
   }
 
-  String getMirror(String uri, List<String> mirrors) {
-    final c = mirrorIndex++ % mirrors.length;
-    return mirrors[c];
+  String getMirror(String uri, List<String> mirrorlists) {
+    final c = uri.hashCode % mirrorlists.length;
+    return mirrorlists[c];
   }
 
   Uri buildUrl(String uri, String mirror) {
@@ -253,8 +252,10 @@ class CacheService {
         return Stream.fromIterable(s);
       } catch (e) {
         // ignore: avoid_print
-        print("http fetch error $mirror $uri $i $retry $e");
+        print("http fetch ts error $mirror $uri $i $retry $e");
         if (++i > retry) {
+          // ignore: avoid_print
+          print("retryed $i , still error $e");
           rethrow;
         }
         mirrorList.removeWhere((element) => element == mirror);
@@ -267,7 +268,7 @@ class CacheService {
 
   // 根据uri负载均衡,我们要根据hash算法计算均衡逻辑
   Future<Stream<List<int>>> get(Uri uri) async {
-    const timeout = Duration(seconds: 15);
+    const timeout = Duration(seconds: 6);
     final req = await client.getUrl(uri);
     final res = await req.close().timeout(timeout);
     if (res.statusCode != HttpStatus.ok) {
@@ -307,7 +308,7 @@ class CacheService {
         return s;
       } catch (e) {
         // ignore: avoid_print
-        print("error when load $id info $e");
+        print("error when load videoinfo $id using $item : $e");
         if (i >= mirrorList.length) {
           rethrow;
         }

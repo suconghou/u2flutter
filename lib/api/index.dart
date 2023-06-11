@@ -6,7 +6,7 @@ import '../utils/store.dart';
 const _default = 'https://r.suconghou.cn/video/api/v3/';
 
 const _defaulstream =
-    'https://share.suconghou.cn/video/;https://u2worker.deno.dev/video/';
+    'https://u2worker.deno.dev/video/;https://modest-borg-0c6cd6.netlify.app/video/';
 
 bool _init = false;
 
