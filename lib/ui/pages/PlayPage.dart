@@ -19,16 +19,13 @@ enum VideoAction {
 late final CacheService cacheproxy;
 int serverport = 0;
 
-// ignore: must_be_immutable
 class PlayPage extends StatelessWidget {
-  late String videoId;
-
-  PlayPage({Key? key}) : super(key: key);
+  const PlayPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     dynamic item = ModalRoute.of(context)?.settings.arguments;
-    videoId = getVideoId(item);
+    final videoId = getVideoId(item);
 
     final String title = getVideoTitle(item);
     final String desc = getVideoTitle(item);
@@ -59,7 +56,11 @@ class PlayPage extends StatelessWidget {
     final full = MediaQuery.of(context).orientation == Orientation.landscape;
 
     Future<dynamic> fn() async {
-      return refresh(item["channel"] is bool);
+      final channel = item["channel"] is bool;
+      if (channel) {
+        return api.playlistsInChannel(channelId: videoId);
+      }
+      return api.relatedVideo(relatedToVideoId: videoId);
     }
 
     final page = Scaffold(
@@ -168,13 +169,6 @@ class PlayPage extends StatelessWidget {
             player,
           ]))
         : page;
-  }
-
-  Future<dynamic> refresh(bool channel) {
-    if (channel) {
-      return api.playlistsInChannel(channelId: videoId);
-    }
-    return api.relatedVideo(relatedToVideoId: videoId);
   }
 
   videoplayer(String videoId, String title) {

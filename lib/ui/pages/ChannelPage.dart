@@ -7,18 +7,16 @@ import 'ChannelTabPage.dart';
 
 // ignore: use_key_in_widget_constructors
 class ChannelPage extends StatelessWidget {
-  late final Future _refresh;
-
   @override
   Widget build(BuildContext context) {
     String cid = ModalRoute.of(context)?.settings.arguments as String;
-    _refresh = api.channels(cid);
     return main(context, cid);
   }
 
   Widget main(BuildContext context, String channelId) {
+    Future refresh = api.channels(channelId);
     return FutureBuilder(
-        future: _refresh,
+        future: refresh,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasError) {

@@ -14,7 +14,7 @@ String videoCover2(Object item) {
   if (id == "") {
     return _defaultImg;
   }
-  return "https://modest-borg-0c6cd6.netlify.app/video/$id.jpg";
+  return "https://r.suconghou.cn/video/$id.jpg";
 }
 
 String getVideoTitle(dynamic item) {

@@ -38,6 +38,45 @@ class ChannelTabPage extends StatelessWidget {
             child: Text("无数据"),
           );
 
+    final infoBox = Drawer(
+        child: ListView(children: [
+      Container(
+        margin: const EdgeInsets.only(top: 40, bottom: 20),
+        child: SizedBox(
+          height: 40,
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 22),
+          ),
+        ),
+      ),
+      Container(
+        margin: const EdgeInsets.all(10),
+        child: ListBody(children: [
+          Text("创建于$pubTime", style: const TextStyle(fontSize: 14)),
+          Row(
+            children: [
+              Text(
+                count,
+                style: const TextStyle(color: Colors.red, fontSize: 14),
+              ),
+              Text(
+                subCount,
+                style: const TextStyle(color: Colors.blue, fontSize: 14),
+              ),
+              Text(videoNum,
+                  style: const TextStyle(color: Colors.green, fontSize: 14)),
+            ],
+          ),
+          Text(
+            desc,
+            style: const TextStyle(fontSize: 14),
+          ),
+        ]),
+      )
+    ]));
+
     return DefaultTabController(
       length: tabTitle.length,
       child: Scaffold(
@@ -46,71 +85,8 @@ class ChannelTabPage extends StatelessWidget {
           bottom: TabBar(
             tabs: tabTitle.map((f) => Tab(text: f)).toList(),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.info_outline),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SimpleDialog(
-                        contentPadding: const EdgeInsets.all(10),
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 1, horizontal: 1),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    title,
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("创建于$pubTime",
-                                        style: const TextStyle(fontSize: 14)),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      count,
-                                      style: const TextStyle(
-                                          color: Colors.red, fontSize: 14),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      subCount,
-                                      style: const TextStyle(
-                                          color: Colors.blue, fontSize: 14),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(videoNum,
-                                        style: const TextStyle(
-                                            color: Colors.green, fontSize: 14)),
-                                  ),
-                                  Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        desc,
-                                        style: const TextStyle(fontSize: 14),
-                                      )),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    });
-              },
-            )
-          ],
         ),
+        endDrawer: infoBox,
         body: TabBarView(
           children: [
             uploadList,

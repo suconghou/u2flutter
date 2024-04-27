@@ -48,7 +48,7 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
         decoration: TextDecoration.none),
   );
   final titleBox = SizedBox(
-    height: 26,
+    height: 28,
     child: titleWidget,
   );
 
