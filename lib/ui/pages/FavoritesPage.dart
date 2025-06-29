@@ -5,7 +5,7 @@ import '../widgets/FavChannelList.dart';
 import '../widgets/FavVideoList.dart';
 
 class FavoritesPage extends StatelessWidget {
-  const FavoritesPage({Key? key}) : super(key: key);
+  const FavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +23,7 @@ class FavoritesPage extends StatelessWidget {
         ),
         body: Container(
           color: Colors.grey[100],
-          child: const TabBarView(
-            children: [
-              FavVideoList(),
-              FavChannelList(),
-            ],
-          ),
+          child: const TabBarView(children: [FavVideoList(), FavChannelList()]),
         ),
       ),
     );

@@ -10,17 +10,13 @@ import '../widgets/DlnaDeviceList.dart';
 import '../../utils/videoInfo.dart';
 import '../../stream/http.dart';
 
-enum VideoAction {
-  fav,
-  dlna,
-  favchannel,
-}
+enum VideoAction { fav, dlna, favchannel }
 
 late final CacheService cacheproxy;
 int serverport = 0;
 
 class PlayPage extends StatelessWidget {
-  const PlayPage({Key? key}) : super(key: key);
+  const PlayPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +45,7 @@ class PlayPage extends StatelessWidget {
               Navigator.pushNamed(context, '/channel', arguments: cid);
             },
           )
-        : const SizedBox(
-            height: 2,
-          );
+        : const SizedBox(height: 2);
 
     final full = MediaQuery.of(context).orientation == Orientation.landscape;
 
@@ -64,59 +58,39 @@ class PlayPage extends StatelessWidget {
     }
 
     final page = Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: [RightMenu(videoId, cid)],
-      ),
+      appBar: AppBar(title: Text(title), actions: [RightMenu(videoId, cid)]),
       body: ListView(
         children: [
           Container(
             padding: const EdgeInsets.fromLTRB(10, 15, 0, 10),
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-            ),
+            child: Text(title, style: const TextStyle(fontSize: 18)),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          AspectRatio(
-            aspectRatio: 1.7777,
-            child: player,
-          ),
+          const SizedBox(height: 10),
+          AspectRatio(aspectRatio: 1.7777, child: player),
           Container(
             color: Colors.grey[100],
             padding: const EdgeInsets.fromLTRB(10, 15, 0, 0),
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: cc,
-                ),
+                Align(alignment: Alignment.topLeft, child: cc),
                 Row(
                   children: [
-                    Text(
-                      "发布于$pubTime",
-                      style: const TextStyle(height: 1),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
+                    Text("发布于$pubTime", style: const TextStyle(height: 1)),
+                    const SizedBox(width: 8),
                     Text(
                       dur,
                       style: const TextStyle(height: 1, color: Colors.red),
                     ),
-                    const SizedBox(
-                      width: 8,
+                    const SizedBox(width: 8),
+                    Text(
+                      count,
+                      style: const TextStyle(
+                        height: 1,
+                        fontSize: 14,
+                        color: Colors.black87,
+                        decoration: TextDecoration.none,
+                      ),
                     ),
-                    Text(count,
-                        style: const TextStyle(
-                            height: 1,
-                            fontSize: 14,
-                            color: Colors.black87,
-                            decoration: TextDecoration.none)),
                   ],
                 ),
               ],
@@ -137,26 +111,17 @@ class PlayPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.only(left: 10),
                   child: const Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
-                      "相关视频",
-                      style: TextStyle(fontSize: 18),
-                    ),
+                    child: Text("相关视频", style: TextStyle(fontSize: 18)),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 VideoListBuilder(fn),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
               ],
             ),
           ),
@@ -165,13 +130,12 @@ class PlayPage extends StatelessWidget {
     );
     return full
         ? Scaffold(
-            body: Stack(fit: StackFit.expand, children: <Widget>[
-            player,
-          ]))
+            body: Stack(fit: StackFit.expand, children: <Widget>[player]),
+          )
         : page;
   }
 
-  videoplayer(String videoId, String title) {
+  FutureBuilder<String> videoplayer(String videoId, String title) {
     if (serverport == 0) {
       final arr = streambase.split(";");
       arr.removeWhere((element) => element.isEmpty);
@@ -196,14 +160,11 @@ class PlayPage extends StatelessWidget {
           return Center(
             child: TextButton(
               child: const Text("获取视频信息失败"),
-              onPressed: () =>
-                  {Toast.toast(context, snapshot.error.toString())},
+              onPressed: () => {toast(snapshot.error.toString())},
             ),
           );
         }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }
@@ -213,7 +174,7 @@ class RightMenu extends StatefulWidget {
   final String videoId;
   final String cid;
 
-  const RightMenu(this.videoId, this.cid, {Key? key}) : super(key: key);
+  const RightMenu(this.videoId, this.cid, {super.key});
   @override
   State<StatefulWidget> createState() {
     return _RightMenuState();
@@ -226,74 +187,73 @@ class _RightMenuState extends State<RightMenu> {
   Widget build(BuildContext context) {
     future = myFav();
     return FutureBuilder(
-        future: future,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (!snapshot.hasError) {
-              final Set<String> vids = snapshot.data[0];
-              final Set<String> cids = snapshot.data[1];
-              final hasFav = vids.contains(widget.videoId);
-              final hasFavCid = cids.contains(widget.cid);
-              return PopupMenuButton(
-                onSelected: (result) async {
-                  if (result == VideoAction.dlna) {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return DlnaDeviceList(videoId: widget.videoId);
-                        });
-                  } else if (result == VideoAction.fav) {
-                    if (hasFav) {
-                      await delFavVIds(widget.videoId);
-                      Toast.toast(context, "已取消收藏");
-                    } else {
-                      await addFavVIds(widget.videoId);
-                      Toast.toast(context, "已加入收藏");
-                    }
-                  } else if (result == VideoAction.favchannel) {
-                    if (hasFavCid) {
-                      await delFavCIds(widget.cid);
-                      Toast.toast(context, "已取消收藏此频道");
-                    } else {
-                      await addFavCIds(widget.cid);
-                      Toast.toast(context, "已收藏此频道");
-                    }
+      future: future,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (!snapshot.hasError) {
+            final Set<String> vids = snapshot.data[0];
+            final Set<String> cids = snapshot.data[1];
+            final hasFav = vids.contains(widget.videoId);
+            final hasFavCid = cids.contains(widget.cid);
+            return PopupMenuButton(
+              onSelected: (result) async {
+                if (result == VideoAction.dlna) {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return DlnaDeviceList(videoId: widget.videoId);
+                    },
+                  );
+                } else if (result == VideoAction.fav) {
+                  if (hasFav) {
+                    await delFavVIds(widget.videoId);
+                    toast("已取消收藏");
+                  } else {
+                    await addFavVIds(widget.videoId);
+                    toast("已加入收藏");
                   }
-                  setState(() {
-                    future = myFav();
-                  });
-                },
-                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  const PopupMenuItem<VideoAction>(
-                    value: VideoAction.dlna,
-                    child: Text('投屏助手'),
-                  ),
-                  PopupMenuItem<VideoAction>(
-                    value: VideoAction.fav,
-                    child: Text(hasFav ? '取消收藏此视频' : '收藏此视频'),
-                  ),
-                  PopupMenuItem<VideoAction>(
-                    value: VideoAction.favchannel,
-                    child: Text(hasFavCid ? '取消收藏此频道' : '收藏此频道'),
-                  ),
-                ],
-              );
-            }
-            return Center(
-              child: TextButton(
-                child: const Text("加载失败"),
-                onPressed: () =>
-                    {Toast.toast(context, snapshot.error.toString())},
-              ),
+                } else if (result == VideoAction.favchannel) {
+                  if (hasFavCid) {
+                    await delFavCIds(widget.cid);
+                    toast("已取消收藏此频道");
+                  } else {
+                    await addFavCIds(widget.cid);
+                    toast("已收藏此频道");
+                  }
+                }
+                setState(() {
+                  future = myFav();
+                });
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                const PopupMenuItem<VideoAction>(
+                  value: VideoAction.dlna,
+                  child: Text('投屏助手'),
+                ),
+                PopupMenuItem<VideoAction>(
+                  value: VideoAction.fav,
+                  child: Text(hasFav ? '取消收藏此视频' : '收藏此视频'),
+                ),
+                PopupMenuItem<VideoAction>(
+                  value: VideoAction.favchannel,
+                  child: Text(hasFavCid ? '取消收藏此频道' : '收藏此频道'),
+                ),
+              ],
             );
           }
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: TextButton(
+              child: const Text("加载失败"),
+              onPressed: () => {toast(snapshot.error.toString())},
+            ),
           );
-        });
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
   }
 
-  myFav() async {
+  Future<List<Set<String>>> myFav() async {
     final vids = await getFavVIds();
     final cids = await getFavCIds();
     return [vids, cids];

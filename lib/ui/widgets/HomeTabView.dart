@@ -6,7 +6,7 @@ import 'VideoGridWidget.dart';
 
 class HomeTabView extends StatefulWidget {
   final int videoCategoryId;
-  const HomeTabView(this.videoCategoryId, {Key? key}) : super(key: key);
+  const HomeTabView(this.videoCategoryId, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -22,25 +22,24 @@ class _HomeTabViewState extends State<HomeTabView> {
     _refresh = api.mostPopularVideos(videoCategoryId: widget.videoCategoryId);
 
     return FutureBuilder(
-        future: _refresh,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (!snapshot.hasError) {
-              return _body(snapshot.data);
-            } else {
-              return Center(
-                child: TextButton(
-                  child: const Text("加载失败，点击重试"),
-                  onPressed: () => refresh(),
-                ),
-              );
-            }
+      future: _refresh,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (!snapshot.hasError) {
+            return _body(snapshot.data);
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: TextButton(
+                child: const Text("加载失败，点击重试"),
+                onPressed: () => refresh(),
+              ),
             );
           }
-        });
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   void refresh() {
@@ -53,9 +52,6 @@ class _HomeTabViewState extends State<HomeTabView> {
     final child = data["items"] is List
         ? VideoGridWidget(data["items"])
         : const Text("数据错误");
-    return RefreshIndicator(
-      onRefresh: () async => refresh(),
-      child: child,
-    );
+    return RefreshIndicator(onRefresh: () async => refresh(), child: child);
   }
 }

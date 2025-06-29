@@ -8,7 +8,7 @@ import 'package:flutter_app/ui/utils/toast.dart';
 class DlnaStreamItems extends StatelessWidget {
   final DLNADevice dev;
   final String videoId;
-  const DlnaStreamItems(this.dev, this.videoId, {Key? key}) : super(key: key);
+  const DlnaStreamItems(this.dev, this.videoId, {super.key});
 
   String getUrl(int type) {
     final base = '${streambase.split(";").first}$videoId.webm';
@@ -32,7 +32,7 @@ class DlnaStreamItems extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                 child: const Text("标清"),
-              )
+              ),
             ],
           ),
           onTap: () async {
@@ -40,7 +40,7 @@ class DlnaStreamItems extends StatelessWidget {
               await dev.setUrl(getUrl(1));
               await dev.play();
             } catch (e) {
-              Toast.toast(context, "$e");
+              toast( "$e");
             }
           },
         ),
@@ -50,7 +50,7 @@ class DlnaStreamItems extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                 child: const Text("高清"),
-              )
+              ),
             ],
           ),
           onTap: () async {
@@ -58,7 +58,7 @@ class DlnaStreamItems extends StatelessWidget {
               await dev.setUrl(getUrl(2));
               await dev.play();
             } catch (e) {
-              Toast.toast(context, "$e");
+              toast( "$e");
             }
           },
         ),
@@ -68,7 +68,7 @@ class DlnaStreamItems extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                 child: const Text("仅音频模式"),
-              )
+              ),
             ],
           ),
           onTap: () async {
@@ -76,7 +76,7 @@ class DlnaStreamItems extends StatelessWidget {
               await dev.setUrl(getUrl(3));
               await dev.play();
             } catch (e) {
-              Toast.toast(context, "$e");
+              toast( "$e");
             }
           },
         ),
@@ -86,7 +86,7 @@ class DlnaStreamItems extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                 child: const Text("仅视频模式"),
-              )
+              ),
             ],
           ),
           onTap: () async {
@@ -94,7 +94,7 @@ class DlnaStreamItems extends StatelessWidget {
               await dev.setUrl(getUrl(4));
               await dev.play();
             } catch (e) {
-              Toast.toast(context, "$e");
+              toast( "$e");
             }
           },
         ),

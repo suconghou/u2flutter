@@ -23,10 +23,7 @@ Future<bool> clearQueryHistory() async {
 
 Future<Set<String>> getQueryHistory() async {
   final v = await Store.getSet(_storeKey);
-  if (v is Set<String>) {
-    return v;
-  }
-  return <String>{};
+  return v;
 }
 
 const String _favVIdsKey = 'fav_vids';
@@ -34,18 +31,12 @@ const String _favCIdsKey = 'fav_cids';
 
 Future<Set<String>> getFavVIds() async {
   final v = await Store.getSet(_favVIdsKey);
-  if (v is Set<String>) {
-    return v;
-  }
-  return <String>{};
+  return v;
 }
 
 Future<Set<String>> getFavCIds() async {
   final v = await Store.getSet(_favCIdsKey);
-  if (v is Set<String>) {
-    return v;
-  }
-  return <String>{};
+  return v;
 }
 
 Future<bool> addFavVIds(String id) async {

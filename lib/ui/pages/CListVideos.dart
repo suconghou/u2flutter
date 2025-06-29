@@ -6,7 +6,7 @@ import 'package:flutter_app/api/index.dart';
 import '../widgets/VideoGridWidget.dart';
 
 class CListVideos extends StatelessWidget {
-  const CListVideos({Key? key}) : super(key: key);
+  const CListVideos({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +14,7 @@ class CListVideos extends StatelessWidget {
     String title = getVideoTitle(item);
     String playlistId = item["id"];
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
+      appBar: AppBar(title: Text(title)),
       body: VideosList(playlistId),
     );
   }
@@ -24,7 +22,7 @@ class CListVideos extends StatelessWidget {
 
 class VideosList extends StatefulWidget {
   final String playlistId;
-  const VideosList(this.playlistId, {Key? key}) : super(key: key);
+  const VideosList(this.playlistId, {super.key});
   @override
   State<StatefulWidget> createState() {
     return _VideosListState();
@@ -41,20 +39,26 @@ class _VideosListState extends State<VideosList> {
   Widget a = Container(
     margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
     child: const Center(
-      child: Text("没有更多数据",
-          style: TextStyle(color: Color(0xFF999999), fontSize: 14.0)),
+      child: Text(
+        "没有更多数据",
+        style: TextStyle(color: Color(0xFF999999), fontSize: 14.0),
+      ),
     ),
   );
   Widget b = Container(
     margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
     child: const Center(
-      child: Text("正在加载中...",
-          style: TextStyle(color: Color(0xFF4483f6), fontSize: 14.0)),
+      child: Text(
+        "正在加载中...",
+        style: TextStyle(color: Color(0xFF4483f6), fontSize: 14.0),
+      ),
     ),
   );
 
-  TextStyle loadMoreTextStyle =
-      const TextStyle(color: Color(0xFF999999), fontSize: 14.0);
+  TextStyle loadMoreTextStyle = const TextStyle(
+    color: Color(0xFF999999),
+    fontSize: 14.0,
+  );
   final ScrollController _controller = ScrollController();
 
   @override
@@ -82,40 +86,37 @@ class _VideosListState extends State<VideosList> {
   Widget build(BuildContext context) {
     final bottom = nomore ? a : b;
     return FutureBuilder(
-        future: loadData,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (!snapshot.hasError) {
-              return RefreshIndicator(
-                  onRefresh: _pullToRefresh,
-                  child: ListView(
-                    controller: _controller,
-                    children: [
-                      VideoGridWidget(
-                        videoList,
-                        controller: ScrollController(),
-                      ),
-                      bottom,
-                    ],
-                  ));
-            } else {
-              return Center(
-                child: TextButton(
-                  child: const Text("加载失败，点击重试"),
-                  onPressed: () => {
-                    setState(() {
-                      loadData = _pullToRefresh();
-                    })
-                  },
-                ),
-              );
-            }
+      future: loadData,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (!snapshot.hasError) {
+            return RefreshIndicator(
+              onRefresh: _pullToRefresh,
+              child: ListView(
+                controller: _controller,
+                children: [
+                  VideoGridWidget(videoList, controller: ScrollController()),
+                  bottom,
+                ],
+              ),
+            );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: TextButton(
+                child: const Text("加载失败，点击重试"),
+                onPressed: () => {
+                  setState(() {
+                    loadData = _pullToRefresh();
+                  }),
+                },
+              ),
             );
           }
-        });
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   Future _pullToRefresh() async {
@@ -133,20 +134,23 @@ class _VideosListState extends State<VideosList> {
     });
   }
 
-  loadMoreData() async {
+  Future<void> loadMoreData() async {
     if (loading) {
       return;
     }
     loading = true;
     if (videoList.isEmpty || nextPageToken.isNotEmpty) {
       final res = await api.playlistItems(
-          playlistId: widget.playlistId, pageToken: nextPageToken);
+        playlistId: widget.playlistId,
+        pageToken: nextPageToken,
+      );
       if (res != null) {
         final origin = List.from(videoList);
         List resList = (res["items"] is List) ? res["items"] : [];
         origin.addAll(resList);
-        nextPageToken =
-            res["nextPageToken"] is String ? res["nextPageToken"] : "";
+        nextPageToken = res["nextPageToken"] is String
+            ? res["nextPageToken"]
+            : "";
         setState(() {
           videoList = origin;
           nextPageToken = nextPageToken;

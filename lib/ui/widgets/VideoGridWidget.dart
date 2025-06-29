@@ -26,7 +26,11 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
                 ctitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Colors.blue, fontSize: 12, height: 1),
+                style: const TextStyle(
+                  color: Colors.blue,
+                  fontSize: 12,
+                  height: 1,
+                ),
               ),
             ),
           ),
@@ -34,23 +38,19 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
             Navigator.pushNamed(context, '/channel', arguments: cid);
           },
         )
-      : const SizedBox(
-          height: 5,
-        );
+      : const SizedBox(height: 5);
   final titleWidget = Text(
     title,
     maxLines: 2,
     overflow: TextOverflow.ellipsis,
     style: const TextStyle(
-        height: 1.1,
-        fontSize: 12,
-        color: Colors.black,
-        decoration: TextDecoration.none),
+      height: 1.1,
+      fontSize: 12,
+      color: Colors.black,
+      decoration: TextDecoration.none,
+    ),
   );
-  final titleBox = SizedBox(
-    height: 28,
-    child: titleWidget,
-  );
+  final titleBox = SizedBox(height: 28, child: titleWidget);
 
   return Container(
     color: Colors.white,
@@ -58,29 +58,39 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Stack(children: [
-          Center(child: imgShow(cover, cover2)),
-          dur.isEmpty
-              ? Container()
-              : Positioned(
-                  bottom: 3,
-                  right: 3,
-                  child: Container(
-                    margin: const EdgeInsets.all(2),
-                    color: Colors.black,
-                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                    child: Text(dur,
+        Stack(
+          children: [
+            Center(child: imgShow(cover, cover2)),
+            dur.isEmpty
+                ? Container()
+                : Positioned(
+                    bottom: 3,
+                    right: 3,
+                    child: Container(
+                      margin: const EdgeInsets.all(2),
+                      color: Colors.black,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 2,
+                      ),
+                      child: Text(
+                        dur,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.white,
                           decoration: TextDecoration.none,
-                        )),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-        ]),
-        Container(margin: const EdgeInsets.fromLTRB(5, 5, 5, 0), child: titleBox),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsets.fromLTRB(5, 5, 5, 0),
+          child: titleBox,
+        ),
         cc,
         Container(
           alignment: Alignment.center,
@@ -97,12 +107,15 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
                 ),
               ),
               Expanded(child: Container()),
-              Text(count,
-                  style: const TextStyle(
-                      fontSize: 12,
-                      height: 1,
-                      color: Colors.grey,
-                      decoration: TextDecoration.none))
+              Text(
+                count,
+                style: const TextStyle(
+                  fontSize: 12,
+                  height: 1,
+                  color: Colors.grey,
+                  decoration: TextDecoration.none,
+                ),
+              ),
             ],
           ),
         ),
@@ -113,14 +126,11 @@ Widget buildVideoItem(BuildContext context, dynamic item) {
 
 Widget buildListVideoItem(BuildContext context, dynamic item) {
   return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          '/play',
-          arguments: item,
-        );
-      },
-      child: buildVideoItem(context, item));
+    onTap: () {
+      Navigator.pushNamed(context, '/play', arguments: item);
+    },
+    child: buildVideoItem(context, item),
+  );
 }
 
 Widget buildSignleVideoItem(BuildContext context, dynamic item) {
@@ -140,33 +150,36 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
     maxLines: 4,
     overflow: TextOverflow.ellipsis,
     style: const TextStyle(
-        height: 1.1,
-        fontSize: 12,
-        color: Colors.black,
-        decoration: TextDecoration.none),
+      height: 1.1,
+      fontSize: 12,
+      color: Colors.black,
+      decoration: TextDecoration.none,
+    ),
   );
 
   final right = Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Container(
-          height: 54, padding: const EdgeInsets.only(right: 4), child: titleBox),
+        height: 54,
+        padding: const EdgeInsets.only(right: 4),
+        child: titleBox,
+      ),
       Container(
-          padding: const EdgeInsets.only(
-            top: 4,
+        padding: const EdgeInsets.only(top: 4),
+        height: 22,
+        child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, '/channel', arguments: cid);
+          },
+          child: Text(
+            ctitle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(color: Colors.blue, fontSize: 12, height: 1),
           ),
-          height: 22,
-          child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, '/channel', arguments: cid);
-            },
-            child: Text(
-              ctitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: Colors.blue, fontSize: 12, height: 1),
-            ),
-          )),
+        ),
+      ),
       Container(
         alignment: Alignment.topLeft,
         padding: const EdgeInsets.only(right: 5),
@@ -184,12 +197,15 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
             count.isEmpty ? Container() : Expanded(child: Container()),
             count.isEmpty
                 ? Container()
-                : Text(count,
+                : Text(
+                    count,
                     style: const TextStyle(
-                        fontSize: 12,
-                        height: 1,
-                        color: Colors.grey,
-                        decoration: TextDecoration.none))
+                      fontSize: 12,
+                      height: 1,
+                      color: Colors.grey,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
           ],
         ),
       ),
@@ -220,23 +236,26 @@ Widget buildSignleVideoItem(BuildContext context, dynamic item) {
     ),
   );
   return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      child: InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, "/play", arguments: item);
-          },
-          child: cardItem));
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+    child: InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, "/play", arguments: item);
+      },
+      child: cardItem,
+    ),
+  );
 }
 
 class VideoGridWidget extends StatelessWidget {
   final List list;
   final ScrollController? controller;
-  const VideoGridWidget(this.list, {Key? key, this.controller}) : super(key: key);
+  const VideoGridWidget(this.list, {super.key, this.controller});
 
   @override
   Widget build(BuildContext context) {
-    final children =
-        list.map((item) => buildListVideoItem(context, item)).toList();
+    final children = list
+        .map((item) => buildListVideoItem(context, item))
+        .toList();
     return GridView.count(
       shrinkWrap: true,
       padding: const EdgeInsets.all(10),

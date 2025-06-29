@@ -10,40 +10,39 @@ import '../../model/video.dart';
 
 class SearchPageDelegate extends SearchDelegate<Map> {
   SearchPageDelegate()
-      : super(
-          searchFieldLabel: "输入关键词搜索",
-          searchFieldStyle: const TextStyle(
-            fontSize: 14,
-            color: Colors.black54,
-          ),
-        );
+    : super(
+        searchFieldLabel: "输入关键词搜索",
+        searchFieldStyle: const TextStyle(fontSize: 14, color: Colors.black54),
+      );
 
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () {
-            if (query.isEmpty) {
-              close(context, {});
-            } else {
-              query = "";
-              showSuggestions(context);
-            }
-          })
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          if (query.isEmpty) {
+            close(context, {});
+          } else {
+            query = "";
+            showSuggestions(context);
+          }
+        },
+      ),
     ];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-        icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow,
-          progress: transitionAnimation,
-        ),
-        onPressed: () {
-          close(context, {});
-        });
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
+      onPressed: () {
+        close(context, {});
+      },
+    );
   }
 
   @override
@@ -63,12 +62,16 @@ class SearchPageDelegate extends SearchDelegate<Map> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return SuggestionPage(query, (q) {
-      query = q;
-      showResults(context);
-    }, (q) {
-      query = q;
-    });
+    return SuggestionPage(
+      query,
+      (q) {
+        query = q;
+        showResults(context);
+      },
+      (q) {
+        query = q;
+      },
+    );
   }
 }
 
@@ -77,61 +80,65 @@ class SuggestionPage extends StatelessWidget {
   final Function onShowResult;
   final Function onQuery;
 
-  const SuggestionPage(this.query, this.onShowResult, this.onQuery, {Key? key}) : super(key: key);
+  const SuggestionPage(
+    this.query,
+    this.onShowResult,
+    this.onQuery, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getQueryHistory(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (!snapshot.hasError) {
-              final suggestions = snapshot.data;
-              return ListView.builder(
-                  itemCount: suggestions.length,
-                  itemBuilder: (c, i) {
-                    return ListTile(
-                      onTap: () {
-                        onShowResult(suggestions.elementAt(i));
+      future: getQueryHistory(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (!snapshot.hasError) {
+            final suggestions = snapshot.data;
+            return ListView.builder(
+              itemCount: suggestions.length,
+              itemBuilder: (c, i) {
+                return ListTile(
+                  onTap: () {
+                    onShowResult(suggestions.elementAt(i));
+                  },
+                  title: Text(suggestions.elementAt(i)),
+                  trailing: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: IconButton(
+                      iconSize: 24,
+                      padding: const EdgeInsets.all(0),
+                      onPressed: () {
+                        delQueryHistory(suggestions.elementAt(i));
+                        onQuery(query);
                       },
-                      title: Text(suggestions.elementAt(i)),
-                      trailing: SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: IconButton(
-                          iconSize: 24,
-                          padding: const EdgeInsets.all(0),
-                          onPressed: () {
-                            delQueryHistory(suggestions.elementAt(i));
-                            onQuery(query);
-                          },
-                          icon: const Icon(Icons.close),
-                        ),
-                      ),
-                    );
-                  });
-            } else {
-              return Center(
-                child: TextButton(
-                  child: const Text("加载失败"),
-                  onPressed: () =>
-                      {Toast.toast(context, snapshot.error.toString())},
-                ),
-              );
-            }
+                      icon: const Icon(Icons.close),
+                    ),
+                  ),
+                );
+              },
+            );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: TextButton(
+                child: const Text("加载失败"),
+                onPressed: () => {toast(snapshot.error.toString())},
+              ),
             );
           }
-        });
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }
 
 class ResultPage extends StatefulWidget {
   final String query;
 
-  const ResultPage(this.query, {Key? key}) : super(key: key);
+  const ResultPage(this.query, {super.key});
 
   @override
   State createState() => ResultPageState();
@@ -142,8 +149,10 @@ class ResultPageState extends LoadingPageState<ResultPage> {
   Future<PageData> fetchData(String page) async {
     final res = await api.search(q: widget.query, pageToken: page);
     if (res != null && res["items"] is List) {
-      return PageData(res["items"],
-          res["nextPageToken"] is String ? res["nextPageToken"] : "");
+      return PageData(
+        res["items"],
+        res["nextPageToken"] is String ? res["nextPageToken"] : "",
+      );
     }
     return PageData([], "");
   }

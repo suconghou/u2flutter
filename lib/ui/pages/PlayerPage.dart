@@ -8,7 +8,7 @@ import 'package:flutter_app/ui/utils/toast.dart';
 import '../widgets/VideoStreamPlayer.dart';
 
 class PlayerPage extends StatefulWidget {
-  const PlayerPage({Key? key}) : super(key: key);
+  const PlayerPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -26,24 +26,16 @@ class _PlayerPageState extends State {
     final full = MediaQuery.of(context).orientation == Orientation.landscape;
     final player = _buildPlayer(url);
     final page = Scaffold(
-      appBar: AppBar(
-        title: const Text("播放器"),
-      ),
+      appBar: AppBar(title: const Text("播放器")),
       body: ListView(
         children: [
-          AspectRatio(
-            aspectRatio: ratio,
-            child: player,
-          ),
+          AspectRatio(aspectRatio: ratio, child: player),
           Container(
             margin: const EdgeInsets.all(5),
             child: Row(
               children: [
-                const Text(
-                  "比例:",
-                  style: TextStyle(fontSize: 14),
-                ),
-                ButtonBar(
+                const Text("比例:", style: TextStyle(fontSize: 14)),
+                OverflowBar(
                   children: [
                     TextButton(
                       child: const Text("4:3"),
@@ -68,9 +60,9 @@ class _PlayerPageState extends State {
                           ratio = 16 / 10;
                         });
                       },
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -79,35 +71,37 @@ class _PlayerPageState extends State {
             child: Column(
               children: [
                 TextField(
-                    controller: urlController,
-                    decoration: const InputDecoration(
-                      icon: Icon(Icons.web),
-                      labelText: "URL",
-                    )),
+                  controller: urlController,
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.web),
+                    labelText: "URL",
+                  ),
+                ),
                 ElevatedButton(
-                    child: const Text("加载"),
-                    onPressed: () {
-                      setState(() {
-                        final u = urlController.value.text.trim();
-                        if (u.isEmpty) {
-                          Toast.toast(context, "请输入正确的URL");
-                          return;
-                        }
-                        if (url == u) {
-                          setState(() {
-                            url = "";
-                          });
-                        }
-                        urls.remove(u);
-                        urls.add(u);
-                        urlController.value = TextEditingValue.empty;
-                        Timer(const Duration(milliseconds: 80), () {
-                          setState(() {
-                            url = u;
-                          });
+                  child: const Text("加载"),
+                  onPressed: () {
+                    setState(() {
+                      final u = urlController.value.text.trim();
+                      if (u.isEmpty) {
+                        toast("请输入正确的URL");
+                        return;
+                      }
+                      if (url == u) {
+                        setState(() {
+                          url = "";
+                        });
+                      }
+                      urls.remove(u);
+                      urls.add(u);
+                      urlController.value = TextEditingValue.empty;
+                      Timer(const Duration(milliseconds: 80), () {
+                        setState(() {
+                          url = u;
                         });
                       });
-                    })
+                    });
+                  },
+                ),
               ],
             ),
           ),
@@ -117,35 +111,42 @@ class _PlayerPageState extends State {
             height: 500,
             child: ListView(
               children: urls
-                  .map((e) => InkWell(
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 6, bottom: 6, right: 3),
-                          child: Text(
-                            e,
-                            maxLines: 1,
+                  .map(
+                    (e) => InkWell(
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                          top: 6,
+                          bottom: 6,
+                          right: 3,
+                        ),
+                        child: Text(
+                          e,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(overflow: TextOverflow.ellipsis),
                           ),
                         ),
-                        onTap: () {
-                          urlController.value = TextEditingValue(text: e);
-                          ClipboardData data = ClipboardData(text: e);
-                          Clipboard.setData(data);
-                          Toast.toast(context, "已复制");
-                        },
-                      ))
+                      ),
+                      onTap: () {
+                        urlController.value = TextEditingValue(text: e);
+                        ClipboardData data = ClipboardData(text: e);
+                        Clipboard.setData(data);
+                        toast("已复制");
+                      },
+                    ),
+                  )
                   .toList(),
             ),
-          )
+          ),
         ],
       ),
     );
 
     return full
         ? Scaffold(
-            body: Stack(fit: StackFit.expand, children: <Widget>[
-            player,
-          ]))
+            body: Stack(fit: StackFit.expand, children: <Widget>[player]),
+          )
         : page;
   }
 
@@ -154,10 +155,7 @@ class _PlayerPageState extends State {
       return Container(
         color: Colors.black,
         child: const Center(
-          child: Text(
-            "无播放资源",
-            style: TextStyle(color: Colors.white),
-          ),
+          child: Text("无播放资源", style: TextStyle(color: Colors.white)),
         ),
       );
     }

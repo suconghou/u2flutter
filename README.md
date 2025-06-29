@@ -37,11 +37,18 @@ TODO
 2. 完善播放器部分
 3. 多线路负载均衡
 4. 开启P2P
+5. 改版，兼容TV版本
+6. 投屏服务器端
+7. 手机端可投屏到服务器端
+8. 支持直播
+9. 支持直播弹幕
+10. 自定义弹幕加载
 
 相关项目 
 
 https://github.com/suconghou/u2web
 
 https://github.com/suconghou/videortc
+
 
 

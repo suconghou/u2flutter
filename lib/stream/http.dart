@@ -15,7 +15,7 @@ const videoitags = [
   "242",
   "133",
   "278",
-  "160"
+  "160",
 ];
 
 const audioitags = ["250", "249", "251", "600", "140", "599"];
@@ -61,13 +61,13 @@ class CacheService {
     return server.port;
   }
 
-  listen() async {
+  Future<void> listen() async {
     await for (HttpRequest req in server) {
       process(req);
     }
   }
 
-  process(HttpRequest req) async {
+  Future<void> process(HttpRequest req) async {
     try {
       req.response.deadline = const Duration(minutes: 5);
       final rr = req.headers.value("range");
@@ -93,14 +93,14 @@ class CacheService {
     }
   }
 
-  handle(HttpRequest req, String reqPath) async {
+  Future<void> handle(HttpRequest req, String reqPath) async {
     final s = await fetch(reqPath);
     req.response.headers.contentType = ContentType.binary;
     await req.response.addStream(s);
     await req.response.close();
   }
 
-  handlePart(HttpRequest req, String rr) async {
+  Future<void> handlePart(HttpRequest req, String rr) async {
     final matches = reqRange.firstMatch(rr);
     final start = matches?.group(1);
     var end = matches?.group(2);
@@ -115,7 +115,7 @@ class CacheService {
     await handle(req, req.uri.path + ts);
   }
 
-  handleJson(HttpRequest req) async {
+  Future<void> handleJson(HttpRequest req) async {
     final matches = reqJson.firstMatch(req.uri.path)!;
     final id = matches.group(1)!;
     final info = await videoinfo(id);
@@ -145,7 +145,7 @@ class CacheService {
     return text.join();
   }
 
-  outputMpd(HttpRequest req, Map<String, dynamic> info) async {
+  Future<void> outputMpd(HttpRequest req, Map<String, dynamic> info) async {
     try {
       final text = await getMpdXml(info);
       req.response.headers.add("Content-Type", "application/dash+xml");
@@ -164,7 +164,7 @@ class CacheService {
     final durationInt = int.parse(info["duration"]);
     final streams = info['streams'] as Map<String, dynamic>;
     final text = [
-      "<MPD xmlns=\"urn:mpeg:dash:schema:mpd:2011\" profiles=\"urn:mpeg:dash:profile:isoff-on-demand:2011\" minBufferTime=\"PT2S\" mediaPresentationDuration=\"$duration\" type=\"static\"><Period>"
+      "<MPD xmlns=\"urn:mpeg:dash:schema:mpd:2011\" profiles=\"urn:mpeg:dash:profile:isoff-on-demand:2011\" minBufferTime=\"PT2S\" mediaPresentationDuration=\"$duration\" type=\"static\"><Period>",
     ];
     final List<String> videos = [];
     final List<String> audios = [];
@@ -202,7 +202,7 @@ class CacheService {
     return text.join();
   }
 
-  findStream(Map<String, dynamic> streams, List<String> prefers) {
+  dynamic findStream(Map<String, dynamic> streams, List<String> prefers) {
     for (final itag in prefers) {
       final item = streams[itag];
       if (item == null) {
@@ -278,7 +278,7 @@ class CacheService {
     return data;
   }
 
-  buildInfoUrl(String id, String mirror) {
+  Uri buildInfoUrl(String id, String mirror) {
     final base = Uri.parse(mirror);
     return Uri(
       scheme: base.scheme,
@@ -324,8 +324,12 @@ class CacheService {
     return data;
   }
 
-  Future<Segment> getSegment(String indexRange, String videoId, int durationInt,
-      Map<String, dynamic> itagItem) async {
+  Future<Segment> getSegment(
+    String indexRange,
+    String videoId,
+    int durationInt,
+    Map<String, dynamic> itagItem,
+  ) async {
     final key = "$videoId:${itagItem['itag']}";
     final v = cache.get(key);
     if (v is Segment) {

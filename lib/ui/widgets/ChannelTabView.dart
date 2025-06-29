@@ -10,8 +10,7 @@ enum ChannelTab { upload, favorite, playlist }
 class ChannelTabView extends StatefulWidget {
   final String channelId;
   final ChannelTab ctype;
-  const ChannelTabView(this.ctype, this.channelId, {Key? key})
-      : super(key: key);
+  const ChannelTabView(this.ctype, this.channelId, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -28,15 +27,19 @@ class _ChannelTabViewState extends State<ChannelTabView> {
   Widget a = Container(
     margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
     child: const Center(
-      child: Text("没有更多数据",
-          style: TextStyle(color: Color(0xFF999999), fontSize: 14.0)),
+      child: Text(
+        "没有更多数据",
+        style: TextStyle(color: Color(0xFF999999), fontSize: 14.0),
+      ),
     ),
   );
   Widget b = Container(
     margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
     child: const Center(
-      child: Text("正在加载中...",
-          style: TextStyle(color: Color(0xFF4483f6), fontSize: 14.0)),
+      child: Text(
+        "正在加载中...",
+        style: TextStyle(color: Color(0xFF4483f6), fontSize: 14.0),
+      ),
     ),
   );
 
@@ -92,7 +95,7 @@ class _ChannelTabViewState extends State<ChannelTabView> {
     }
   }
 
-  loadMoreData() async {
+  Future<void> loadMoreData() async {
     if (!mounted) {
       return;
     }
@@ -107,17 +110,22 @@ class _ChannelTabViewState extends State<ChannelTabView> {
       dynamic res;
       if (widget.ctype == ChannelTab.playlist) {
         res = await api.playlistsInChannel(
-            channelId: widget.channelId, pageToken: nextPageToken);
+          channelId: widget.channelId,
+          pageToken: nextPageToken,
+        );
       } else {
         res = await api.playlistItems(
-            playlistId: widget.channelId, pageToken: nextPageToken);
+          playlistId: widget.channelId,
+          pageToken: nextPageToken,
+        );
       }
       if (res != null) {
         List origin = List.from(listData);
         List resList = (res["items"] is List) ? res["items"] : [];
         origin.addAll(resList);
-        nextPageToken =
-            res["nextPageToken"] is String ? res["nextPageToken"] : "";
+        nextPageToken = res["nextPageToken"] is String
+            ? res["nextPageToken"]
+            : "";
         setState(() {
           listData = origin;
           nextPageToken = nextPageToken;
@@ -140,10 +148,7 @@ class _ChannelTabViewState extends State<ChannelTabView> {
         controller: _controller,
         cacheExtent: 500,
         children: [
-          VideoGridWidget(
-            listData,
-            controller: ScrollController(),
-          ),
+          VideoGridWidget(listData, controller: ScrollController()),
           bottom,
         ],
       );
@@ -152,11 +157,8 @@ class _ChannelTabViewState extends State<ChannelTabView> {
     return ListView(
       controller: _controller,
       children: [
-        ChannelPlayList(
-          listData,
-          controller: ScrollController(),
-        ),
-        bottom
+        ChannelPlayList(listData, controller: ScrollController()),
+        bottom,
       ],
     );
   }

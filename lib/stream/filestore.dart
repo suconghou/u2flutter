@@ -28,7 +28,7 @@ class FileCache {
     return file.openRead();
   }
 
-  writeAsBytes(List<List<int>> bytes) async {
+  Future<void> writeAsBytes(List<List<int>> bytes) async {
     await file.parent.create(recursive: true);
     for (final item in bytes) {
       await file.writeAsBytes(item);
@@ -39,7 +39,7 @@ class FileCache {
 class FileCacheManager {
   static late Directory appDocDir;
 
-  static init() async {
+  static Future<void> init() async {
     appDocDir = await getApplicationDocumentsDirectory();
   }
 

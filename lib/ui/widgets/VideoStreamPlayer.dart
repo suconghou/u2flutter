@@ -6,7 +6,7 @@ import 'package:u2flutter_player/u2flutter_player.dart';
 class VideoStreamPlayer extends StatefulWidget {
   final String url;
   final String title;
-  const VideoStreamPlayer(this.url, this.title, {Key? key}) : super(key: key);
+  const VideoStreamPlayer(this.url, this.title, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,10 +21,7 @@ class _VideoStreamPlayerState extends State<VideoStreamPlayer>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return VideoPlayerUI(
-      opts: PlayerOpts(widget.url),
-      title: widget.title,
-    );
+    return VideoPlayerUI(opts: PlayerOpts(widget.url), title: widget.title);
   }
 
   @override

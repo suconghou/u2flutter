@@ -11,7 +11,7 @@ Map<String, DLNADevice> cacheDeviceList = {};
 
 class DlnaDeviceList extends StatefulWidget {
   final String? videoId;
-  const DlnaDeviceList({Key? key, this.videoId}) : super(key: key);
+  const DlnaDeviceList({super.key, this.videoId});
 
   @override
   State<StatefulWidget> createState() {
@@ -32,7 +32,7 @@ class _DlnaDeviceListState extends State<DlnaDeviceList> {
     init();
   }
 
-  init() async {
+  Future<void> init() async {
     m = await searcher.start();
     m.devices.stream.listen((dlist) {
       dlist.forEach((key, value) {
@@ -67,18 +67,14 @@ class _DlnaDeviceListState extends State<DlnaDeviceList> {
 
   Widget _body() {
     if (deviceList.isEmpty) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
     final List<Widget> dlist = [];
     deviceList.forEach((uri, devi) {
       dlist.add(buildItem(uri, devi));
     });
 
-    return ListView(
-      children: dlist,
-    );
+    return ListView(children: dlist);
   }
 
   Widget buildItem(String uri, DLNADevice device) {
@@ -86,26 +82,20 @@ class _DlnaDeviceListState extends State<DlnaDeviceList> {
     final subtitle = '$uri\r\n${device.info.deviceType}';
     final s = subtitle.toLowerCase();
     var icon = Icons.wifi;
-    final support = s.contains("mediarenderer") ||
+    final support =
+        s.contains("mediarenderer") ||
         s.contains("avtransport") ||
         s.contains('mediaserver');
     if (!support) {
       icon = Icons.router;
     }
     final card = Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(children: <Widget>[
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(
-              top: 16,
-              left: 16,
-              bottom: 30,
-            ),
-            child: CircleAvatar(
-              child: Icon(icon),
-            ),
+            padding: const EdgeInsets.only(top: 16, left: 16, bottom: 30),
+            child: CircleAvatar(child: Icon(icon)),
           ),
           Expanded(
             child: Column(
@@ -123,11 +113,7 @@ class _DlnaDeviceListState extends State<DlnaDeviceList> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    top: 8,
-                    left: 16,
-                    right: 16,
-                  ),
+                  padding: const EdgeInsets.only(top: 8, left: 16, right: 16),
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -147,8 +133,10 @@ class _DlnaDeviceListState extends State<DlnaDeviceList> {
                 ),
               ],
             ),
-          )
-        ]));
+          ),
+        ],
+      ),
+    );
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -157,21 +145,17 @@ class _DlnaDeviceListState extends State<DlnaDeviceList> {
         onTap: () {
           if (!support) {
             const msg = "该设备不支持投屏";
-            Toast.toast(context, msg);
+            toast(msg);
             return;
           }
           showDialog(
-              context: context,
-              builder: (context) {
-                return SimpleDialog(
-                  children: [
-                    DlnaDialog(
-                      device,
-                      videoId: widget.videoId,
-                    )
-                  ],
-                );
-              });
+            context: context,
+            builder: (context) {
+              return SimpleDialog(
+                children: [DlnaDialog(device, videoId: widget.videoId)],
+              );
+            },
+          );
         },
       ),
     );
