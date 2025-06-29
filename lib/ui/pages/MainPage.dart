@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/utils/toast.dart';
 import '../widgets/HomeDrawer.dart';
 import '../widgets/HomeTabView.dart';
 import '../pages/SearchPage.dart';
@@ -24,6 +25,7 @@ class _MainPageState extends State with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    Toast.context = context;
     return Scaffold(
       appBar: AppBar(
         title: const Text("首页"),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/main.dart' show navigatorKey;
 
 class Toast {
   static OverlayEntry? _overlayEntry; //toast靠它加到屏幕上
@@ -7,13 +6,12 @@ class Toast {
   static DateTime _startedTime =
       DateTime.now(); //开启一个新toast的当前时间，用于对比是否已经展示了足够时间
   static String _msg = "";
+  static late BuildContext context;
   static void toast(String msg) async {
-    final context = navigatorKey.currentContext;
-    if (context == null) return;
     _msg = msg;
     _startedTime = DateTime.now();
     //获取OverlayState
-    OverlayState overlayState = Overlay.of(context);
+    OverlayState overlayState = Overlay.of(context, rootOverlay: true);
     _showing = true;
     if (_overlayEntry == null) {
       _overlayEntry = OverlayEntry(

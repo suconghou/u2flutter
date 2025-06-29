@@ -36,7 +36,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
           position = p;
         });
       } catch (e) {
-        print("update play progress failed: $e");
+        toast("update play progress failed: $e");
       }
     }
 
@@ -197,7 +197,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
       ),
     );
     final play = SizedBox(
-      width: 60,
+      width: 80,
       height: 30,
       child: ElevatedButton(
         onPressed: () async {
@@ -211,7 +211,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
       ),
     );
     final pause = SizedBox(
-      width: 60,
+      width: 80,
       height: 30,
       child: ElevatedButton(
         onPressed: () async {
@@ -225,7 +225,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
       ),
     );
     final stop = SizedBox(
-      width: 60,
+      width: 80,
       height: 30,
       child: ElevatedButton(
         onPressed: () async {
@@ -239,7 +239,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
       ),
     );
     final prev10 = SizedBox(
-      width: 90,
+      width: 100,
       height: 30,
       child: ElevatedButton(
         onPressed: () async {
@@ -258,7 +258,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
       ),
     );
     final next10 = SizedBox(
-      width: 90,
+      width: 100,
       height: 30,
       child: ElevatedButton(
         onPressed: () async {
@@ -278,7 +278,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
     );
 
     final prev30 = SizedBox(
-      width: 90,
+      width: 100,
       height: 30,
       child: ElevatedButton(
         onPressed: () async {
@@ -297,7 +297,7 @@ class _DlnaDialogState extends State<DlnaDialog> {
       ),
     );
     final next30 = SizedBox(
-      width: 90,
+      width: 100,
       height: 30,
       child: ElevatedButton(
         onPressed: () async {
@@ -319,14 +319,19 @@ class _DlnaDialogState extends State<DlnaDialog> {
     return Column(
       children: [
         OverflowBar(alignment: MainAxisAlignment.center, children: [push]),
+        SizedBox(height: 10),
         OverflowBar(
           alignment: MainAxisAlignment.center,
           children: [play, pause, stop],
         ),
+        SizedBox(height: 10),
+
         OverflowBar(
           alignment: MainAxisAlignment.center,
           children: [next10, prev10],
         ),
+        SizedBox(height: 10),
+
         OverflowBar(
           alignment: MainAxisAlignment.center,
           children: [next30, prev30],
